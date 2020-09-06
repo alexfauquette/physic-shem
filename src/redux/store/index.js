@@ -1,8 +1,9 @@
 import { createStore } from "redux";
-import { ADD_ELEMENT, START_ADDING_ELEMENT } from "../actions";
+import { ADD_ELEMENT, START_ADDING_ELEMENT, NO_STATE } from "../actions";
 import { v4 as uuid } from "uuid";
 
 export const MODE_ADD = "MODE_ADD";
+export const MODE_SELECT = "MODE_SELECT";
 
 const initial_state = {
   mode: null,
@@ -27,6 +28,8 @@ function counter(state = initial_state, action) {
       };
     case START_ADDING_ELEMENT:
       return { ...state, mode: MODE_ADD, selection: [action.elementType] };
+    case NO_STATE:
+      return { ...state, mode: MODE_SELECT, selection: [] };
     default:
       return state;
   }

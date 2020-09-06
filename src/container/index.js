@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import components from "../components";
 import { connect } from "react-redux";
 import { addElement } from "../redux/actions";
@@ -17,6 +17,9 @@ const mapStateToProps = (state) => {
 
 const Container = ({ mode, scene, selection, addElement }) => {
   const [coords, setCoords] = useState({ x: undefined, y: undefined });
+  useEffect(() => {
+    setCoords({ x: undefined, y: undefined });
+  }, [mode]);
 
   const followMouse = (event) => {
     const newCoords = {

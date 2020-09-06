@@ -14,3 +14,10 @@ export function startAddingElement(elementType) {
     elementType,
   };
 }
+
+export const NO_STATE = "NO_STATE";
+export function resetState() {
+  return {
+    type: NO_STATE,
+  };
+}
