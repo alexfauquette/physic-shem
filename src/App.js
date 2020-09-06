@@ -1,19 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import Container from "./container/index.js";
-import Lampe from "./components/Lampe";
+import { connect } from "react-redux";
+import { startAddingElement } from "./redux/actions";
 
-function App() {
-  const [x, setX] = useState(30);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    startAdding: () => dispatch(startAddingElement("lampe")),
+  };
+};
 
+function App({ startAdding }) {
   return (
     <div className="App">
       <header className="App-header">
-        <Container>
-          <Lampe x={x} y={50} onClick={() => setX(x + 10)} />
-        </Container>
+        <button onClick={startAdding}>Start adding</button>
+        <Container />
       </header>
     </div>
   );
 }
 
-export default App;
+export default connect(null, mapDispatchToProps)(App);
