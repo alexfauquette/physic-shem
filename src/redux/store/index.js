@@ -1,9 +1,15 @@
 import { createStore } from "redux";
-import { ADD_ELEMENT, START_ADDING_ELEMENT, NO_STATE } from "../actions";
+import {
+  ADD_ELEMENT,
+  START_ADDING_ELEMENT,
+  NO_STATE,
+  START_DRAGGING,
+} from "../actions";
 import { v4 as uuid } from "uuid";
 
 export const MODE_ADD = "MODE_ADD";
 export const MODE_SELECT = "MODE_SELECT";
+export const MODE_DRAG = "MODE_DRAG";
 
 const initial_state = {
   mode: null,
@@ -30,6 +36,8 @@ function counter(state = initial_state, action) {
       return { ...state, mode: MODE_ADD, selection: [action.elementType] };
     case NO_STATE:
       return { ...state, mode: MODE_SELECT, selection: [] };
+    case START_DRAGGING:
+      return { ...state, mode: MODE_DRAG, selection: [action.objectId] };
     default:
       return state;
   }

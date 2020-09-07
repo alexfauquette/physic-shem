@@ -21,3 +21,11 @@ export function resetState() {
     type: NO_STATE,
   };
 }
+
+export const START_DRAGGING = "START_DRAGGING";
+export function startDragging(objectId) {
+  return {
+    type: START_DRAGGING,
+    objectId,
+  };
+}
