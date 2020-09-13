@@ -99,6 +99,12 @@ const Container = ({
         onClick={
           mode === MODE_ADD && coords.x && coords.y
             ? () => addElement(coords.x, coords.y)
+            : mode === MODE_SELECT
+            ? (event) => {
+                if (!event.ctrlKey) {
+                  select(null, event.ctrlKey);
+                }
+              }
             : null
         }
         onMouseLeave={mode === MODE_DRAG ? () => stopDraging() : null}
@@ -120,16 +126,29 @@ const Container = ({
               scene[id].type &&
               components[scene[id].type]({
                 id,
-                onClick: () => {
-                  console.log("jdhskjhjfkhskjfhkd");
-                },
                 onMouseDown:
+                  mode === MODE_SELECT && selection.includes(id)
+                    ? (event) => {
+                        event.stopPropagation();
+                        if (!event.ctrlKey) {
+                          startDrag(event);
+                        }
+                      }
+                    : null,
+                onClick:
                   mode === MODE_SELECT
                     ? selection.includes(id)
-                      ? startDrag
-                      : (event) => select(id, event.ctrlKey)
+                      ? (event) => {
+                          event.stopPropagation();
+                          if (event.ctrlKey) {
+                            select(id, event.ctrlKey);
+                          }
+                        }
+                      : (event) => {
+                          event.stopPropagation();
+                          select(id, event.ctrlKey);
+                        }
                     : null,
-
                 selected: selection.includes(id),
               })
           )}
@@ -145,6 +164,7 @@ const Container = ({
             {selection.map((id) =>
               components[scene[id].type]({
                 id: id,
+                selected: true,
               })
             )}
           </g>
