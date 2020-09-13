@@ -6,7 +6,11 @@ import { startAddingElement, resetState } from "./redux/actions";
 const mapDispatchToProps = (dispatch) => {
   return {
     startAdding: () => dispatch(startAddingElement("lampe")),
-    resetState: () => dispatch(resetState()),
+    resetState: (event) => {
+      if (!event.ctrlKey) {
+        dispatch(resetState());
+      }
+    },
   };
 };
 

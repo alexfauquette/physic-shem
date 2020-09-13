@@ -23,9 +23,26 @@ export function resetState() {
 }
 
 export const START_DRAGGING = "START_DRAGGING";
-export function startDragging(objectId) {
+export function startDragging() {
   return {
     type: START_DRAGGING,
+  };
+}
+
+export const SELECT_ELEMENT = "SELECT_ELEMENT";
+export function selectElement(objectId, ctrlPressed) {
+  return {
+    type: SELECT_ELEMENT,
     objectId,
+    ctrlPressed,
+  };
+}
+
+export const STOP_DRAGGING = "STOP_DRAGGING";
+export function stopDraging(dx, dy) {
+  return {
+    type: STOP_DRAGGING,
+    dx,
+    dy,
   };
 }

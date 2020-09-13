@@ -4,6 +4,8 @@ import {
   START_ADDING_ELEMENT,
   NO_STATE,
   START_DRAGGING,
+  SELECT_ELEMENT,
+  STOP_DRAGGING,
 } from "../actions";
 import { v4 as uuid } from "uuid";
 
@@ -37,7 +39,27 @@ function counter(state = initial_state, action) {
     case NO_STATE:
       return { ...state, mode: MODE_SELECT, selection: [] };
     case START_DRAGGING:
-      return { ...state, mode: MODE_DRAG, selection: [action.objectId] };
+      return { ...state, mode: MODE_DRAG };
+    case SELECT_ELEMENT:
+      return {
+        ...state,
+        mode: MODE_SELECT,
+        selection: action.ctrlPressed
+          ? [...state.selection, action.objectId]
+          : [action.objectId],
+      };
+    case STOP_DRAGGING:
+      if (action.dx && action.dx) {
+        state.selection.forEach((id) => {
+          state.scene[id] = {
+            ...state.scene[id],
+            x: state.scene[id].x + action.dx,
+            y: state.scene[id].y + action.dy,
+          };
+        });
+        return { ...state, mode: MODE_SELECT, scene: state.scene };
+      }
+      return { ...state, mode: MODE_SELECT };
     default:
       return state;
   }
