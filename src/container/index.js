@@ -8,6 +8,7 @@ import {
   stopDraging,
 } from "../redux/actions";
 import { MODE_ADD, MODE_SELECT, MODE_DRAG } from "../redux/store";
+import Components from "./components";
 
 const STEP = 10;
 
@@ -86,9 +87,6 @@ const Container = ({
   };
   return (
     <>
-      <p>{mode}</p>
-      <p>{selection}</p>
-      <p>{Object.keys(scene)}</p>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 500 300"
@@ -118,40 +116,7 @@ const Container = ({
             : null
         }
       >
-        <text>{mode}</text>
-        {Object.keys(scene)
-          .filter((id) => mode !== MODE_DRAG || !selection.includes(id))
-          .map(
-            (id) =>
-              scene[id].type &&
-              components[scene[id].type]({
-                id,
-                onMouseDown:
-                  mode === MODE_SELECT && selection.includes(id)
-                    ? (event) => {
-                        event.stopPropagation();
-                        if (!event.ctrlKey) {
-                          startDrag(event);
-                        }
-                      }
-                    : null,
-                onClick:
-                  mode === MODE_SELECT
-                    ? selection.includes(id)
-                      ? (event) => {
-                          event.stopPropagation();
-                          if (event.ctrlKey) {
-                            select(id, event.ctrlKey);
-                          }
-                        }
-                      : (event) => {
-                          event.stopPropagation();
-                          select(id, event.ctrlKey);
-                        }
-                    : null,
-                selected: selection.includes(id),
-              })
-          )}
+        <Components startDrag={startDrag} />
         {mode === MODE_ADD && components[selection[0]]({ ...coords })}
         {mode === MODE_DRAG && (
           <g
