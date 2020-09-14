@@ -14,7 +14,7 @@ export const MODE_SELECT = "MODE_SELECT";
 export const MODE_DRAG = "MODE_DRAG";
 
 const initial_state = {
-  mode: null,
+  mode: MODE_SELECT,
   selection: [],
   scene: {},
 };
@@ -41,6 +41,19 @@ function counter(state = initial_state, action) {
     case START_DRAGGING:
       return { ...state, mode: MODE_DRAG };
     case SELECT_ELEMENT:
+      if (
+        !action.objectId ||
+        (state.selection.includes(action.objectId) && !action.ctrlPressed)
+      ) {
+        return { ...state, mode: MODE_SELECT, selection: [] };
+      }
+      if (state.selection.includes(action.objectId) && action.ctrlPressed) {
+        return {
+          ...state,
+          mode: MODE_SELECT,
+          selection: state.selection.filter((id) => id !== action.objectId),
+        };
+      }
       return {
         ...state,
         mode: MODE_SELECT,
