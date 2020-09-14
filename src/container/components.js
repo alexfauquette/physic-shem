@@ -2,7 +2,7 @@ import React from "react";
 import components from "../components";
 import { connect } from "react-redux";
 import { selectElement } from "../redux/actions";
-import { MODE_SELECT, MODE_DRAG } from "../redux/store";
+import { MODE_SELECT, MODE_DRAG, MODE_LINK } from "../redux/store";
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -47,6 +47,7 @@ const Components = ({ scene, selection, mode, startDrag, select }) => (
                     }
                 : null,
             selected: selection.includes(id),
+            showHandles: mode === MODE_LINK,
           })
       )}
   </>

@@ -46,3 +46,13 @@ export function stopDraging(dx, dy) {
     dy,
   };
 }
+
+export const START_LINKING = "START_LINKING";
+export function startLinking(objectId, x, y) {
+  return {
+    type: START_LINKING,
+    objectId,
+    x,
+    y,
+  };
+}

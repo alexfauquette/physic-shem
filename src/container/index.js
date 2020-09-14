@@ -7,7 +7,7 @@ import {
   selectElement,
   stopDraging,
 } from "../redux/actions";
-import { MODE_ADD, MODE_SELECT, MODE_DRAG } from "../redux/store";
+import { MODE_ADD, MODE_SELECT, MODE_DRAG, MODE_LINK } from "../redux/store";
 import Components from "./components";
 
 const STEP = 10;
@@ -29,6 +29,7 @@ const Container = ({
   mode,
   scene,
   selection,
+  startLink,
   addElement,
   startDragging,
   select,
@@ -49,6 +50,7 @@ const Container = ({
   const followMouse = (event) => {
     switch (mode) {
       case MODE_ADD:
+      case MODE_LINK:
         const newCoords = {
           x:
             event.nativeEvent.offsetX -
@@ -87,12 +89,15 @@ const Container = ({
   };
   return (
     <>
+      <p>{mode}</p>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 500 300"
         style={{ width: 500, height: 300 }}
         onMouseMove={
-          mode === MODE_ADD || mode === MODE_DRAG ? followMouse : null
+          mode === MODE_ADD || mode === MODE_DRAG || mode === MODE_LINK
+            ? followMouse
+            : null
         }
         onClick={
           mode === MODE_ADD && coords.x && coords.y
@@ -133,6 +138,12 @@ const Container = ({
               })
             )}
           </g>
+        )}
+        {mode === MODE_LINK && (
+          <path
+            style={{ stroke: "black", strokeWidth: 2 }}
+            d={`M ${startLink.x} ${startLink.y} L ${coords.x} ${coords.y}`}
+          />
         )}
       </svg>
     </>

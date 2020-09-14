@@ -6,12 +6,14 @@ import {
   START_DRAGGING,
   SELECT_ELEMENT,
   STOP_DRAGGING,
+  START_LINKING,
 } from "../actions";
 import { v4 as uuid } from "uuid";
 
 export const MODE_ADD = "MODE_ADD";
 export const MODE_SELECT = "MODE_SELECT";
 export const MODE_DRAG = "MODE_DRAG";
+export const MODE_LINK = "MODE_LINK";
 
 const initial_state = {
   mode: MODE_SELECT,
@@ -73,6 +75,13 @@ function counter(state = initial_state, action) {
         return { ...state, mode: MODE_SELECT, scene: state.scene };
       }
       return { ...state, mode: MODE_SELECT };
+    case START_LINKING:
+      return {
+        ...state,
+        mode: MODE_LINK,
+        selection: [],
+        startLink: { id: action.objectId, x: action.x, y: action.y },
+      };
     default:
       return state;
   }
