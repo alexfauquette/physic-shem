@@ -56,3 +56,13 @@ export function startLinking(objectId, x, y) {
     y,
   };
 }
+
+export const STOP_LINKING = "STOP_LINKING";
+export function stopLinking(objectId, x, y) {
+  return {
+    type: STOP_LINKING,
+    objectId,
+    x,
+    y,
+  };
+}

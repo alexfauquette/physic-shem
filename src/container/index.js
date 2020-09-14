@@ -9,6 +9,7 @@ import {
 } from "../redux/actions";
 import { MODE_ADD, MODE_SELECT, MODE_DRAG, MODE_LINK } from "../redux/store";
 import Components from "./components";
+import Links from "./links";
 
 const STEP = 10;
 
@@ -122,6 +123,7 @@ const Container = ({
         }
       >
         <Components startDrag={startDrag} />
+        <Links />
         {mode === MODE_ADD && components[selection[0]]({ ...coords })}
         {mode === MODE_DRAG && (
           <g
@@ -139,7 +141,7 @@ const Container = ({
             )}
           </g>
         )}
-        {mode === MODE_LINK && (
+        {mode === MODE_LINK && coords.x && coords.y && (
           <path
             style={{ stroke: "black", strokeWidth: 2 }}
             d={`M ${startLink.x} ${startLink.y} L ${coords.x} ${coords.y}`}

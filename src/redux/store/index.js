@@ -7,6 +7,7 @@ import {
   SELECT_ELEMENT,
   STOP_DRAGGING,
   START_LINKING,
+  STOP_LINKING,
 } from "../actions";
 import { v4 as uuid } from "uuid";
 
@@ -18,7 +19,7 @@ export const MODE_LINK = "MODE_LINK";
 const initial_state = {
   mode: MODE_SELECT,
   selection: [],
-  scene: {},
+  links: [],
 };
 
 function counter(state = initial_state, action) {
@@ -82,6 +83,29 @@ function counter(state = initial_state, action) {
         selection: [],
         startLink: { id: action.objectId, x: action.x, y: action.y },
       };
+    case STOP_LINKING:
+      if (state.startLink && state.startLink.objectId !== action.objectId) {
+        return {
+          ...state,
+          mode: MODE_SELECT,
+          links: [
+            ...state.links,
+            {
+              id: uuid(),
+              listOfPoints: [
+                { x: state.startLink.x, y: state.startLink.y },
+                { x: action.x, y: action.y },
+              ],
+            },
+          ],
+        };
+      } else {
+        return {
+          ...state,
+          mode: MODE_SELECT,
+        };
+      }
+
     default:
       return state;
   }
