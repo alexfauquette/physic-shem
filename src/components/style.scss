@@ -1,0 +1,22 @@
+.component {
+  fill: transparent;
+  stroke-width: 2;
+  .handle {
+    stroke: red;
+    display: none;
+  }
+  &:hover {
+    stroke: red;
+    .handle {
+      display: initial;
+    }
+  }
+}
+
+.black {
+  stroke: black;
+}
+
+.red {
+  stroke: red;
+}
