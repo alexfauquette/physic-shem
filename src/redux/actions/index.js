@@ -66,3 +66,13 @@ export function stopLinking(objectId, x, y) {
     y,
   };
 }
+
+export const TOGGLE_LINK_STEP = "TOGGLE_LINK_STEP";
+export function toggleLinkStep(stepId, x, y) {
+  return {
+    type: TOGGLE_LINK_STEP,
+    stepId,
+    x,
+    y,
+  };
+}

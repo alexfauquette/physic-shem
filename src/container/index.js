@@ -6,10 +6,12 @@ import {
   startDragging,
   selectElement,
   stopDraging,
+  toggleLinkStep,
 } from "../redux/actions";
 import { MODE_ADD, MODE_SELECT, MODE_DRAG, MODE_LINK } from "../redux/store";
 import Components from "./components";
 import Links from "./links";
+import { v4 as uuid } from "uuid";
 
 const STEP = 10;
 
@@ -20,6 +22,7 @@ const mapDispatchToProps = (dispatch) => {
     select: (objectId, ctrlPressed) =>
       dispatch(selectElement(objectId, ctrlPressed)),
     stopDraging: (dx, dy) => dispatch(stopDraging(dx, dy)),
+    toggleLinkStep: (id, x, y) => dispatch(toggleLinkStep(id, x, y)),
   };
 };
 const mapStateToProps = (state) => {
@@ -30,11 +33,12 @@ const Container = ({
   mode,
   scene,
   selection,
-  startLink,
+  currentLink,
   addElement,
   startDragging,
   select,
   stopDraging,
+  toggleLinkStep,
 }) => {
   const [coords, setCoords] = useState({ x: undefined, y: undefined });
   useEffect(() => {
@@ -109,6 +113,14 @@ const Container = ({
                   select(null, event.ctrlKey);
                 }
               }
+            : mode === MODE_LINK
+            ? (event) => {
+                toggleLinkStep(
+                  uuid(),
+                  event.nativeEvent.offsetX,
+                  event.nativeEvent.offsetY
+                );
+              }
             : null
         }
         onMouseLeave={mode === MODE_DRAG ? () => stopDraging() : null}
@@ -142,10 +154,29 @@ const Container = ({
           </g>
         )}
         {mode === MODE_LINK && coords.x && coords.y && (
-          <path
-            style={{ stroke: "black", strokeWidth: 2 }}
-            d={`M ${startLink.x} ${startLink.y} L ${coords.x} ${coords.y}`}
-          />
+          <>
+            <path
+              style={{ stroke: "black", strokeWidth: 2 }}
+              d={`M ${currentLink.map(({ x, y }) => `${x} ${y} L `).join("")} ${
+                coords.x
+              } ${coords.y}`}
+            />
+            {currentLink.map(({ id, x, y }) => (
+              <circle
+                cx={x}
+                cy={y}
+                r={5}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  toggleLinkStep(
+                    id,
+                    event.nativeEvent.offsetX,
+                    event.nativeEvent.offsetY
+                  );
+                }}
+              />
+            ))}
+          </>
         )}
       </svg>
     </>

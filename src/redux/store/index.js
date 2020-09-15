@@ -8,6 +8,7 @@ import {
   STOP_DRAGGING,
   START_LINKING,
   STOP_LINKING,
+  TOGGLE_LINK_STEP,
 } from "../actions";
 import { v4 as uuid } from "uuid";
 
@@ -81,19 +82,24 @@ function counter(state = initial_state, action) {
         ...state,
         mode: MODE_LINK,
         selection: [],
-        startLink: { id: action.objectId, x: action.x, y: action.y },
+        currentLink: [{ id: action.objectId, x: action.x, y: action.y }],
       };
     case STOP_LINKING:
-      if (state.startLink && state.startLink.objectId !== action.objectId) {
+      if (
+        state.currentLink &&
+        state.currentLink.length > 0 &&
+        state.currentLink[0].objectId !== action.objectId
+      ) {
         return {
           ...state,
           mode: MODE_SELECT,
+          currentLink: [],
           links: [
             ...state.links,
             {
               id: uuid(),
               listOfPoints: [
-                { x: state.startLink.x, y: state.startLink.y },
+                ...state.currentLink.map(({ x, y }) => ({ x, y })),
                 { x: action.x, y: action.y },
               ],
             },
@@ -102,10 +108,30 @@ function counter(state = initial_state, action) {
       } else {
         return {
           ...state,
+          currentLink: [],
           mode: MODE_SELECT,
         };
       }
-
+    case TOGGLE_LINK_STEP:
+      const correspondingIndex = state.currentLink.findIndex(
+        (point) => point.id === action.stepId
+      );
+      if (correspondingIndex < 0) {
+        return {
+          ...state,
+          currentLink: [
+            ...state.currentLink,
+            { id: action.stepId, x: action.x, y: action.y },
+          ],
+        };
+      } else if (correspondingIndex === state.currentLink.length - 1) {
+        return {
+          ...state,
+          currentLink: state.currentLink.slice(0, state.currentLink.length - 1),
+        };
+      } else {
+        return state;
+      }
     default:
       return state;
   }
