@@ -10,10 +10,10 @@ import {
 } from "../redux/actions";
 import { MODE_ADD, MODE_SELECT, MODE_DRAG, MODE_LINK } from "../redux/store";
 import Components from "./components";
-import Links from "./links";
+import Links, { Link } from "./links";
 import { v4 as uuid } from "uuid";
 
-const STEP = 10;
+const STEP = 50;
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -66,12 +66,33 @@ const Container = ({
             (event.nativeEvent.offsetY % STEP) +
             (event.nativeEvent.offsetY % STEP > STEP / 2 ? STEP : 0),
         };
-        if (newCoords.x !== coords.x || newCoords.y !== coords.y) {
+
+        if (
+          mode === MODE_ADD &&
+          (newCoords.x !== coords.x || newCoords.y !== coords.y)
+        ) {
           setCoords(newCoords);
+        } else if (
+          mode === MODE_LINK &&
+          (newCoords.x !== coords.x || newCoords.y !== coords.y)
+        ) {
+          const dx = newCoords.x - currentLink[currentLink.length - 1].x;
+          const dy = newCoords.y - currentLink[currentLink.length - 1].y;
+
+          if (Math.abs(dx) > Math.abs(dy)) {
+            setCoords({
+              x: newCoords.x,
+              y: currentLink[currentLink.length - 1].y,
+            });
+          } else {
+            setCoords({
+              x: currentLink[currentLink.length - 1].x,
+              y: newCoords.y,
+            });
+          }
         }
         break;
       case MODE_DRAG:
-        console.log(drag);
         setDrag({
           ...drag,
           x: event.nativeEvent.offsetX,
@@ -114,12 +135,8 @@ const Container = ({
                 }
               }
             : mode === MODE_LINK
-            ? (event) => {
-                toggleLinkStep(
-                  uuid(),
-                  event.nativeEvent.offsetX,
-                  event.nativeEvent.offsetY
-                );
+            ? () => {
+                toggleLinkStep(uuid(), coords.x, coords.y);
               }
             : null
         }
@@ -155,27 +172,13 @@ const Container = ({
         )}
         {mode === MODE_LINK && coords.x && coords.y && (
           <>
+            <Link listOfPoints={currentLink} className="creationLink" />
             <path
-              style={{ stroke: "black", strokeWidth: 2 }}
-              d={`M ${currentLink.map(({ x, y }) => `${x} ${y} L `).join("")} ${
-                coords.x
-              } ${coords.y}`}
+              className="linkLastPath"
+              d={`M ${currentLink[currentLink.length - 1].x} ${
+                currentLink[currentLink.length - 1].y
+              } L ${coords.x} ${coords.y}`}
             />
-            {currentLink.map(({ id, x, y }) => (
-              <circle
-                cx={x}
-                cy={y}
-                r={5}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  toggleLinkStep(
-                    id,
-                    event.nativeEvent.offsetX,
-                    event.nativeEvent.offsetY
-                  );
-                }}
-              />
-            ))}
           </>
         )}
       </svg>

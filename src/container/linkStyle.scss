@@ -1,0 +1,41 @@
+.link {
+  path {
+    stroke-width: 2;
+    stroke: black;
+    fill: none;
+  }
+  circle {
+    fill: none;
+    stroke-width: 2;
+    stroke: black;
+  }
+
+  &:hover {
+    path {
+      stroke: red;
+      stroke-dasharray: 10;
+    }
+    circle {
+      stroke: red;
+    }
+  }
+}
+
+.creationLink {
+  path {
+    stroke-width: 2;
+    stroke: black;
+    fill: none;
+  }
+  circle {
+    fill: none;
+    stroke-width: 2;
+    stroke: black;
+  }
+}
+
+.linkLastPath {
+  stroke-width: 2;
+  stroke: black;
+  fill: none;
+}
