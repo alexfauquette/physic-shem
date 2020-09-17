@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const Lampe = ({
+const Resistance = ({
   x,
   y,
   mode,
@@ -42,38 +42,39 @@ const Lampe = ({
       className={`component ${selected ? "red" : "black"}`}
     >
       <g {...props}>
-        <circle cx={0} cy={0} r={10} />
-        <path d={`M -7 -7 L 7 7 M -7 7 L 7 -7`} />
-        <path d={`M -20 0 L -10 0`} />
-        <path d={`M 20 0 L 10 0`} />
+        <path d={`M -20 -10 L 20 -10 L 20 10 L -20 10 Z`} />
+        <path d={`M -20 0 L -30 0`} />
+        <path d={`M 20 0 L 30 0`} />
+
         <path
           d={`M -25 0 L 25 0`}
           style={{ stroke: "transparent", strokeWidth: "10" }}
         />
       </g>
+      <circle
+        cx={-30}
+        cy={0}
+        r={5}
+        className="handle"
+        onClick={
+          (mode === MODE_SELECT && startLinking(id, x - 30, y)) ||
+          (mode === MODE_LINK && stopLinking(id, x - 30, y)) ||
+          null
+        }
+      />
+      <circle
+        cx={30}
+        cy={0}
+        r={5}
+        className="handle"
+        onClick={
+          (mode === MODE_SELECT && startLinking(id, x + 30, y)) ||
+          (mode === MODE_LINK && stopLinking(id, x + 30, y)) ||
+          null
+        }
+      />
+
       {/* helper for selection */}
-      <circle
-        cx={-20}
-        cy={0}
-        r={5}
-        className="handle"
-        onClick={
-          (mode === MODE_SELECT && startLinking(id, x - 20, y)) ||
-          (mode === MODE_LINK && stopLinking(id, x - 20, y)) ||
-          null
-        }
-      />
-      <circle
-        cx={20}
-        cy={0}
-        r={5}
-        className="handle"
-        onClick={
-          (mode === MODE_SELECT && startLinking(id, x + 20, y)) ||
-          (mode === MODE_LINK && stopLinking(id, x + 20, y)) ||
-          null
-        }
-      />
     </g>
   ) : null;
-export default connect(mapStateToProps, mapDispatchToProps)(Lampe);
+export default connect(mapStateToProps, mapDispatchToProps)(Resistance);
