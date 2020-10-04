@@ -116,6 +116,13 @@ const Container = ({
   return (
     <>
       <p>{mode}</p>
+      <p>
+        {scene
+          .filter(
+            (element) => mode !== MODE_DRAG || !selection.includes(element.id)
+          )
+          .map((element) => element.type)}
+      </p>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 500 300"
@@ -162,12 +169,14 @@ const Container = ({
               }px)`,
             }}
           >
-            {selection.map((id) =>
-              components[scene[id].type]({
-                id: id,
-                selected: true,
-              })
-            )}
+            {scene
+              .filter((element) => selection.includes(element.id))
+              .map((element) =>
+                components[element.type]({
+                  ...element,
+                  selected: true,
+                })
+              )}
           </g>
         )}
         {mode === MODE_LINK && coords.x && coords.y && (

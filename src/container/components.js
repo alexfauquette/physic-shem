@@ -16,15 +16,17 @@ const mapStateToProps = (state) => {
 
 const Components = ({ scene, selection, mode, startDrag, select }) => (
   <>
-    {Object.keys(scene)
-      .filter((id) => mode !== MODE_DRAG || !selection.includes(id))
+    {scene
+      .filter(
+        (element) => mode !== MODE_DRAG || !selection.includes(element.id)
+      )
       .map(
-        (id) =>
-          scene[id].type &&
-          components[scene[id].type]({
-            id,
+        (element) =>
+          element.type &&
+          components[element.type]({
+            ...element,
             onMouseDown:
-              mode === MODE_SELECT && selection.includes(id)
+              mode === MODE_SELECT && selection.includes(element.id)
                 ? (event) => {
                     event.stopPropagation();
                     if (!event.ctrlKey) {
@@ -34,19 +36,19 @@ const Components = ({ scene, selection, mode, startDrag, select }) => (
                 : null,
             onClick:
               mode === MODE_SELECT
-                ? selection.includes(id)
+                ? selection.includes(element.id)
                   ? (event) => {
                       event.stopPropagation();
                       if (event.ctrlKey) {
-                        select(id, event.ctrlKey);
+                        select(element.id, event.ctrlKey);
                       }
                     }
                   : (event) => {
                       event.stopPropagation();
-                      select(id, event.ctrlKey);
+                      select(element.id, event.ctrlKey);
                     }
                 : null,
-            selected: selection.includes(id),
+            selected: selection.includes(element.id),
             showHandles: mode === MODE_LINK,
           })
       )}

@@ -7,7 +7,7 @@ import "./style.scss";
 // If id => it's from scene
 // If no id => it's from adding
 const mapStateToProps = (state, props) => {
-  return props.id ? { ...state.scene[props.id], mode: state.mode } : {};
+  return props.id ? { mode: state.mode } : {};
 };
 
 const mapDispatchToProps = (dispatch) => {

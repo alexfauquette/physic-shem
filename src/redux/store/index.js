@@ -21,6 +21,26 @@ const initial_state = {
   mode: MODE_SELECT,
   selection: [],
   links: [],
+  scene: [
+    {
+      id: uuid(),
+      x: 50,
+      y: 50,
+      type: "lampe",
+    },
+    {
+      id: uuid(),
+      x: 150,
+      y: 150,
+      type: "lampe",
+    },
+    {
+      id: uuid(),
+      x: 50,
+      y: 150,
+      type: "resistance",
+    },
+  ],
 };
 
 function counter(state = initial_state, action) {
@@ -29,14 +49,15 @@ function counter(state = initial_state, action) {
       return {
         ...state,
         mode: MODE_ADD,
-        scene: {
+        scene: [
           ...state.scene,
-          [uuid()]: {
+          {
+            id: uuid(),
             x: action.x,
             y: action.y,
             type: state.selection[0],
           },
-        },
+        ],
       };
     case START_ADDING_ELEMENT:
       return { ...state, mode: MODE_ADD, selection: [action.elementType] };
@@ -67,14 +88,19 @@ function counter(state = initial_state, action) {
       };
     case STOP_DRAGGING:
       if (action.dx && action.dx) {
-        state.selection.forEach((id) => {
-          state.scene[id] = {
-            ...state.scene[id],
-            x: state.scene[id].x + action.dx,
-            y: state.scene[id].y + action.dy,
-          };
-        });
-        return { ...state, mode: MODE_SELECT, scene: state.scene };
+        return {
+          ...state,
+          mode: MODE_SELECT,
+          scene: state.scene.map((element) =>
+            state.selection.includes(element.id)
+              ? {
+                  ...element,
+                  x: element.x + action.dx,
+                  y: element.y + action.dy,
+                }
+              : { ...element }
+          ),
+        };
       }
       return { ...state, mode: MODE_SELECT };
     case START_LINKING:
