@@ -35,7 +35,6 @@ const Lampe = ({
   id,
   ...props
 }) => {
-  console.log(anchors);
   if (!anchors || !anchors.byId[from] || !anchors.byId[to]) {
     return null;
   }
@@ -43,9 +42,7 @@ const Lampe = ({
   const { x: xTo, y: yTo } = anchors.byId[to];
 
   const d = Math.sqrt((xFrom - xTo) ** 2 + (yFrom - yTo) ** 2);
-
   const ratio = 1 / 2 - 10 / d;
-  console.log(ratio);
   return (
     <g className={`component ${selected ? "red" : "black"}`}>
       <g {...props}>
