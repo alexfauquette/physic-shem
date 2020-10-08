@@ -41,6 +41,40 @@ const initial_state = {
       type: "resistance",
     },
   ],
+  pathComponents: {
+    byId: {
+      id1: {
+        id: "id1",
+        from: "anchor1",
+        to: "anchor2",
+        type: "lampe",
+      },
+      id2: {
+        id: "id2",
+        from: "anchor2",
+        to: "anchor3",
+        type: "lampe",
+      },
+    },
+    allIds: ["id1", "id2"],
+  },
+  anchors: {
+    byId: {
+      anchor1: {
+        x: 10,
+        y: 10,
+      },
+      anchor2: {
+        x: 150,
+        y: 30,
+      },
+      anchor3: {
+        x: 100,
+        y: 100,
+      },
+    },
+    allIds: ["anchor1", "anchor2", "anchor3"],
+  },
 };
 
 function counter(state = initial_state, action) {

@@ -14,19 +14,18 @@ const mapStateToProps = (state) => {
   return state;
 };
 
-const Components = ({ scene, selection, mode, startDrag, select }) => (
+const Components = ({ pathComponents, selection, mode, startDrag, select }) => (
   <>
-    {scene
-      .filter(
-        (element) => mode !== MODE_DRAG || !selection.includes(element.id)
-      )
+    {pathComponents.allIds
+      .filter((id) => mode !== MODE_DRAG || !selection.includes(id))
       .map(
-        (element) =>
-          element.type &&
-          components[element.type]({
-            ...element,
+        (id) =>
+          pathComponents.byId[id].type &&
+          components[pathComponents.byId[id].type]({
+            ...pathComponents.byId[id],
             onMouseDown:
-              mode === MODE_SELECT && selection.includes(element.id)
+              mode === MODE_SELECT &&
+              selection.includes(pathComponents.byId[id].id)
                 ? (event) => {
                     event.stopPropagation();
                     if (!event.ctrlKey) {
@@ -36,19 +35,19 @@ const Components = ({ scene, selection, mode, startDrag, select }) => (
                 : null,
             onClick:
               mode === MODE_SELECT
-                ? selection.includes(element.id)
+                ? selection.includes(pathComponents.byId[id].id)
                   ? (event) => {
                       event.stopPropagation();
                       if (event.ctrlKey) {
-                        select(element.id, event.ctrlKey);
+                        select(pathComponents.byId[id].id, event.ctrlKey);
                       }
                     }
                   : (event) => {
                       event.stopPropagation();
-                      select(element.id, event.ctrlKey);
+                      select(pathComponents.byId[id].id, event.ctrlKey);
                     }
                 : null,
-            selected: selection.includes(element.id),
+            selected: selection.includes(pathComponents.byId[id].id),
             showHandles: mode === MODE_LINK,
           })
       )}
