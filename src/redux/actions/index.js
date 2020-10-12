@@ -1,7 +1,7 @@
-export const START_DRAGGING_ANCHOR = "START_DRAGGING_ANCHOR";
-export function startDragginAnchor(anchorId) {
+export const START_DRAGGING = "START_DRAGGING";
+export function startDraggin(anchorId) {
   return {
-    type: START_DRAGGING_ANCHOR,
+    type: START_DRAGGING,
     anchorId: anchorId,
   };
 }

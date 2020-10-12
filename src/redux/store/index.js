@@ -1,5 +1,5 @@
 import { createStore } from "redux";
-import { START_DRAGGING_ANCHOR, ANCHOR_MOVE } from "../actions";
+import { START_DRAGGING, ANCHOR_MOVE } from "../actions";
 import { v4 as uuid } from "uuid";
 
 export const MODE_SELECT = "MODE_SELECT";
@@ -101,7 +101,7 @@ const initial_state = {
 
 function counter(state = initial_state, action) {
   switch (action.type) {
-    case START_DRAGGING_ANCHOR:
+    case START_DRAGGING:
       return {
         ...state,
         mode: MODE_DRAG,
