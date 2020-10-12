@@ -3,7 +3,7 @@ import { START_DRAGGING_ANCHOR, ANCHOR_MOVE } from "../actions";
 import { v4 as uuid } from "uuid";
 
 export const MODE_SELECT = "MODE_SELECT";
-export const MODE_DRAG_ANCHOR = "MODE_DRAG_ANCHOR";
+export const MODE_DRAG = "MODE_DRAG";
 
 const initial_state = {
   mode: MODE_SELECT,
@@ -100,7 +100,7 @@ function counter(state = initial_state, action) {
     case START_DRAGGING_ANCHOR:
       return {
         ...state,
-        mode: MODE_DRAG_ANCHOR,
+        mode: MODE_DRAG,
         selection: [action.anchorId],
         originalPosition: { ...state.anchors.byId[action.anchorId] },
       };

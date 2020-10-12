@@ -1,26 +1,9 @@
-import React, { useState, useEffect } from "react";
-// import components from "../components";
+import React from "react";
 import { connect } from "react-redux";
-import {
-  // addElement,
-  // startDragging,
-  // selectElement,
-  // stopDraging,
-  // toggleLinkStep,
-  anchorMove,
-} from "../redux/actions";
-import {
-  // MODE_ADD,
-  // MODE_SELECT,
-  MODE_DRAG,
-  MODE_LINK,
-  MODE_DRAG_ANCHOR,
-} from "../redux/store";
+import { anchorMove } from "../redux/actions";
+import { MODE_DRAG } from "../redux/store";
 import Components from "./components";
 import Anchors from "./anchors";
-import { v4 as uuid } from "uuid";
-
-const STEP = 50;
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -43,7 +26,7 @@ const Container = ({
 }) => {
   const followMouse = (event) => {
     switch (mode) {
-      case MODE_DRAG_ANCHOR:
+      case MODE_DRAG:
         anchorMove(
           event.nativeEvent.offsetX,
           event.nativeEvent.offsetY,
@@ -62,7 +45,7 @@ const Container = ({
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 500 300"
         style={{ width: 500, height: 300 }}
-        onMouseMove={mode === MODE_DRAG_ANCHOR ? followMouse : null}
+        onMouseMove={mode === MODE_DRAG ? followMouse : null}
         // onClick={
         // mode === MODE_ADD && coords.x && coords.y
         //   ? () => addElement(coords.x, coords.y)

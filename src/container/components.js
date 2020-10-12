@@ -1,7 +1,7 @@
 import React from "react";
 import components from "../components";
 import { connect } from "react-redux";
-import { MODE_SELECT, MODE_DRAG_ANCHOR } from "../redux/store";
+import { MODE_SELECT, MODE_DRAG } from "../redux/store";
 
 const mapDispatchToProps = (dispatch) => {
   return {};
@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
 const Components = ({ pathComponents, selection, mode, startDrag }) => (
   <>
     {pathComponents.allIds
-      .filter((id) => mode !== MODE_DRAG_ANCHOR || !selection.includes(id))
+      .filter((id) => mode !== MODE_DRAG || !selection.includes(id))
       .map(
         (id) =>
           pathComponents.byId[id].type &&

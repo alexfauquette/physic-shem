@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { startDragginAnchor } from "../redux/actions";
-// import { MODE_DRAG } from "../redux/store";
 
 const mapDispatchToProps = (dispatch) => {
   return {
