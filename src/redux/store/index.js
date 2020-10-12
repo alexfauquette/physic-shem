@@ -4,6 +4,10 @@ import { v4 as uuid } from "uuid";
 
 export const MODE_SELECT = "MODE_SELECT";
 export const MODE_DRAG = "MODE_DRAG";
+export const MODE_DELETE = "MODE_DELETE";
+export const MODE_SPLIT_ANCHOR = "MODE_SPLIT_ANCHOR";
+export const MODE_CREATE_ANCHOR = "MODE_CREATE_ANCHOR";
+export const MODE_CREATE_PATH_ELEMENT = "MODE_CREATE_PATH_ELEMENT";
 
 const initial_state = {
   mode: MODE_SELECT,
