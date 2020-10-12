@@ -2,10 +2,7 @@ import { createStore } from "redux";
 import { START_DRAGGING_ANCHOR, ANCHOR_MOVE } from "../actions";
 import { v4 as uuid } from "uuid";
 
-export const MODE_ADD = "MODE_ADD";
 export const MODE_SELECT = "MODE_SELECT";
-export const MODE_DRAG = "MODE_DRAG";
-export const MODE_LINK = "MODE_LINK";
 export const MODE_DRAG_ANCHOR = "MODE_DRAG_ANCHOR";
 
 const initial_state = {

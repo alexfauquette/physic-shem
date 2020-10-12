@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import { startLinking, stopLinking } from "../redux/actions";
 // import { MODE_LINK, MODE_SELECT } from "../redux/store";
 import "./style.scss";
 
@@ -11,16 +10,7 @@ const mapStateToProps = (state, props) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    startLinking: (id, x, y) => (event) => {
-      event.stopPropagation();
-      dispatch(startLinking(id, x, y));
-    },
-    stopLinking: (id, x, y) => (event) => {
-      event.stopPropagation();
-      dispatch(stopLinking(id, x, y));
-    },
-  };
+  return {};
 };
 
 const Lampe = ({
@@ -30,8 +20,6 @@ const Lampe = ({
   mode,
   selected,
   showHandles,
-  startLinking,
-  stopLinking,
   id,
   ...props
 }) => {

@@ -1,7 +1,6 @@
 import React from "react";
 import Container from "./container/index.js";
 import { connect } from "react-redux";
-import { startAddingElement, resetState } from "./redux/actions";
 import { MODE_SELECT } from "./redux/store";
 import components from "./components";
 
@@ -48,22 +47,14 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = (dispatch) => {
-  return {
-    startAdding: (name) => () => dispatch(startAddingElement(name)),
-    resetState: (event) => {
-      if (!event.ctrlKey) {
-        dispatch(resetState());
-      }
-    },
-  };
+  return {};
 };
 
-function App({ mode, selection, startAdding, resetState }) {
+function App({ mode, selection }) {
   const classes = useStyles();
   return (
     // TODO : Proper listen key event
-    <div className={classes.root} onKeyDown={resetState} tabIndex="0">
-      {/* <button onClick={startAdding}>Start adding</button> */}
+    <div className={classes.root} tabIndex="0">
       <CssBaseline />
 
       <AppBar position="fixed" className={classes.appBar}>
@@ -84,7 +75,7 @@ function App({ mode, selection, startAdding, resetState }) {
         <div className={classes.drawerContainer}>
           <List>
             {Object.keys(components).map((name) => (
-              <ListItem button key={name} onClick={startAdding(name)}>
+              <ListItem button key={name}>
                 <ListItemText primary={name} />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -101,7 +92,7 @@ function App({ mode, selection, startAdding, resetState }) {
       <Drawer
         anchor="right"
         variant="persistent"
-        open={mode === MODE_SELECT && selection.length > 0}
+        open={mode === MODE_SELECT && selection.length === 1}
       >
         <Toolbar />
         <p>kjdxhfks</p>
