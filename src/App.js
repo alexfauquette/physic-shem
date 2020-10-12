@@ -14,6 +14,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import { startSelect } from "./redux/actions/index.js";
 
 const drawerWidth = 180;
 
@@ -47,14 +48,16 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    startSelect: () => dispatch(startSelect()),
+  };
 };
 
-function App({ mode, selection }) {
+function App({ mode, selection, startSelect }) {
   const classes = useStyles();
   return (
     // TODO : Proper listen key event
-    <div className={classes.root} tabIndex="0">
+    <div className={classes.root} tabIndex="0" onClick={startSelect}>
       <CssBaseline />
 
       <AppBar position="fixed" className={classes.appBar}>

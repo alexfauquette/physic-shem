@@ -15,3 +15,10 @@ export function anchorMove(x, y, shiftPress) {
     shiftPress: shiftPress,
   };
 }
+
+export const START_SELECT = "START_SELECT";
+export function startSelect() {
+  return {
+    type: START_SELECT,
+  };
+}
