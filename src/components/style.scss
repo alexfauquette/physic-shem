@@ -1,12 +1,13 @@
 .component {
   fill: transparent;
   stroke-width: 2;
+  transition: opacity 0.1s;
   .handle {
     stroke: red;
     display: none;
   }
   &:hover {
-    stroke: red;
+    opacity: 0.5;
     .handle {
       display: initial;
     }

@@ -1,8 +1,9 @@
 export const START_DRAGGING = "START_DRAGGING";
-export function startDraggin(anchorId) {
+export function startDragging(x, y) {
   return {
     type: START_DRAGGING,
-    anchorId: anchorId,
+    x,
+    y,
   };
 }
 
@@ -20,5 +21,14 @@ export const START_SELECT = "START_SELECT";
 export function startSelect() {
   return {
     type: START_SELECT,
+  };
+}
+
+export const TOGGLE_SELECTION = "TOGGLE_SELECTION";
+export function toggleSelection(objectId) {
+  console.log(objectId);
+  return {
+    type: TOGGLE_SELECTION,
+    objectId,
   };
 }

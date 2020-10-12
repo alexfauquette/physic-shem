@@ -1,5 +1,11 @@
 import { createStore } from "redux";
-import { START_DRAGGING, ANCHOR_MOVE, START_SELECT } from "../actions";
+import {
+  START_DRAGGING,
+  ANCHOR_MOVE,
+  START_SELECT,
+  TOGGLE_SELECTION,
+} from "../actions";
+
 import { v4 as uuid } from "uuid";
 
 export const MODE_SELECT = "MODE_SELECT";
@@ -71,26 +77,32 @@ const initial_state = {
   anchors: {
     byId: {
       anchor1: {
+        id: "anchor1",
         x: 10,
         y: 10,
       },
       anchor2: {
+        id: "anchor2",
         x: 150,
         y: 30,
       },
       anchor3: {
+        id: "anchor3",
         x: 100,
         y: 100,
       },
       anchor4: {
+        id: "anchor4",
         x: 10,
         y: 200,
       },
       anchor5: {
+        id: "anchor5",
         x: 50,
         y: 200,
       },
       anchor6: {
+        id: "anchor6",
         x: 100,
         y: 200,
       },
@@ -100,7 +112,26 @@ const initial_state = {
 };
 
 function counter(state = initial_state, action) {
+  console.log("reducer");
   switch (action.type) {
+    case TOGGLE_SELECTION:
+      console.log(TOGGLE_SELECTION);
+      const index = state.selection.findIndex((x) => x === action.objectId);
+      console.log(index);
+      if (index >= 0) {
+        return {
+          ...state,
+          selection: [
+            ...state.selection.slice(0, index),
+            ...state.selection.slice(index + 1),
+          ],
+        };
+      } else {
+        return {
+          ...state,
+          selection: [...state.selection, action.objectId],
+        };
+      }
     case START_SELECT:
       return {
         ...state,
@@ -108,42 +139,69 @@ function counter(state = initial_state, action) {
         mode: MODE_SELECT,
       };
     case START_DRAGGING:
+      const anchorsToMove = [];
+      state.selection.forEach((selectedId) => {
+        if (state.anchors.allIds.includes(selectedId)) {
+          if (!anchorsToMove.includes(selectedId)) {
+            anchorsToMove.push(selectedId);
+          }
+        } else if (state.pathComponents.allIds.includes(selectedId)) {
+          if (
+            !anchorsToMove.includes(state.pathComponents.byId[selectedId].from)
+          ) {
+            anchorsToMove.push(state.pathComponents.byId[selectedId].from);
+          }
+          if (
+            !anchorsToMove.includes(state.pathComponents.byId[selectedId].to)
+          ) {
+            anchorsToMove.push(state.pathComponents.byId[selectedId].to);
+          }
+        }
+      });
       return {
         ...state,
         mode: MODE_DRAG,
-        selection: [action.anchorId],
-        originalPosition: { ...state.anchors.byId[action.anchorId] },
+        anchorsToMove: [...anchorsToMove],
+        originalPosition: { x: action.x, y: action.y },
+        alreadyMoved: { x: 0, y: 0 },
       };
 
     case ANCHOR_MOVE:
-      let newX, newY;
+      let newMoveX, newMoveY;
       if (action.shiftPress) {
         if (
           Math.abs(action.x - state.originalPosition.x) >
           Math.abs(action.y - state.originalPosition.y)
         ) {
-          newX = action.x;
-          newY = state.originalPosition.y;
+          newMoveX = action.x - state.originalPosition.x;
+          newMoveY = 0;
         } else {
-          newX = state.originalPosition.x;
-          newY = action.y;
+          newMoveX = 0;
+          newMoveY = action.y - state.originalPosition.y;
         }
       } else {
-        newX = action.x;
-        newY = action.y;
+        newMoveX = action.x - state.originalPosition.x;
+        newMoveY = action.y - state.originalPosition.y;
       }
+
+      const anchorById = state.anchors.byId;
+      state.anchorsToMove.forEach((anchorId) => {
+        anchorById[anchorId] = {
+          ...anchorById[anchorId],
+          x: anchorById[anchorId].x + newMoveX - state.alreadyMoved.x,
+          y: anchorById[anchorId].y + newMoveY - state.alreadyMoved.y,
+        };
+      });
+
       return {
         ...state,
         anchors: {
           ...state.anchors,
-          byId: {
-            ...state.anchors.byId,
-            [state.selection[0]]: {
-              ...state.anchors.byId[state.selection[0]],
-              x: newX,
-              y: newY,
-            },
-          },
+          byId: { ...anchorById },
+        },
+        alreadyMoved: {
+          x: newMoveX,
+          y: newMoveY,
         },
       };
     default:

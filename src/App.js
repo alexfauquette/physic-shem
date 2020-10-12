@@ -57,7 +57,7 @@ function App({ mode, selection, startSelect }) {
   const classes = useStyles();
   return (
     // TODO : Proper listen key event
-    <div className={classes.root} tabIndex="0" onClick={startSelect}>
+    <div className={classes.root} tabIndex="0" onMouseDown={startSelect}>
       <CssBaseline />
 
       <AppBar position="fixed" className={classes.appBar}>
