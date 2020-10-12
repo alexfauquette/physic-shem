@@ -7,6 +7,13 @@ export function startDragging(x, y) {
   };
 }
 
+export const STOP_DRAGGING = "STOP_DRAGGING";
+export function stopDragging() {
+  return {
+    type: STOP_DRAGGING,
+  };
+}
+
 export const ANCHOR_MOVE = "ANCHOR_MOVE";
 export function anchorMove(x, y, shiftPress) {
   return {

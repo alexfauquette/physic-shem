@@ -4,6 +4,7 @@ import {
   ANCHOR_MOVE,
   START_SELECT,
   TOGGLE_SELECTION,
+  STOP_DRAGGING,
 } from "../actions";
 
 import { v4 as uuid } from "uuid";
@@ -165,7 +166,14 @@ function counter(state = initial_state, action) {
         originalPosition: { x: action.x, y: action.y },
         alreadyMoved: { x: 0, y: 0 },
       };
-
+    case STOP_DRAGGING:
+      return {
+        ...state,
+        mode: MODE_SELECT,
+        anchorsToMove: [],
+        originalPosition: {},
+        alreadyMoved: {},
+      };
     case ANCHOR_MOVE:
       let newMoveX, newMoveY;
       if (action.shiftPress) {

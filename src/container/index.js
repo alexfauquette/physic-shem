@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { anchorMove } from "../redux/actions";
+import { anchorMove, stopDragging } from "../redux/actions";
 import { MODE_DRAG } from "../redux/store";
 import Components from "./components";
 import Anchors from "./anchors";
@@ -8,22 +8,14 @@ import Anchors from "./anchors";
 const mapDispatchToProps = (dispatch) => {
   return {
     anchorMove: (x, y, shiftPress) => dispatch(anchorMove(x, y, shiftPress)),
+    stopDragging: () => dispatch(stopDragging()),
   };
 };
 const mapStateToProps = (state) => {
   return state;
 };
 
-const Container = ({
-  mode,
-  selection,
-  addElement,
-  startDragging,
-  select,
-  stopDraging,
-  toggleLinkStep,
-  anchorMove,
-}) => {
+const Container = ({ mode, stopDragging, anchorMove }) => {
   const followMouse = (event) => {
     switch (mode) {
       case MODE_DRAG:
@@ -61,16 +53,7 @@ const Container = ({
         //     }
         //   : null
         // }
-        // onMouseLeave={mode === MODE_DRAG ? () => stopDraging() : null}
-        // onMouseUp={
-        //   mode === MODE_DRAG
-        //     ? (event) =>
-        //         stopDraging(
-        //           event.nativeEvent.offsetX - drag.xOrigine,
-        //           event.nativeEvent.offsetY - drag.yOrigine
-        //         )
-        //     : null
-        // }
+        onMouseUp={mode === MODE_DRAG ? () => stopDragging() : null}
       >
         <Components />
         <Anchors />
