@@ -5,6 +5,9 @@ import {
   START_SELECT,
   TOGGLE_SELECTION,
   STOP_DRAGGING,
+  START_CREATE_ANCHOR,
+  UPDATE_ANCHOR_CREATION,
+  SAVE_ANCHOR_CREATION,
 } from "../actions";
 
 import { v4 as uuid } from "uuid";
@@ -113,12 +116,9 @@ const initial_state = {
 };
 
 function counter(state = initial_state, action) {
-  console.log("reducer");
   switch (action.type) {
     case TOGGLE_SELECTION:
-      console.log(TOGGLE_SELECTION);
       const index = state.selection.findIndex((x) => x === action.objectId);
-      console.log(index);
       if (index >= 0) {
         return {
           ...state,
@@ -212,6 +212,50 @@ function counter(state = initial_state, action) {
           y: newMoveY,
         },
       };
+    case START_CREATE_ANCHOR:
+      return {
+        ...state,
+        selection: [],
+        mode: MODE_CREATE_ANCHOR,
+        newAnchor: {
+          x: null,
+          y: null,
+          id: null,
+        },
+      };
+
+    case UPDATE_ANCHOR_CREATION:
+      return {
+        ...state,
+        newAnchor: {
+          x: action.x,
+          y: action.y,
+          id: action.id,
+        },
+      };
+    case SAVE_ANCHOR_CREATION:
+      if (state.newAnchor.id == null) {
+        const newId = uuid();
+        return {
+          ...state,
+          anchors: {
+            byId: {
+              ...state.anchors.byId,
+              [newId]: {
+                ...state.newAnchor,
+                id: newId,
+              },
+            },
+            allIds: [...state.anchors.allIds, newId],
+          },
+          newAnchor: {
+            x: action.x,
+            y: action.y,
+            id: newId,
+          },
+        };
+      }
+      return state;
     default:
       return state;
   }

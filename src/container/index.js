@@ -1,7 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
-import { anchorMove, stopDragging } from "../redux/actions";
-import { MODE_DRAG } from "../redux/store";
+import {
+  anchorMove,
+  stopDragging,
+  updateAnchorCreation,
+  saveAnchorCreation,
+} from "../redux/actions";
+import { MODE_DRAG, MODE_CREATE_ANCHOR } from "../redux/store";
 import Components from "./components";
 import Anchors from "./anchors";
 
@@ -9,13 +14,22 @@ const mapDispatchToProps = (dispatch) => {
   return {
     anchorMove: (x, y, shiftPress) => dispatch(anchorMove(x, y, shiftPress)),
     stopDragging: () => dispatch(stopDragging()),
+    updateAnchorCreation: (x, y) => dispatch(updateAnchorCreation(x, y, null)),
+    saveAnchorCreation: () => dispatch(saveAnchorCreation()),
   };
 };
 const mapStateToProps = (state) => {
   return state;
 };
 
-const Container = ({ mode, stopDragging, anchorMove }) => {
+const Container = ({
+  mode,
+  newAnchor,
+  stopDragging,
+  anchorMove,
+  updateAnchorCreation,
+  saveAnchorCreation,
+}) => {
   const followMouse = (event) => {
     switch (mode) {
       case MODE_DRAG:
@@ -24,6 +38,23 @@ const Container = ({ mode, stopDragging, anchorMove }) => {
           event.nativeEvent.offsetY,
           event.shiftKey
         );
+        break;
+      case MODE_CREATE_ANCHOR:
+        updateAnchorCreation(
+          event.nativeEvent.offsetX,
+          event.nativeEvent.offsetY
+        );
+        break;
+      default:
+        break;
+    }
+  };
+
+  const click = (event) => {
+    switch (mode) {
+      case MODE_CREATE_ANCHOR:
+        event.stopPropagation();
+        saveAnchorCreation();
         break;
       default:
         break;
@@ -37,25 +68,17 @@ const Container = ({ mode, stopDragging, anchorMove }) => {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 500 300"
         style={{ width: 500, height: 300 }}
-        onMouseMove={mode === MODE_DRAG ? followMouse : null}
-        // onClick={
-        // mode === MODE_ADD && coords.x && coords.y
-        //   ? () => addElement(coords.x, coords.y)
-        //   : mode === MODE_SELECT
-        //   ? (event) => {
-        //       if (!event.ctrlKey) {
-        //         select(null, event.ctrlKey);
-        //       }
-        //     }
-        //   : mode === MODE_LINK
-        //   ? () => {
-        //       toggleLinkStep(uuid(), coords.x, coords.y);
-        //     }
-        //   : null
-        // }
+        onMouseMove={
+          mode === MODE_DRAG || mode === MODE_CREATE_ANCHOR ? followMouse : null
+        }
+        onMouseDown={click}
         onMouseUp={mode === MODE_DRAG ? () => stopDragging() : null}
       >
         <Components />
+        {mode === MODE_CREATE_ANCHOR &&
+          newAnchor &&
+          newAnchor.x &&
+          newAnchor.y && <circle cx={newAnchor.x} cy={newAnchor.y} r={5} />}
         <Anchors />
 
         {/* {mode === MODE_ADD && components[selection[0]]({ ...coords })}

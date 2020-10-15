@@ -14,7 +14,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import { startSelect } from "./redux/actions/index.js";
+import { startSelect, startCreateAnchor } from "./redux/actions/index.js";
 
 const drawerWidth = 180;
 
@@ -50,10 +50,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     startSelect: () => dispatch(startSelect()),
+    startCreateAnchor: () => dispatch(startCreateAnchor()),
   };
 };
 
-function App({ mode, selection, startSelect }) {
+function App({ mode, selection, startSelect, startCreateAnchor }) {
   const classes = useStyles();
   return (
     // TODO : Proper listen key event
@@ -89,6 +90,7 @@ function App({ mode, selection, startSelect }) {
                 </svg>
               </ListItem>
             ))}
+            <button onClick={startCreateAnchor}>Anchor</button>
           </List>
         </div>
       </Drawer>

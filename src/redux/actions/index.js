@@ -33,9 +33,32 @@ export function startSelect() {
 
 export const TOGGLE_SELECTION = "TOGGLE_SELECTION";
 export function toggleSelection(objectId) {
-  console.log(objectId);
   return {
     type: TOGGLE_SELECTION,
     objectId,
+  };
+}
+
+export const START_CREATE_ANCHOR = "START_CREATE_ANCHOR";
+export function startCreateAnchor() {
+  return {
+    type: START_CREATE_ANCHOR,
+  };
+}
+
+export const UPDATE_ANCHOR_CREATION = "UPDATE_ANCHOR_CREATION";
+export function updateAnchorCreation(x, y, id) {
+  return {
+    type: UPDATE_ANCHOR_CREATION,
+    x,
+    y,
+    id: id || null,
+  };
+}
+
+export const SAVE_ANCHOR_CREATION = "SAVE_ANCHOR_CREATION";
+export function saveAnchorCreation() {
+  return {
+    type: SAVE_ANCHOR_CREATION,
   };
 }
