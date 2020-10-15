@@ -62,3 +62,44 @@ export function saveAnchorCreation() {
     type: SAVE_ANCHOR_CREATION,
   };
 }
+
+export const START_CREATE_PATH_ELEMENT = "START_CREATE_PATH_ELEMENT";
+export function startCreatePathElement(elementType) {
+  return {
+    type: START_CREATE_PATH_ELEMENT,
+    elementType,
+  };
+}
+
+export const UPDATE_PATH_ELEMENT_CREATION = "UPDATE_PATH_ELEMENT_CREATION";
+export function updatePathElementCreation(x, y, id) {
+  return {
+    type: UPDATE_PATH_ELEMENT_CREATION,
+    x,
+    y,
+    id: id || null,
+  };
+}
+
+export const VALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION =
+  "VALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION";
+export function validateFirstStepPathElementCreation() {
+  return {
+    type: VALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION,
+  };
+}
+
+export const INVALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION =
+  "INVALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION";
+export function invalidateFirstStepPathElementCreation() {
+  return {
+    type: INVALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION,
+  };
+}
+
+export const SAVE_PATH_ELEMENT_CREATION = "SAVE_PATH_ELEMENT_CREATION";
+export function savePathElementCreation() {
+  return {
+    type: SAVE_PATH_ELEMENT_CREATION,
+  };
+}

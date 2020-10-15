@@ -6,7 +6,14 @@ import "./style.scss";
 // If id => it's from scene
 // If no id => it's from adding
 const mapStateToProps = (state, props) => {
-  return props.id ? { mode: state.mode, anchors: state.anchors } : {};
+  return props.id
+    ? {
+        mode: state.mode,
+        // allows to create components directly without using the store
+        fromCoords: state.anchors.byId[props.from],
+        toCoords: state.anchors.byId[props.to],
+      }
+    : {};
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -14,8 +21,8 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const Lampe = ({
-  from,
-  to,
+  fromCoords,
+  toCoords,
   anchors,
   mode,
   selected,
@@ -23,11 +30,11 @@ const Lampe = ({
   id,
   ...props
 }) => {
-  if (!anchors || !anchors.byId[from] || !anchors.byId[to]) {
+  if (!fromCoords || !toCoords) {
     return null;
   }
-  const { x: xFrom, y: yFrom } = anchors.byId[from];
-  const { x: xTo, y: yTo } = anchors.byId[to];
+  const { x: xFrom, y: yFrom } = fromCoords;
+  const { x: xTo, y: yTo } = toCoords;
 
   const d = Math.sqrt((xFrom - xTo) ** 2 + (yFrom - yTo) ** 2);
   const ratio = 1 / 2 - 10 / d;

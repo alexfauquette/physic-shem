@@ -1,12 +1,21 @@
 import React from "react";
 import { connect } from "react-redux";
+import components from "../components";
 import {
   anchorMove,
   stopDragging,
   updateAnchorCreation,
   saveAnchorCreation,
+  updatePathElementCreation,
+  validateFirstStepPathElementCreation,
+  invalidateFirstStepPathElementCreation,
+  savePathElementCreation,
 } from "../redux/actions";
-import { MODE_DRAG, MODE_CREATE_ANCHOR } from "../redux/store";
+import {
+  MODE_DRAG,
+  MODE_CREATE_ANCHOR,
+  MODE_CREATE_PATH_ELEMENT,
+} from "../redux/store";
 import Components from "./components";
 import Anchors from "./anchors";
 
@@ -16,6 +25,13 @@ const mapDispatchToProps = (dispatch) => {
     stopDragging: () => dispatch(stopDragging()),
     updateAnchorCreation: (x, y) => dispatch(updateAnchorCreation(x, y, null)),
     saveAnchorCreation: () => dispatch(saveAnchorCreation()),
+    updatePathElementCreation: (x, y) =>
+      dispatch(updatePathElementCreation(x, y, null)),
+    validateFirstStepPathElementCreation: () =>
+      dispatch(validateFirstStepPathElementCreation()),
+    invalidateFirstStepPathElementCreation: () =>
+      dispatch(invalidateFirstStepPathElementCreation()),
+    savePathElementCreation: () => dispatch(savePathElementCreation()),
   };
 };
 const mapStateToProps = (state) => {
@@ -25,10 +41,15 @@ const mapStateToProps = (state) => {
 const Container = ({
   mode,
   newAnchor,
+  newPath,
   stopDragging,
   anchorMove,
   updateAnchorCreation,
   saveAnchorCreation,
+  updatePathElementCreation,
+  validateFirstStepPathElementCreation,
+  invalidateFirstStepPathElementCreation,
+  savePathElementCreation,
 }) => {
   const followMouse = (event) => {
     switch (mode) {
@@ -45,6 +66,12 @@ const Container = ({
           event.nativeEvent.offsetY
         );
         break;
+      case MODE_CREATE_PATH_ELEMENT:
+        updatePathElementCreation(
+          event.nativeEvent.offsetX,
+          event.nativeEvent.offsetY
+        );
+        break;
       default:
         break;
     }
@@ -56,6 +83,17 @@ const Container = ({
         event.stopPropagation();
         saveAnchorCreation();
         break;
+      case MODE_CREATE_PATH_ELEMENT:
+        event.stopPropagation();
+        if (newPath.isFromValidated) {
+          savePathElementCreation(
+            event.nativeEvent.offsetX,
+            event.nativeEvent.offsetY
+          );
+        } else {
+          validateFirstStepPathElementCreation();
+        }
+        break;
       default:
         break;
     }
@@ -64,12 +102,17 @@ const Container = ({
   return (
     <>
       <p>{mode}</p>
+      <p>{(newPath && newPath.elementType) || "none"}</p>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 500 300"
         style={{ width: 500, height: 300 }}
         onMouseMove={
-          mode === MODE_DRAG || mode === MODE_CREATE_ANCHOR ? followMouse : null
+          mode === MODE_DRAG ||
+          mode === MODE_CREATE_ANCHOR ||
+          mode === MODE_CREATE_PATH_ELEMENT
+            ? followMouse
+            : null
         }
         onMouseDown={click}
         onMouseUp={mode === MODE_DRAG ? () => stopDragging() : null}
@@ -77,40 +120,47 @@ const Container = ({
         <Components />
         {mode === MODE_CREATE_ANCHOR &&
           newAnchor &&
-          newAnchor.x &&
-          newAnchor.y && <circle cx={newAnchor.x} cy={newAnchor.y} r={5} />}
-        <Anchors />
+          newAnchor.x !== null &&
+          newAnchor.y !== null && (
+            <circle cx={newAnchor.x} cy={newAnchor.y} r={15} />
+          )}
 
-        {/* {mode === MODE_ADD && components[selection[0]]({ ...coords })}
-        {mode === MODE_DRAG && (
-          <g
-            style={{
-              transform: `translate(${drag.x - drag.xOrigine}px, ${
-                drag.y - drag.yOrigine
-              }px)`,
-            }}
-          >
-            {scene
-              .filter((element) => selection.includes(element.id))
-              .map((element) =>
-                components[element.type]({
-                  ...element,
-                  selected: true,
-                })
-              )}
-          </g>
-        )}
-        {mode === MODE_LINK && coords.x && coords.y && (
-          <>
-            <Link listOfPoints={currentLink} className="creationLink" />
-            <path
-              className="linkLastPath"
-              d={`M ${currentLink[currentLink.length - 1].x} ${
-                currentLink[currentLink.length - 1].y
-              } L ${coords.x} ${coords.y}`}
+        {/* display the path element in during its creation */}
+
+        {mode === MODE_CREATE_PATH_ELEMENT && // the element
+          newPath &&
+          newPath.isFromValidated &&
+          newPath.to &&
+          newPath.to.x !== null &&
+          newPath.to.y !== null &&
+          newPath.from &&
+          newPath.from.x !== null &&
+          newPath.from.y !== null &&
+          components[newPath.elementType]({
+            fromCoords: newPath.from,
+            toCoords: newPath.to,
+          })}
+        {mode === MODE_CREATE_PATH_ELEMENT && //the anchor TO
+          newPath &&
+          newPath.isFromValidated &&
+          newPath.to.x !== null &&
+          newPath.to.y !== null && (
+            <circle cx={newPath.to.x} cy={newPath.to.y} r={10} />
+          )}
+        {mode === MODE_CREATE_PATH_ELEMENT && // the anchor FROM
+          newPath &&
+          newPath.from &&
+          newPath.from.x !== null &&
+          newPath.from.y !== null && (
+            <circle
+              cx={newPath.from.x}
+              cy={newPath.from.y}
+              r={10}
+              onMouseEnter={invalidateFirstStepPathElementCreation}
             />
-          </>
-        )} */}
+          )}
+
+        <Anchors />
       </svg>
     </>
   );

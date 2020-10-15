@@ -14,7 +14,11 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import { startSelect, startCreateAnchor } from "./redux/actions/index.js";
+import {
+  startSelect,
+  startCreateAnchor,
+  startCreatePathElement,
+} from "./redux/actions/index.js";
 
 const drawerWidth = 180;
 
@@ -51,10 +55,18 @@ const mapDispatchToProps = (dispatch) => {
   return {
     startSelect: () => dispatch(startSelect()),
     startCreateAnchor: () => dispatch(startCreateAnchor()),
+    startCreatePathElement: (elementType) =>
+      dispatch(startCreatePathElement(elementType)),
   };
 };
 
-function App({ mode, selection, startSelect, startCreateAnchor }) {
+function App({
+  mode,
+  selection,
+  startSelect,
+  startCreateAnchor,
+  startCreatePathElement,
+}) {
   const classes = useStyles();
   return (
     // TODO : Proper listen key event
@@ -79,7 +91,14 @@ function App({ mode, selection, startSelect, startCreateAnchor }) {
         <div className={classes.drawerContainer}>
           <List>
             {Object.keys(components).map((name) => (
-              <ListItem button key={name}>
+              <ListItem
+                button
+                key={name}
+                onMouseDown={(event) => {
+                  event.stopPropagation();
+                  startCreatePathElement(name);
+                }}
+              >
                 <ListItemText primary={name} />
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
