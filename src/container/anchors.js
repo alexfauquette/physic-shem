@@ -1,62 +1,20 @@
 import React from "react";
 import { connect } from "react-redux";
-import { MODE_SELECT } from "../redux/store";
-import { toggleSelection, startDragging } from "../redux/actions";
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    toggleSelection: (objectId) => dispatch(toggleSelection(objectId)),
-    startDragging: (x, y) => dispatch(startDragging(x, y)),
-  };
-};
+import Anchor from "../atoms/anchor";
+
 const mapStateToProps = (state) => {
   return {
-    anchors: state.anchors,
-    mode: state.mode,
-    selection: state.selection,
+    anchorIds: state.anchors.allIds,
   };
 };
 
-const Anchors = ({
-  anchors,
-  mode,
-  selection,
-  startDragging,
-  toggleSelection,
-}) => (
+const Anchors = ({ anchorIds }) => (
   <>
-    {anchors.allIds.map((id) => (
-      <circle
-        key={id}
-        cx={anchors.byId[id].x}
-        cy={anchors.byId[id].y}
-        r={5}
-        style={{
-          fill: selection.includes(anchors.byId[id].id) ? "red" : null,
-        }}
-        onMouseDown={
-          mode === MODE_SELECT
-            ? selection.includes(anchors.byId[id].id)
-              ? (event) => {
-                  event.stopPropagation();
-                  if (!event.ctrlKey) {
-                    startDragging(
-                      event.nativeEvent.offsetX,
-                      event.nativeEvent.offsetY
-                    );
-                  } else {
-                    toggleSelection(anchors.byId[id].id);
-                  }
-                }
-              : (event) => {
-                  event.stopPropagation();
-                  toggleSelection(anchors.byId[id].id);
-                }
-            : null
-        }
-      />
+    {anchorIds.map((id) => (
+      <Anchor key={id} id={id} />
     ))}
   </>
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Anchors);
+export default connect(mapStateToProps)(Anchors);
