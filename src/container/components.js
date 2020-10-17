@@ -6,7 +6,8 @@ import { toggleSelection, startDragging } from "../redux/actions";
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleSelection: (objectId) => dispatch(toggleSelection(objectId)),
+    toggleSelection: (objectId, reset) =>
+      dispatch(toggleSelection(objectId, reset)),
     startDragging: (x, y) => dispatch(startDragging(x, y)),
   };
 };
@@ -33,22 +34,20 @@ const Components = ({
           ...pathComponents.byId[id],
           onMouseDown:
             mode === MODE_SELECT
-              ? selection.includes(pathComponents.byId[id].id)
-                ? (event) => {
-                    event.stopPropagation();
-                    if (!event.ctrlKey) {
-                      startDragging(
-                        event.nativeEvent.offsetX,
-                        event.nativeEvent.offsetY
-                      );
-                    } else {
-                      toggleSelection(pathComponents.byId[id].id);
-                    }
+              ? (event) => {
+                  event.stopPropagation();
+                  if (
+                    !event.ctrlKey &&
+                    selection.includes(pathComponents.byId[id].id)
+                  ) {
+                    startDragging(
+                      event.nativeEvent.offsetX,
+                      event.nativeEvent.offsetY
+                    );
+                  } else {
+                    toggleSelection(pathComponents.byId[id].id, !event.ctrlKey);
                   }
-                : (event) => {
-                    event.stopPropagation();
-                    toggleSelection(pathComponents.byId[id].id);
-                  }
+                }
               : null,
           selected: selection.includes(pathComponents.byId[id].id),
           // showHandles: mode === MODE_LINK,

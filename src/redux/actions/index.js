@@ -32,10 +32,11 @@ export function startSelect() {
 }
 
 export const TOGGLE_SELECTION = "TOGGLE_SELECTION";
-export function toggleSelection(objectId) {
+export function toggleSelection(objectId, reset) {
   return {
     type: TOGGLE_SELECTION,
     objectId,
+    reset,
   };
 }
 

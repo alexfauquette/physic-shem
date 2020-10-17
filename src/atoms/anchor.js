@@ -15,7 +15,8 @@ import {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleSelection: (objectId) => dispatch(toggleSelection(objectId)),
+    toggleSelection: (objectId, reset) =>
+      dispatch(toggleSelection(objectId, reset)),
     startDragging: (x, y) => dispatch(startDragging(x, y)),
 
     updateAnchorCreation: (x, y, id) =>
@@ -75,22 +76,17 @@ const Anchor = ({
     }
     onMouseDown={
       mode === MODE_SELECT
-        ? selected
-          ? (event) => {
-              event.stopPropagation();
-              if (!event.ctrlKey) {
-                startDragging(
-                  event.nativeEvent.offsetX,
-                  event.nativeEvent.offsetY
-                );
-              } else {
-                toggleSelection(id);
-              }
+        ? (event) => {
+            event.stopPropagation();
+            if (!event.ctrlKey && selected) {
+              startDragging(
+                event.nativeEvent.offsetX,
+                event.nativeEvent.offsetY
+              );
+            } else {
+              toggleSelection(id, !event.ctrlKey);
             }
-          : (event) => {
-              event.stopPropagation();
-              toggleSelection(id);
-            }
+          }
         : null
     }
   />

@@ -123,20 +123,28 @@ const initial_state = {
 function counter(state = initial_state, action) {
   switch (action.type) {
     case TOGGLE_SELECTION:
-      const index = state.selection.findIndex((x) => x === action.objectId);
-      if (index >= 0) {
+      console.log(action);
+      if (action.reset) {
         return {
           ...state,
-          selection: [
-            ...state.selection.slice(0, index),
-            ...state.selection.slice(index + 1),
-          ],
+          selection: [action.objectId],
         };
       } else {
-        return {
-          ...state,
-          selection: [...state.selection, action.objectId],
-        };
+        const index = state.selection.findIndex((x) => x === action.objectId);
+        if (index >= 0) {
+          return {
+            ...state,
+            selection: [
+              ...state.selection.slice(0, index),
+              ...state.selection.slice(index + 1),
+            ],
+          };
+        } else {
+          return {
+            ...state,
+            selection: [...state.selection, action.objectId],
+          };
+        }
       }
     case START_SELECT:
       return {
