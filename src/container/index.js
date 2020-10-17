@@ -145,7 +145,7 @@ const Container = ({
           newPath.isFromValidated &&
           newPath.to.x !== null &&
           newPath.to.y !== null && (
-            <circle cx={newPath.to.x} cy={newPath.to.y} r={10} />
+            <circle cx={newPath.to.x} cy={newPath.to.y} r={5} />
           )}
         {mode === MODE_CREATE_PATH_ELEMENT && // the anchor FROM
           newPath &&
@@ -155,7 +155,7 @@ const Container = ({
             <circle
               cx={newPath.from.x}
               cy={newPath.from.y}
-              r={10}
+              r={5}
               onMouseEnter={invalidateFirstStepPathElementCreation}
             />
           )}
