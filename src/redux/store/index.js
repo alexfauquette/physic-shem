@@ -54,13 +54,13 @@ const initial_state = {
         id: "id1",
         from: "anchor1",
         to: "anchor3",
-        type: "lampe",
+        type: "pR",
       },
       id2: {
         id: "id2",
         from: "anchor2",
         to: "anchor3",
-        type: "lampe",
+        type: "empty led",
       },
       id3: {
         id: "id3",
@@ -77,8 +77,9 @@ const initial_state = {
       id5: {
         id: "id5",
         from: "anchor6",
-        to: "anchor3",
-        type: "lampe",
+        type: "nmos",
+        angle: 10,
+        positionAnchor: "E",
       },
     },
     allIds: ["id1", "id2", "id3", "id4", "id5"],
@@ -88,27 +89,27 @@ const initial_state = {
       anchor1: {
         id: "anchor1",
         x: 10,
-        y: 10,
+        y: 100,
       },
       anchor2: {
         id: "anchor2",
-        x: 150,
-        y: 30,
+        x: 500,
+        y: 100,
       },
       anchor3: {
         id: "anchor3",
-        x: 100,
+        x: 250,
         y: 100,
       },
       anchor4: {
         id: "anchor4",
-        x: 10,
+        x: 250,
         y: 200,
       },
       anchor5: {
         id: "anchor5",
-        x: 50,
-        y: 200,
+        x: 250,
+        y: 10,
       },
       anchor6: {
         id: "anchor6",
