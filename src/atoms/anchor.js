@@ -9,7 +9,7 @@ import {
 import {
   toggleSelection,
   startDragging,
-  updateAnchorCreation,
+  updatePosition,
   invalidateFirstStepPathElementCreation,
   updateElementCreation,
 } from "../redux/actions";
@@ -20,8 +20,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(toggleSelection(objectId, reset)),
     startDragging: (x, y) => dispatch(startDragging(x, y)),
 
-    updateAnchorCreation: (x, y, id) =>
-      dispatch(updateAnchorCreation(x, y, id)),
+    updatePosition: (x, y, id) => dispatch(updatePosition({ x, y, id })),
     invalidateFirstStepPathElementCreation: () =>
       dispatch(invalidateFirstStepPathElementCreation()),
     updateElementCreation: (x, y, id) =>
@@ -47,7 +46,7 @@ const Anchor = ({
   startDragging,
   toggleSelection,
   newPath,
-  updateAnchorCreation,
+  updatePosition,
   invalidateFirstStepPathElementCreation,
   updateElementCreation,
 }) => (
@@ -60,7 +59,7 @@ const Anchor = ({
     }}
     onMouseEnter={
       mode === MODE_CREATE_ANCHOR
-        ? () => updateAnchorCreation(x, y, id)
+        ? () => updatePosition(x, y, id)
         : mode === MODE_CREATE_PATH_ELEMENT
         ? newPath.isFromValidated && id === newPath.from.id
           ? () => invalidateFirstStepPathElementCreation()

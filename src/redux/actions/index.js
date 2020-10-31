@@ -20,7 +20,7 @@ export function updatePosition({ x, y, id, shiftPress }) {
     type: UPDATE_POSITION,
     x,
     y,
-    id,
+    id: id || null,
     shiftPress,
   };
 }
@@ -45,16 +45,6 @@ export const START_CREATE_ANCHOR = "START_CREATE_ANCHOR";
 export function startCreateAnchor() {
   return {
     type: START_CREATE_ANCHOR,
-  };
-}
-
-export const UPDATE_ANCHOR_CREATION = "UPDATE_ANCHOR_CREATION";
-export function updateAnchorCreation(x, y, id) {
-  return {
-    type: UPDATE_ANCHOR_CREATION,
-    x,
-    y,
-    id: id || null,
   };
 }
 

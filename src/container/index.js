@@ -4,7 +4,6 @@ import components from "../components";
 import {
   updatePosition,
   stopDragging,
-  updateAnchorCreation,
   saveAnchorCreation,
   updateElementCreation,
   validateFirstStepPathElementCreation,
@@ -26,7 +25,6 @@ const mapDispatchToProps = (dispatch) => {
     updatePosition: (x, y, shiftPress) =>
       dispatch(updatePosition({ x, y, shiftPress })),
     stopDragging: () => dispatch(stopDragging()),
-    updateAnchorCreation: (x, y) => dispatch(updateAnchorCreation(x, y, null)),
     saveAnchorCreation: () => dispatch(saveAnchorCreation()),
     updateElementCreation: (x, y) =>
       dispatch(updateElementCreation(x, y, null)),
@@ -49,7 +47,6 @@ const Container = ({
   newNode,
   stopDragging,
   updatePosition,
-  updateAnchorCreation,
   saveAnchorCreation,
   updateElementCreation,
   validateFirstStepPathElementCreation,
@@ -67,9 +64,10 @@ const Container = ({
         );
         break;
       case MODE_CREATE_ANCHOR:
-        updateAnchorCreation(
+        updatePosition(
           event.nativeEvent.offsetX,
-          event.nativeEvent.offsetY
+          event.nativeEvent.offsetY,
+          null
         );
         break;
       case MODE_CREATE_PATH_ELEMENT:
@@ -104,6 +102,7 @@ const Container = ({
       case MODE_CREATE_NODE_ELEMENT:
         event.stopPropagation();
         nextStepOfElementCreation();
+        break;
       default:
         break;
     }

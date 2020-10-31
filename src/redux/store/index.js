@@ -242,6 +242,16 @@ function update(state = initial_state, action) {
               y: newMoveY,
             },
           };
+        case MODE_CREATE_ANCHOR:
+          return {
+            ...state,
+            newAnchor: {
+              x: x,
+              y: y,
+              id: id,
+            },
+          };
+
         default:
           return state;
       }
@@ -257,15 +267,6 @@ function update(state = initial_state, action) {
         },
       };
 
-    case UPDATE_ANCHOR_CREATION:
-      return {
-        ...state,
-        newAnchor: {
-          x: action.x,
-          y: action.y,
-          id: action.id,
-        },
-      };
     case SAVE_ANCHOR_CREATION:
       if (state.newAnchor.id === null) {
         const newId = uuid();
