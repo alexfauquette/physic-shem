@@ -21,7 +21,7 @@ const mapStateToProps = (state, props) => {
     ? {
         mode: state.mode,
         // allows to create components directly without using the store
-        positionCoords: state.anchors.byId[props.from],
+        positionCoords: state.anchors.byId[props.position],
       }
     : {};
 };

@@ -9,7 +9,9 @@ import {
   UPDATE_ANCHOR_CREATION,
   SAVE_ANCHOR_CREATION,
   START_CREATE_PATH_ELEMENT,
-  UPDATE_PATH_ELEMENT_CREATION,
+  START_CREATE_NODE_ELEMENT,
+  UPDATE_ELEMENT_CREATION,
+  ELEMENT_CREATION_NEXT_STEP,
   VALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION,
   INVALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION,
   SAVE_PATH_ELEMENT_CREATION,
@@ -23,6 +25,7 @@ export const MODE_DELETE = "MODE_DELETE";
 export const MODE_SPLIT_ANCHOR = "MODE_SPLIT_ANCHOR";
 export const MODE_CREATE_ANCHOR = "MODE_CREATE_ANCHOR";
 export const MODE_CREATE_PATH_ELEMENT = "MODE_CREATE_PATH_ELEMENT";
+export const MODE_CREATE_NODE_ELEMENT = "MODE_CREATE_NODE_ELEMENT";
 
 const initial_state = {
   mode: MODE_SELECT,
@@ -76,7 +79,7 @@ const initial_state = {
       },
       id5: {
         id: "id5",
-        from: "anchor6",
+        position: "anchor6",
         type: "nmos",
         angle: 10,
         positionAnchor: "E",
@@ -162,6 +165,7 @@ function update(state = initial_state, action) {
           }
         } else if (state.pathComponents.allIds.includes(selectedId)) {
           if (
+            state.pathComponents.byId[selectedId].from &&
             !anchorsToMove.includes(state.pathComponents.byId[selectedId].from)
           ) {
             anchorsToMove.push(state.pathComponents.byId[selectedId].from);
@@ -171,6 +175,14 @@ function update(state = initial_state, action) {
             !anchorsToMove.includes(state.pathComponents.byId[selectedId].to)
           ) {
             anchorsToMove.push(state.pathComponents.byId[selectedId].to);
+          }
+          if (
+            state.pathComponents.byId[selectedId].position &&
+            !anchorsToMove.includes(
+              state.pathComponents.byId[selectedId].position
+            )
+          ) {
+            anchorsToMove.push(state.pathComponents.byId[selectedId].position);
           }
         }
       });
@@ -283,25 +295,91 @@ function update(state = initial_state, action) {
           to: { x: null, y: null, id: null },
         },
       };
-    case UPDATE_PATH_ELEMENT_CREATION:
-      if (state.newPath.isFromValidated) {
+    case START_CREATE_NODE_ELEMENT:
+      return {
+        ...state,
+        selection: [],
+        mode: MODE_CREATE_NODE_ELEMENT,
+        newNode: {
+          elementType: action.elementType,
+          position: { x: null, y: null, id: null },
+        },
+      };
+    case UPDATE_ELEMENT_CREATION:
+      if (state.mode === MODE_CREATE_PATH_ELEMENT) {
+        if (state.newPath.isFromValidated) {
+          return {
+            ...state,
+            newPath: {
+              ...state.newPath,
+              to: { x: action.x, y: action.y, id: action.id },
+              movedAfterFromCreation: true,
+            },
+          };
+        } else {
+          return {
+            ...state,
+            newPath: {
+              ...state.newPath,
+              from: { x: action.x, y: action.y, id: action.id },
+            },
+          };
+        }
+      } else if (state.mode === MODE_CREATE_NODE_ELEMENT) {
         return {
           ...state,
-          newPath: {
-            ...state.newPath,
-            to: { x: action.x, y: action.y, id: action.id },
-            movedAfterFromCreation: true,
-          },
-        };
-      } else {
-        return {
-          ...state,
-          newPath: {
-            ...state.newPath,
-            from: { x: action.x, y: action.y, id: action.id },
+          newNode: {
+            ...state.newNode,
+            position: { x: action.x, y: action.y, id: action.id },
           },
         };
       }
+      break;
+    case ELEMENT_CREATION_NEXT_STEP:
+      if (
+        state.mode === MODE_CREATE_NODE_ELEMENT &&
+        state.newNode.position.x !== null &&
+        state.newNode.position.y !== null
+      ) {
+        const newId_element = uuid();
+        const newId_anchor = uuid();
+
+        let newAnchors = state.anchors;
+        if (state.newNode.position.id === null) {
+          newAnchors = {
+            byId: {
+              ...state.anchors.byId,
+              [newId_anchor]: {
+                id: newId_anchor,
+                x: state.newNode.position.x,
+                y: state.newNode.position.y,
+              },
+            },
+            allIds: [...state.anchors.allIds, newId_anchor],
+          };
+        }
+
+        return {
+          ...state,
+          newNode: {
+            ...state.newNode,
+            position: { x: null, y: null, id: null },
+          },
+          pathComponents: {
+            byId: {
+              ...state.pathComponents.byId,
+              [newId_element]: {
+                id: newId_element,
+                position: state.newNode.position.id || newId_anchor,
+                type: state.newNode.elementType,
+              },
+            },
+            allIds: [...state.pathComponents.allIds, newId_element],
+          },
+          anchors: { ...newAnchors },
+        };
+      }
+      return state;
     case VALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION:
       return {
         ...state,

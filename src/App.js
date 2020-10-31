@@ -2,7 +2,7 @@ import React from "react";
 import Container from "./container/index.js";
 import { connect } from "react-redux";
 import { MODE_SELECT } from "./redux/store";
-import components from "./components";
+import components, { isPath } from "./components";
 
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
@@ -18,6 +18,7 @@ import {
   startSelect,
   startCreateAnchor,
   startCreatePathElement,
+  startCreateNodeElement,
 } from "./redux/actions/index.js";
 
 const drawerWidth = 180;
@@ -57,6 +58,8 @@ const mapDispatchToProps = (dispatch) => {
     startCreateAnchor: () => dispatch(startCreateAnchor()),
     startCreatePathElement: (elementType) =>
       dispatch(startCreatePathElement(elementType)),
+    startCreateNodeElement: (elementType) =>
+      dispatch(startCreateNodeElement(elementType)),
   };
 };
 
@@ -66,6 +69,7 @@ function App({
   startSelect,
   startCreateAnchor,
   startCreatePathElement,
+  startCreateNodeElement,
 }) {
   const classes = useStyles();
   return (
@@ -96,7 +100,11 @@ function App({
                 key={name}
                 onMouseDown={(event) => {
                   event.stopPropagation();
-                  startCreatePathElement(name);
+                  if (isPath[name]) {
+                    startCreatePathElement(name);
+                  } else {
+                    startCreateNodeElement(name);
+                  }
                 }}
               >
                 <ListItemText primary={name} />

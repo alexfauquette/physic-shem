@@ -72,10 +72,10 @@ export function startCreatePathElement(elementType) {
   };
 }
 
-export const UPDATE_PATH_ELEMENT_CREATION = "UPDATE_PATH_ELEMENT_CREATION";
-export function updatePathElementCreation(x, y, id) {
+export const UPDATE_ELEMENT_CREATION = "UPDATE_ELEMENT_CREATION";
+export function updateElementCreation(x, y, id) {
   return {
-    type: UPDATE_PATH_ELEMENT_CREATION,
+    type: UPDATE_ELEMENT_CREATION,
     x,
     y,
     id: id || null,
@@ -102,5 +102,20 @@ export const SAVE_PATH_ELEMENT_CREATION = "SAVE_PATH_ELEMENT_CREATION";
 export function savePathElementCreation() {
   return {
     type: SAVE_PATH_ELEMENT_CREATION,
+  };
+}
+
+export const START_CREATE_NODE_ELEMENT = "START_CREATE_NODE_ELEMENT";
+export function startCreateNodeElement(elementType) {
+  return {
+    type: START_CREATE_NODE_ELEMENT,
+    elementType,
+  };
+}
+
+export const ELEMENT_CREATION_NEXT_STEP = "ELEMENT_CREATION_NEXT_STEP";
+export function nextStepOfElementCreation() {
+  return {
+    type: ELEMENT_CREATION_NEXT_STEP,
   };
 }

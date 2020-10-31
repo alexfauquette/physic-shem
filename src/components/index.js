@@ -4,6 +4,12 @@ import EmptyDiode from "./empty_diode";
 import PR from "./pR";
 import NMOS from "./nmos";
 
+export const isPath = {
+  lampe: true,
+  "empty led": true,
+  pR: true,
+  nmos: false,
+};
 export default {
   lampe: (props) => <Lampe key={props.id} {...props} />,
   "empty led": (props) => <EmptyDiode key={props.id} {...props} />,

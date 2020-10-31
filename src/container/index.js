@@ -6,15 +6,17 @@ import {
   stopDragging,
   updateAnchorCreation,
   saveAnchorCreation,
-  updatePathElementCreation,
+  updateElementCreation,
   validateFirstStepPathElementCreation,
   invalidateFirstStepPathElementCreation,
   savePathElementCreation,
+  nextStepOfElementCreation,
 } from "../redux/actions";
 import {
   MODE_DRAG,
   MODE_CREATE_ANCHOR,
   MODE_CREATE_PATH_ELEMENT,
+  MODE_CREATE_NODE_ELEMENT,
 } from "../redux/store";
 import Components from "./components";
 import Anchors from "./anchors";
@@ -25,13 +27,14 @@ const mapDispatchToProps = (dispatch) => {
     stopDragging: () => dispatch(stopDragging()),
     updateAnchorCreation: (x, y) => dispatch(updateAnchorCreation(x, y, null)),
     saveAnchorCreation: () => dispatch(saveAnchorCreation()),
-    updatePathElementCreation: (x, y) =>
-      dispatch(updatePathElementCreation(x, y, null)),
+    updateElementCreation: (x, y) =>
+      dispatch(updateElementCreation(x, y, null)),
     validateFirstStepPathElementCreation: () =>
       dispatch(validateFirstStepPathElementCreation()),
     invalidateFirstStepPathElementCreation: () =>
       dispatch(invalidateFirstStepPathElementCreation()),
     savePathElementCreation: () => dispatch(savePathElementCreation()),
+    nextStepOfElementCreation: () => dispatch(nextStepOfElementCreation()),
   };
 };
 const mapStateToProps = (state) => {
@@ -42,14 +45,16 @@ const Container = ({
   mode,
   newAnchor,
   newPath,
+  newNode,
   stopDragging,
   anchorMove,
   updateAnchorCreation,
   saveAnchorCreation,
-  updatePathElementCreation,
+  updateElementCreation,
   validateFirstStepPathElementCreation,
   invalidateFirstStepPathElementCreation,
   savePathElementCreation,
+  nextStepOfElementCreation,
 }) => {
   const followMouse = (event) => {
     switch (mode) {
@@ -67,7 +72,8 @@ const Container = ({
         );
         break;
       case MODE_CREATE_PATH_ELEMENT:
-        updatePathElementCreation(
+      case MODE_CREATE_NODE_ELEMENT:
+        updateElementCreation(
           event.nativeEvent.offsetX,
           event.nativeEvent.offsetY
         );
@@ -94,6 +100,9 @@ const Container = ({
           validateFirstStepPathElementCreation();
         }
         break;
+      case MODE_CREATE_NODE_ELEMENT:
+        event.stopPropagation();
+        nextStepOfElementCreation();
       default:
         break;
     }
@@ -102,6 +111,7 @@ const Container = ({
   return (
     <>
       <p>{mode}</p>
+      <p>{newNode && newNode.from && newNode.elementType}</p>
       <p>{(newPath && newPath.elementType) || "none"}</p>
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +120,8 @@ const Container = ({
         onMouseMove={
           mode === MODE_DRAG ||
           mode === MODE_CREATE_ANCHOR ||
-          mode === MODE_CREATE_PATH_ELEMENT
+          mode === MODE_CREATE_PATH_ELEMENT ||
+          mode === MODE_CREATE_NODE_ELEMENT
             ? followMouse
             : null
         }
@@ -158,6 +169,24 @@ const Container = ({
               r={5}
               onMouseEnter={invalidateFirstStepPathElementCreation}
             />
+          )}
+
+        {/* display the path element in during its creation */}
+
+        {mode === MODE_CREATE_NODE_ELEMENT && // the element
+          newNode &&
+          newNode.position &&
+          newNode.position.x !== null &&
+          newNode.position.y !== null &&
+          components[newNode.elementType]({
+            positionCoords: newNode.position,
+          })}
+        {mode === MODE_CREATE_NODE_ELEMENT && // the anchor POSITION
+          newNode &&
+          newNode.position &&
+          newNode.position.x !== null &&
+          newNode.position.y !== null && (
+            <circle cx={newNode.position.x} cy={newNode.position.y} r={5} />
           )}
 
         <Anchors />

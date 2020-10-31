@@ -4,13 +4,14 @@ import {
   MODE_SELECT,
   MODE_CREATE_ANCHOR,
   MODE_CREATE_PATH_ELEMENT,
+  MODE_CREATE_NODE_ELEMENT,
 } from "../redux/store";
 import {
   toggleSelection,
   startDragging,
   updateAnchorCreation,
   invalidateFirstStepPathElementCreation,
-  updatePathElementCreation,
+  updateElementCreation,
 } from "../redux/actions";
 
 const mapDispatchToProps = (dispatch) => {
@@ -23,8 +24,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(updateAnchorCreation(x, y, id)),
     invalidateFirstStepPathElementCreation: () =>
       dispatch(invalidateFirstStepPathElementCreation()),
-    updatePathElementCreation: (x, y, id) =>
-      dispatch(updatePathElementCreation(x, y, id)),
+    updateElementCreation: (x, y, id) =>
+      dispatch(updateElementCreation(x, y, id)),
   };
 };
 const mapStateToProps = (state, { id }) => {
@@ -48,7 +49,7 @@ const Anchor = ({
   newPath,
   updateAnchorCreation,
   invalidateFirstStepPathElementCreation,
-  updatePathElementCreation,
+  updateElementCreation,
 }) => (
   <circle
     cx={x}
@@ -63,12 +64,16 @@ const Anchor = ({
         : mode === MODE_CREATE_PATH_ELEMENT
         ? newPath.isFromValidated && id === newPath.from.id
           ? () => invalidateFirstStepPathElementCreation()
-          : () => updatePathElementCreation(x, y, id)
+          : () => updateElementCreation(x, y, id)
+        : mode === MODE_CREATE_NODE_ELEMENT
+        ? () => updateElementCreation(x, y, id)
         : null
     }
     onMouseMove={
       // revent from moving the "increation anchor when moving on the anchor"
-      mode === MODE_CREATE_PATH_ELEMENT || mode === MODE_CREATE_ANCHOR
+      mode === MODE_CREATE_PATH_ELEMENT ||
+      mode === MODE_CREATE_ANCHOR ||
+      mode === MODE_CREATE_NODE_ELEMENT
         ? (event) => {
             event.stopPropagation();
           }
