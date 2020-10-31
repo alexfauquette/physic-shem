@@ -121,7 +121,7 @@ const initial_state = {
   },
 };
 
-function counter(state = initial_state, action) {
+function update(state = initial_state, action) {
   switch (action.type) {
     case TOGGLE_SELECTION:
       console.log(action);
@@ -167,6 +167,7 @@ function counter(state = initial_state, action) {
             anchorsToMove.push(state.pathComponents.byId[selectedId].from);
           }
           if (
+            state.pathComponents.byId[selectedId].to &&
             !anchorsToMove.includes(state.pathComponents.byId[selectedId].to)
           ) {
             anchorsToMove.push(state.pathComponents.byId[selectedId].to);
@@ -409,6 +410,6 @@ function counter(state = initial_state, action) {
 
 // Create a Redux store holding the state of your app.
 // Its API is { subscribe, dispatch, getState }.
-let store = createStore(counter);
+let store = createStore(update);
 
 export default store;
