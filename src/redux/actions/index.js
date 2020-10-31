@@ -63,16 +63,6 @@ export function startCreatePathElement(elementType) {
   };
 }
 
-export const UPDATE_ELEMENT_CREATION = "UPDATE_ELEMENT_CREATION";
-export function updateElementCreation(x, y, id) {
-  return {
-    type: UPDATE_ELEMENT_CREATION,
-    x,
-    y,
-    id: id || null,
-  };
-}
-
 export const VALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION =
   "VALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION";
 export function validateFirstStepPathElementCreation() {

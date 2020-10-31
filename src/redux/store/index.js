@@ -5,11 +5,9 @@ import {
   TOGGLE_SELECTION,
   STOP_DRAGGING,
   START_CREATE_ANCHOR,
-  UPDATE_ANCHOR_CREATION,
   SAVE_ANCHOR_CREATION,
   START_CREATE_PATH_ELEMENT,
   START_CREATE_NODE_ELEMENT,
-  UPDATE_ELEMENT_CREATION,
   ELEMENT_CREATION_NEXT_STEP,
   VALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION,
   INVALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION,
@@ -127,7 +125,6 @@ const initial_state = {
 function update(state = initial_state, action) {
   switch (action.type) {
     case TOGGLE_SELECTION:
-      console.log(action);
       if (action.reset) {
         return {
           ...state,
@@ -252,6 +249,34 @@ function update(state = initial_state, action) {
             },
           };
 
+        case MODE_CREATE_PATH_ELEMENT:
+          if (state.newPath.isFromValidated) {
+            return {
+              ...state,
+              newPath: {
+                ...state.newPath,
+                to: { x: action.x, y: action.y, id: action.id },
+                movedAfterFromCreation: true,
+              },
+            };
+          } else {
+            return {
+              ...state,
+              newPath: {
+                ...state.newPath,
+                from: { x: action.x, y: action.y, id: action.id },
+              },
+            };
+          }
+        case MODE_CREATE_NODE_ELEMENT:
+          return {
+            ...state,
+            newNode: {
+              ...state.newNode,
+              position: { x: action.x, y: action.y, id: action.id },
+            },
+          };
+
         default:
           return state;
       }
@@ -312,36 +337,6 @@ function update(state = initial_state, action) {
           position: { x: null, y: null, id: null },
         },
       };
-    case UPDATE_ELEMENT_CREATION:
-      if (state.mode === MODE_CREATE_PATH_ELEMENT) {
-        if (state.newPath.isFromValidated) {
-          return {
-            ...state,
-            newPath: {
-              ...state.newPath,
-              to: { x: action.x, y: action.y, id: action.id },
-              movedAfterFromCreation: true,
-            },
-          };
-        } else {
-          return {
-            ...state,
-            newPath: {
-              ...state.newPath,
-              from: { x: action.x, y: action.y, id: action.id },
-            },
-          };
-        }
-      } else if (state.mode === MODE_CREATE_NODE_ELEMENT) {
-        return {
-          ...state,
-          newNode: {
-            ...state.newNode,
-            position: { x: action.x, y: action.y, id: action.id },
-          },
-        };
-      }
-      break;
     case ELEMENT_CREATION_NEXT_STEP:
       if (
         state.mode === MODE_CREATE_NODE_ELEMENT &&

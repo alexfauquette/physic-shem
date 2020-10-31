@@ -5,7 +5,6 @@ import {
   updatePosition,
   stopDragging,
   saveAnchorCreation,
-  updateElementCreation,
   validateFirstStepPathElementCreation,
   invalidateFirstStepPathElementCreation,
   savePathElementCreation,
@@ -26,8 +25,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(updatePosition({ x, y, shiftPress })),
     stopDragging: () => dispatch(stopDragging()),
     saveAnchorCreation: () => dispatch(saveAnchorCreation()),
-    updateElementCreation: (x, y) =>
-      dispatch(updateElementCreation(x, y, null)),
     validateFirstStepPathElementCreation: () =>
       dispatch(validateFirstStepPathElementCreation()),
     invalidateFirstStepPathElementCreation: () =>
@@ -48,7 +45,6 @@ const Container = ({
   stopDragging,
   updatePosition,
   saveAnchorCreation,
-  updateElementCreation,
   validateFirstStepPathElementCreation,
   invalidateFirstStepPathElementCreation,
   savePathElementCreation,
@@ -57,6 +53,8 @@ const Container = ({
   const followMouse = (event) => {
     switch (mode) {
       case MODE_DRAG:
+      case MODE_CREATE_PATH_ELEMENT:
+      case MODE_CREATE_NODE_ELEMENT:
         updatePosition(
           event.nativeEvent.offsetX,
           event.nativeEvent.offsetY,
@@ -68,13 +66,6 @@ const Container = ({
           event.nativeEvent.offsetX,
           event.nativeEvent.offsetY,
           null
-        );
-        break;
-      case MODE_CREATE_PATH_ELEMENT:
-      case MODE_CREATE_NODE_ELEMENT:
-        updateElementCreation(
-          event.nativeEvent.offsetX,
-          event.nativeEvent.offsetY
         );
         break;
       default:

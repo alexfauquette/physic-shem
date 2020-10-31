@@ -11,7 +11,6 @@ import {
   startDragging,
   updatePosition,
   invalidateFirstStepPathElementCreation,
-  updateElementCreation,
 } from "../redux/actions";
 
 const mapDispatchToProps = (dispatch) => {
@@ -19,12 +18,9 @@ const mapDispatchToProps = (dispatch) => {
     toggleSelection: (objectId, reset) =>
       dispatch(toggleSelection(objectId, reset)),
     startDragging: (x, y) => dispatch(startDragging(x, y)),
-
     updatePosition: (x, y, id) => dispatch(updatePosition({ x, y, id })),
     invalidateFirstStepPathElementCreation: () =>
       dispatch(invalidateFirstStepPathElementCreation()),
-    updateElementCreation: (x, y, id) =>
-      dispatch(updateElementCreation(x, y, id)),
   };
 };
 const mapStateToProps = (state, { id }) => {
@@ -48,7 +44,6 @@ const Anchor = ({
   newPath,
   updatePosition,
   invalidateFirstStepPathElementCreation,
-  updateElementCreation,
 }) => (
   <circle
     cx={x}
@@ -58,14 +53,12 @@ const Anchor = ({
       fill: selected ? "red" : null,
     }}
     onMouseEnter={
-      mode === MODE_CREATE_ANCHOR
+      mode === MODE_CREATE_ANCHOR || mode === MODE_CREATE_NODE_ELEMENT
         ? () => updatePosition(x, y, id)
         : mode === MODE_CREATE_PATH_ELEMENT
         ? newPath.isFromValidated && id === newPath.from.id
           ? () => invalidateFirstStepPathElementCreation()
-          : () => updateElementCreation(x, y, id)
-        : mode === MODE_CREATE_NODE_ELEMENT
-        ? () => updateElementCreation(x, y, id)
+          : () => updatePosition(x, y, id)
         : null
     }
     onMouseMove={
