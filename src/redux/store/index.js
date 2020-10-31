@@ -79,11 +79,18 @@ const initial_state = {
         id: "id5",
         position: "anchor6",
         type: "nmos",
-        angle: 10,
-        positionAnchor: "E",
+        angle: -45,
+        positionAnchor: "B",
+      },
+      id6: {
+        id: "id6",
+        position: "anchor7",
+        type: "nmos",
+        angle: "",
+        positionAnchor: "",
       },
     },
-    allIds: ["id1", "id2", "id3", "id4", "id5"],
+    allIds: ["id1", "id2", "id3", "id4", "id5", "id6"],
   },
   anchors: {
     byId: {
@@ -117,8 +124,21 @@ const initial_state = {
         x: 100,
         y: 200,
       },
+      anchor7: {
+        id: "anchor7",
+        x: 100,
+        y: 200,
+      },
     },
-    allIds: ["anchor1", "anchor2", "anchor3", "anchor4", "anchor5", "anchor6"],
+    allIds: [
+      "anchor1",
+      "anchor2",
+      "anchor3",
+      "anchor4",
+      "anchor5",
+      "anchor6",
+      "anchor7  ",
+    ],
   },
 };
 

@@ -2,6 +2,17 @@ import React from "react";
 import { connect } from "react-redux";
 import "./style.scss";
 
+export const getAnchor = ({ fromCoords, toCoords }) => {
+  const { x: xFrom, y: yFrom } = fromCoords;
+  const { x: xTo, y: yTo } = toCoords;
+
+  const angle = Math.atan2(yTo - yFrom, xTo - xFrom);
+
+  const x = (xFrom + xTo) / 2 + 55 * Math.sin(angle);
+  const y = (yFrom + yTo) / 2 - 55 * Math.cos(angle);
+  return [{ name: "wiper", x, y }];
+};
+
 // If id => it's from scene
 // If no id => it's from adding
 const mapStateToProps = (state, props) => {

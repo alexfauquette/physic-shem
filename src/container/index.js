@@ -18,6 +18,7 @@ import {
 } from "../redux/store";
 import Components from "./components";
 import Anchors from "./anchors";
+import Magnets from "./magnets";
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -181,6 +182,7 @@ const Container = ({
           )}
 
         <Anchors />
+        <Magnets />
       </svg>
     </>
   );

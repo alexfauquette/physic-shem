@@ -14,6 +14,44 @@ const getElementTranslation = (positionAnchor) => {
       return { x: 0, y: 0 };
   }
 };
+
+export const getAnchor = ({ positionAnchor, angle = 0, positionCoords }) => {
+  const { x, y } = positionCoords;
+
+  const { x: dx, y: dy } = getElementTranslation(positionAnchor);
+
+  const Cgap = getElementTranslation("C");
+  const Bgap = getElementTranslation("B");
+  const Egap = getElementTranslation("E");
+  const radAngle = (Math.PI * angle) / 180;
+
+  const Crad = Math.atan2(dy - Cgap.y, dx - Cgap.x);
+  const Brad = Math.atan2(dy - Bgap.y, dx - Bgap.x);
+  const Erad = Math.atan2(dy - Egap.y, dx - Egap.x);
+
+  const distanceC = Math.sqrt((Cgap.x - dx) ** 2 + (Cgap.y - dy) ** 2);
+  const distanceB = Math.sqrt((Bgap.x - dx) ** 2 + (Bgap.y - dy) ** 2);
+  const distanceE = Math.sqrt((Egap.x - dx) ** 2 + (Egap.y - dy) ** 2);
+
+  return [
+    {
+      name: "C",
+      x: x + Math.cos(-radAngle + Crad) * distanceC,
+      y: y + Math.sin(-radAngle + Crad) * distanceC,
+    },
+    {
+      name: "B",
+      x: x + Math.cos(-radAngle + Brad) * distanceB,
+      y: y + Math.sin(-radAngle + Brad) * distanceB,
+    },
+    {
+      name: "E",
+      x: x + Math.cos(-radAngle + Erad) * distanceE,
+      y: y + Math.sin(-radAngle + Erad) * distanceE,
+    },
+  ];
+};
+
 // If id => it's from scene
 // If no id => it's from adding
 const mapStateToProps = (state, props) => {
