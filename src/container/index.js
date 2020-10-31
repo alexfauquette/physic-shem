@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import components from "../components";
 import {
-  anchorMove,
+  updatePosition,
   stopDragging,
   updateAnchorCreation,
   saveAnchorCreation,
@@ -23,7 +23,8 @@ import Anchors from "./anchors";
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    anchorMove: (x, y, shiftPress) => dispatch(anchorMove(x, y, shiftPress)),
+    updatePosition: (x, y, shiftPress) =>
+      dispatch(updatePosition({ x, y, shiftPress })),
     stopDragging: () => dispatch(stopDragging()),
     updateAnchorCreation: (x, y) => dispatch(updateAnchorCreation(x, y, null)),
     saveAnchorCreation: () => dispatch(saveAnchorCreation()),
@@ -47,7 +48,7 @@ const Container = ({
   newPath,
   newNode,
   stopDragging,
-  anchorMove,
+  updatePosition,
   updateAnchorCreation,
   saveAnchorCreation,
   updateElementCreation,
@@ -59,7 +60,7 @@ const Container = ({
   const followMouse = (event) => {
     switch (mode) {
       case MODE_DRAG:
-        anchorMove(
+        updatePosition(
           event.nativeEvent.offsetX,
           event.nativeEvent.offsetY,
           event.shiftKey

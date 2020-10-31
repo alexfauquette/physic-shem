@@ -1,7 +1,6 @@
 import { createStore } from "redux";
 import {
   START_DRAGGING,
-  ANCHOR_MOVE,
   START_SELECT,
   TOGGLE_SELECTION,
   STOP_DRAGGING,
@@ -15,6 +14,7 @@ import {
   VALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION,
   INVALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION,
   SAVE_PATH_ELEMENT_CREATION,
+  UPDATE_POSITION,
 } from "../actions";
 
 import { v4 as uuid } from "uuid";
@@ -201,44 +201,50 @@ function update(state = initial_state, action) {
         originalPosition: {},
         alreadyMoved: {},
       };
-    case ANCHOR_MOVE:
-      let newMoveX, newMoveY;
-      if (action.shiftPress) {
-        if (
-          Math.abs(action.x - state.originalPosition.x) >
-          Math.abs(action.y - state.originalPosition.y)
-        ) {
-          newMoveX = action.x - state.originalPosition.x;
-          newMoveY = 0;
-        } else {
-          newMoveX = 0;
-          newMoveY = action.y - state.originalPosition.y;
-        }
-      } else {
-        newMoveX = action.x - state.originalPosition.x;
-        newMoveY = action.y - state.originalPosition.y;
+    case UPDATE_POSITION:
+      const { x, y, id, shiftPress } = action;
+      switch (state.mode) {
+        case MODE_DRAG:
+          let newMoveX, newMoveY;
+          if (shiftPress) {
+            if (
+              Math.abs(x - state.originalPosition.x) >
+              Math.abs(y - state.originalPosition.y)
+            ) {
+              newMoveX = x - state.originalPosition.x;
+              newMoveY = 0;
+            } else {
+              newMoveX = 0;
+              newMoveY = y - state.originalPosition.y;
+            }
+          } else {
+            newMoveX = x - state.originalPosition.x;
+            newMoveY = y - state.originalPosition.y;
+          }
+
+          const anchorById = state.anchors.byId;
+          state.anchorsToMove.forEach((anchorId) => {
+            anchorById[anchorId] = {
+              ...anchorById[anchorId],
+              x: anchorById[anchorId].x + newMoveX - state.alreadyMoved.x,
+              y: anchorById[anchorId].y + newMoveY - state.alreadyMoved.y,
+            };
+          });
+
+          return {
+            ...state,
+            anchors: {
+              ...state.anchors,
+              byId: { ...anchorById },
+            },
+            alreadyMoved: {
+              x: newMoveX,
+              y: newMoveY,
+            },
+          };
+        default:
+          return state;
       }
-
-      const anchorById = state.anchors.byId;
-      state.anchorsToMove.forEach((anchorId) => {
-        anchorById[anchorId] = {
-          ...anchorById[anchorId],
-          x: anchorById[anchorId].x + newMoveX - state.alreadyMoved.x,
-          y: anchorById[anchorId].y + newMoveY - state.alreadyMoved.y,
-        };
-      });
-
-      return {
-        ...state,
-        anchors: {
-          ...state.anchors,
-          byId: { ...anchorById },
-        },
-        alreadyMoved: {
-          x: newMoveX,
-          y: newMoveY,
-        },
-      };
     case START_CREATE_ANCHOR:
       return {
         ...state,

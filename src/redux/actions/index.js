@@ -14,13 +14,14 @@ export function stopDragging() {
   };
 }
 
-export const ANCHOR_MOVE = "ANCHOR_MOVE";
-export function anchorMove(x, y, shiftPress) {
+export const UPDATE_POSITION = "UPDATE_POSITION";
+export function updatePosition({ x, y, id, shiftPress }) {
   return {
-    type: ANCHOR_MOVE,
+    type: UPDATE_POSITION,
     x,
     y,
-    shiftPress: shiftPress,
+    id,
+    shiftPress,
   };
 }
 
