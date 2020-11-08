@@ -15,7 +15,7 @@ import {
   UPDATE_POSITION,
 } from "../actions";
 
-import { getElementAnchors } from "../../components";
+import { getElementAnchors, isPath } from "../../components";
 
 import { v4 as uuid } from "uuid";
 
@@ -27,10 +27,46 @@ export const MODE_CREATE_ANCHOR = "MODE_CREATE_ANCHOR";
 export const MODE_CREATE_PATH_ELEMENT = "MODE_CREATE_PATH_ELEMENT";
 export const MODE_CREATE_NODE_ELEMENT = "MODE_CREATE_NODE_ELEMENT";
 
+const getAdhesivePoints = (elementType) => {
+  const adhesivePoints = [];
+  if (isPath[elementType]) {
+    adhesivePoints.push({
+      type: "ANCHOR",
+      id: null,
+      dx: 0,
+      dy: 0,
+    });
+  } else {
+    adhesivePoints.push({
+      type: "ANCHOR",
+      id: null,
+      dx: 0,
+      dy: 0,
+    });
+    const anchors = getElementAnchors({
+      type: elementType,
+      fromCoords: { x: 0, y: 0 },
+      toCoords: { x: 0, y: 0 },
+      positionCoords: { x: 0, y: 0 },
+    });
+    anchors.forEach(({ x, y, name }) => {
+      adhesivePoints.push({
+        type: "COMPONENT", // TODO use constant file
+        name: name,
+        id: null,
+        dx: -x,
+        dy: -y,
+      });
+    });
+  }
+  return adhesivePoints;
+};
+
 const initial_state = {
   mode: MODE_SELECT,
   selection: [],
   links: [],
+  adhesivePoints: [],
   scene: [
     {
       id: uuid(),
@@ -173,6 +209,7 @@ function update(state = initial_state, action) {
       return {
         ...state,
         selection: [],
+        adhesivePoints: [],
         mode: MODE_SELECT,
       };
     case START_DRAGGING:
@@ -402,6 +439,7 @@ function update(state = initial_state, action) {
       return {
         ...state,
         selection: [],
+        adhesivePoints: [{ type: "ANCHOR", id: null, dx: 0, dy: 0 }],
         mode: MODE_CREATE_ANCHOR,
         newAnchor: {
           x: null,
@@ -433,10 +471,11 @@ function update(state = initial_state, action) {
         };
       }
       return state;
-    case START_CREATE_PATH_ELEMENT:
+    case START_CREATE_PATH_ELEMENT: {
       return {
         ...state,
         selection: [],
+        adhesivePoints: [...getAdhesivePoints(action.elementType)],
         mode: MODE_CREATE_PATH_ELEMENT,
         newPath: {
           elementType: action.elementType,
@@ -445,10 +484,12 @@ function update(state = initial_state, action) {
           to: { x: null, y: null, id: null },
         },
       };
+    }
     case START_CREATE_NODE_ELEMENT:
       return {
         ...state,
         selection: [],
+        adhesivePoints: [...getAdhesivePoints(action.elementType)],
         mode: MODE_CREATE_NODE_ELEMENT,
         newNode: {
           elementType: action.elementType,

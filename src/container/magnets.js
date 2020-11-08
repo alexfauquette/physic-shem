@@ -24,6 +24,12 @@ const mapStateToProps = (state) => {
 
 const isMoving = (element, anchorsToMove) => {
   // help function to filter magnets
+  if (!anchorsToMove) {
+    return false;
+  }
+  if (typeof element == "number" && anchorsToMove.includes(element)) {
+    return true;
+  }
   if (element.from && anchorsToMove.includes(element.from)) {
     return true;
   }
@@ -94,7 +100,7 @@ const Magnets = ({
           []
         )}
       {anchors.allIds
-        .filter((id) => !anchorsToMove.includes(id))
+        .filter((id) => !isMoving(id, anchorsToMove))
         .map((id) =>
           adhesivePoints.reduce(
             (
