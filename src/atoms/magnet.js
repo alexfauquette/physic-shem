@@ -13,9 +13,9 @@ const Magnet = ({ id, x, y, color, updatePosition }) => (
   <circle
     cx={x}
     cy={y}
-    r={5}
+    r={10}
     style={{
-      fill: color || "green",
+      fill: color || "transparent",
     }}
     onMouseEnter={(event) => {
       event.stopPropagation();

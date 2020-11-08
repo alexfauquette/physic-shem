@@ -16,10 +16,19 @@ const mapStateToProps = (state) => {
     anchors: state.anchors,
     pathComponents: state.pathComponents,
     mode: state.mode,
+    anchorsToMove: state.anchorsToMove,
+    selection: state.selection,
+    adhesivePoints: state.adhesivePoints || null,
   };
 };
 
-const Magnets = ({ mode, anchors, pathComponents }) => {
+const Magnets = ({
+  mode,
+  anchors,
+  pathComponents,
+  anchorsToMove,
+  adhesivePoints,
+}) => {
   if (
     mode !== MODE_DRAG &&
     mode !== MODE_CREATE_NODE_ELEMENT &&
@@ -45,15 +54,47 @@ const Magnets = ({ mode, anchors, pathComponents }) => {
             positionCoords:
               pathComponents.byId[id].position &&
               anchors.byId[pathComponents.byId[id].position],
-          }).map(({ x, y, name }) => (
-            <Magnet key={`${id}-${name}`} x={x} y={y} />
-          )),
+          }).map(({ x, y, name }) =>
+            adhesivePoints.reduce(
+              (
+                accu,
+                { type, dx, dy, name: nameAdhesive = "", id: idAdhesive }
+              ) => {
+                return [
+                  ...accu,
+                  <Magnet
+                    key={`${id}-${name}<-${idAdhesive}-${nameAdhesive || ""}`}
+                    x={x + dx}
+                    y={y + dy}
+                  />,
+                ];
+              },
+              []
+            )
+          ),
         ],
         []
       )}
-      {anchors.allIds.map((id) => (
-        <Magnet key={id} {...anchors.byId[id]} color="pink" />
-      ))}
+      {anchors.allIds
+        .filter((id) => !anchorsToMove.includes(id))
+        .map((id) =>
+          adhesivePoints.reduce(
+            (
+              accu,
+              { type, dx, dy, name: nameAdhesive = "", id: idAdhesive }
+            ) => {
+              return [
+                ...accu,
+                <Magnet
+                  key={`${id}<-${idAdhesive}-${nameAdhesive || ""}`}
+                  x={anchors.byId[id].x + dx}
+                  y={anchors.byId[id].y + dy}
+                />,
+              ];
+            },
+            []
+          )
+        )}
     </>
   );
 };
