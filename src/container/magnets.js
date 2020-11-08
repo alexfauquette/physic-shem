@@ -22,6 +22,20 @@ const mapStateToProps = (state) => {
   };
 };
 
+const isMoving = (element, anchorsToMove) => {
+  // help function to filter magnets
+  if (element.from && anchorsToMove.includes(element.from)) {
+    return true;
+  }
+  if (element.to && anchorsToMove.includes(element.to)) {
+    return true;
+  }
+  if (element.position && anchorsToMove.includes(element.position)) {
+    return true;
+  }
+  return false;
+};
+
 const Magnets = ({
   mode,
   anchors,
@@ -40,41 +54,43 @@ const Magnets = ({
 
   return (
     <>
-      {pathComponents.allIds.reduce(
-        (accumulator, id) => [
-          ...accumulator,
-          ...getElementAnchors({
-            ...pathComponents.byId[id],
-            fromCoords:
-              pathComponents.byId[id].from &&
-              anchors.byId[pathComponents.byId[id].from],
-            toCoords:
-              pathComponents.byId[id].to &&
-              anchors.byId[pathComponents.byId[id].to],
-            positionCoords:
-              pathComponents.byId[id].position &&
-              anchors.byId[pathComponents.byId[id].position],
-          }).map(({ x, y, name }) =>
-            adhesivePoints.reduce(
-              (
-                accu,
-                { type, dx, dy, name: nameAdhesive = "", id: idAdhesive }
-              ) => {
-                return [
-                  ...accu,
-                  <Magnet
-                    key={`${id}-${name}<-${idAdhesive}-${nameAdhesive || ""}`}
-                    x={x + dx}
-                    y={y + dy}
-                  />,
-                ];
-              },
-              []
-            )
-          ),
-        ],
-        []
-      )}
+      {pathComponents.allIds
+        .filter((id) => !isMoving(pathComponents.byId[id], anchorsToMove))
+        .reduce(
+          (accumulator, id) => [
+            ...accumulator,
+            ...getElementAnchors({
+              ...pathComponents.byId[id],
+              fromCoords:
+                pathComponents.byId[id].from &&
+                anchors.byId[pathComponents.byId[id].from],
+              toCoords:
+                pathComponents.byId[id].to &&
+                anchors.byId[pathComponents.byId[id].to],
+              positionCoords:
+                pathComponents.byId[id].position &&
+                anchors.byId[pathComponents.byId[id].position],
+            }).map(({ x, y, name }) =>
+              adhesivePoints.reduce(
+                (
+                  accu,
+                  { type, dx, dy, name: nameAdhesive = "", id: idAdhesive }
+                ) => {
+                  return [
+                    ...accu,
+                    <Magnet
+                      key={`${id}-${name}<-${idAdhesive}-${nameAdhesive || ""}`}
+                      x={x + dx}
+                      y={y + dy}
+                    />,
+                  ];
+                },
+                []
+              )
+            ),
+          ],
+          []
+        )}
       {anchors.allIds
         .filter((id) => !anchorsToMove.includes(id))
         .map((id) =>
