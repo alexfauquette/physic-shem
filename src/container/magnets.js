@@ -80,8 +80,10 @@ const Magnets = ({
                     ...accu,
                     <Magnet
                       key={`${id}-${name}<-${idAdhesive}-${nameAdhesive || ""}`}
-                      x={x + dx}
-                      y={y + dy}
+                      x={x}
+                      dx={dx}
+                      y={y}
+                      dy={dy}
                     />,
                   ];
                 },
@@ -103,8 +105,10 @@ const Magnets = ({
                 ...accu,
                 <Magnet
                   key={`${id}<-${idAdhesive}-${nameAdhesive || ""}`}
-                  x={anchors.byId[id].x + dx}
-                  y={anchors.byId[id].y + dy}
+                  x={anchors.byId[id].x}
+                  dx={dx}
+                  y={anchors.byId[id].y}
+                  dy={dy}
                 />,
               ];
             },
