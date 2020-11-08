@@ -137,7 +137,7 @@ const initial_state = {
       "anchor4",
       "anchor5",
       "anchor6",
-      "anchor7  ",
+      "anchor7",
     ],
   },
 };

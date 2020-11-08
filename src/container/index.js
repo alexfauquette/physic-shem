@@ -107,8 +107,8 @@ const Container = ({
       <p>{(newPath && newPath.elementType) || "none"}</p>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 500 300"
-        style={{ width: 500, height: 300 }}
+        viewBox="0 0 1000 600"
+        style={{ width: 1000, height: 600 }}
         onMouseMove={
           mode === MODE_DRAG ||
           mode === MODE_CREATE_ANCHOR ||
