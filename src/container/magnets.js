@@ -90,6 +90,13 @@ const Magnets = ({
                       dx={dx}
                       y={y}
                       dy={dy}
+                      mode={mode}
+                      attractor={{ type: "COMPONENT", name: name, id: id }}
+                      attracted={{
+                        type: type,
+                        name: nameAdhesive,
+                        id: idAdhesive,
+                      }}
                     />,
                   ];
                 },
@@ -115,6 +122,13 @@ const Magnets = ({
                   dx={dx}
                   y={anchors.byId[id].y}
                   dy={dy}
+                  mode={mode}
+                  attractor={{ type: "ANCHOR", name: "", id: id }}
+                  attracted={{
+                    type: type,
+                    name: nameAdhesive,
+                    id: idAdhesive,
+                  }}
                 />,
               ];
             },

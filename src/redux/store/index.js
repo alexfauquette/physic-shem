@@ -18,6 +18,7 @@ import {
 import { getElementAnchors, isPath } from "../../components";
 
 import { v4 as uuid } from "uuid";
+import anchors from "../../container/anchors";
 
 export const MODE_SELECT = "MODE_SELECT";
 export const MODE_DRAG = "MODE_DRAG";
@@ -346,6 +347,65 @@ function update(state = initial_state, action) {
         alreadyMoved: { x: 0, y: 0 },
       };
     case STOP_DRAGGING:
+      if (
+        action.attractor &&
+        action.attracted &&
+        action.attracted.type === "ANCHOR" &&
+        action.attractor.type === "ANCHOR"
+      ) {
+        // we need to fusion those anchors
+        const anchorToRemoveID = action.attracted.id;
+        const anchorToUseId = action.attractor.id;
+
+        // remove anchor
+        const anchorToRemoveIDIndex = state.anchors.allIds.findIndex(
+          (id) => id === anchorToRemoveID
+        );
+        const {
+          [anchorToRemoveID]: anchorToRemove,
+          ...remainingAnchors
+        } = state.anchors.byId;
+
+        //const update elements
+        const newByIDElements = {};
+        state.pathComponents.allIds.forEach((id) => {
+          const element = state.pathComponents.byId[id];
+          if (element.position && element.position === anchorToRemoveID) {
+            newByIDElements[id] = { ...element, position: anchorToUseId };
+            element.position = anchorToUseId;
+          }
+          if (element.from && element.from === anchorToRemoveID) {
+            newByIDElements[id] = { ...element, from: anchorToUseId };
+            element.from = anchorToUseId;
+          }
+
+          if (element.to && element.to === anchorToRemoveID) {
+            newByIDElements[id] = { ...element, to: anchorToUseId };
+            element.to = anchorToUseId;
+          }
+          newByIDElements[id] = element;
+        });
+
+        return {
+          ...state,
+          anchors: {
+            byId: { ...remainingAnchors },
+            allIds: [
+              ...state.anchors.allIds.slice(0, anchorToRemoveIDIndex),
+              ...state.anchors.allIds.slice(anchorToRemoveIDIndex + 1),
+            ],
+          },
+          pathComponents: {
+            ...state.pathComponents,
+            byId: { ...newByIDElements },
+          },
+          mode: MODE_SELECT,
+          anchorsToMove: [],
+          originalPosition: {},
+          alreadyMoved: {},
+        };
+      }
+
       return {
         ...state,
         mode: MODE_SELECT,
@@ -353,6 +413,7 @@ function update(state = initial_state, action) {
         originalPosition: {},
         alreadyMoved: {},
       };
+
     case UPDATE_POSITION:
       const { x, y, id, shiftPress } = action;
       switch (state.mode) {

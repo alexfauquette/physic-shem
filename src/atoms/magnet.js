@@ -1,15 +1,26 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 
-import { updatePosition } from "../redux/actions";
-
-const mapDispatchToProps = (dispatch) => {
+import { updatePosition, stopDragging } from "../redux/actions";
+import { MODE_DRAG } from "../redux/store";
+const mapDispatchToProps = (dispatch, { attractor, attracted }) => {
   return {
     updatePosition: (x, y, id) => dispatch(updatePosition({ x, y, id })),
+    stopDragging: () => dispatch(stopDragging(attractor, attracted)),
   };
 };
 
-const Magnet = ({ id, x, y, dx, dy, color, updatePosition }) => {
+const Magnet = ({
+  id,
+  x,
+  y,
+  dx,
+  dy,
+  color,
+  mode,
+  updatePosition,
+  stopDragging,
+}) => {
   const [isUsed, setIsUsed] = useState(false);
 
   return (
@@ -41,6 +52,14 @@ const Magnet = ({ id, x, y, dx, dy, color, updatePosition }) => {
         onMouseLeave={() => setIsUsed(false)}
         onMouseMove={
           (event) => event.stopPropagation() //stop the propagation
+        }
+        onMouseUp={
+          mode === MODE_DRAG
+            ? (event) => {
+                event.stopPropagation();
+                stopDragging();
+              }
+            : null
         }
       />
     </>

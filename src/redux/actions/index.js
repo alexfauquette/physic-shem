@@ -8,9 +8,11 @@ export function startDragging(x, y) {
 }
 
 export const STOP_DRAGGING = "STOP_DRAGGING";
-export function stopDragging() {
+export function stopDragging(attractor, attracted) {
   return {
     type: STOP_DRAGGING,
+    attractor: attractor || null,
+    attracted: attracted || null,
   };
 }
 
