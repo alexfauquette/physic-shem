@@ -13,6 +13,7 @@ import {
   INVALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION,
   SAVE_PATH_ELEMENT_CREATION,
   UPDATE_POSITION,
+  SPLIT_ANCHOR,
 } from "../actions";
 
 import { getElementAnchors, isPath } from "../../components";
@@ -62,6 +63,18 @@ const getAdhesivePoints = (elementType) => {
   return adhesivePoints;
 };
 
+const componentUseThisAnchor = (element, anchorId) => {
+  if (element.from && element.from === anchorId) {
+    return true;
+  }
+  if (element.to && element.to === anchorId) {
+    return true;
+  }
+  if (element.position && element.position === anchorId) {
+    return true;
+  }
+  return false;
+};
 
 const replaceComponentAnchor = (element, previousAnchorId, newAnchorId) => {
   const newElement = { ...element };
@@ -707,6 +720,55 @@ function update(state = initial_state, action) {
         },
         anchors: { ...newAnchors },
       };
+    case SPLIT_ANCHOR:
+      let anchorId = action.anchorId;
+      if (
+        !anchorId &&
+        state.selection.length === 1 &&
+        state.anchors.allIds.includes(state.selection[0])
+      ) {
+        anchorId = state.selection[0];
+      }
+      if (anchorId && state.anchors.allIds.includes(anchorId)) {
+        const componentsToChange = state.pathComponents.allIds.filter((id) =>
+          componentUseThisAnchor(state.pathComponents.byId[id], anchorId)
+        );
+        if (componentsToChange.length <= 1) {
+          return state;
+        }
+
+        const newAnchors = state.anchors;
+        const newComponents = state.pathComponents.byId;
+
+        componentsToChange.slice(1).forEach((componentId) => {
+          const newAnchorId = uuid();
+
+          newComponents[componentId] = replaceComponentAnchor(
+            state.pathComponents.byId[componentId],
+            anchorId,
+            newAnchorId
+          );
+
+          newAnchors.allIds = [newAnchorId, ...newAnchors.allIds];
+          newAnchors.byId = {
+            ...newAnchors.byId,
+            [newAnchorId]: { ...newAnchors.byId[anchorId] },
+          };
+        });
+
+        return {
+          ...state,
+          pathComponents: {
+            ...state.pathComponents,
+            byId: { ...newComponents },
+          },
+          anchors: {
+            allIds: [...newAnchors.allIds],
+            byId: { ...newAnchors.byId },
+          },
+        };
+      }
+      return state;
     default:
       return state;
   }

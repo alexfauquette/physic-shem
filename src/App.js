@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Container from "./container/index.js";
 import { connect } from "react-redux";
 import { MODE_SELECT } from "./redux/store";
@@ -19,6 +19,7 @@ import {
   startCreateAnchor,
   startCreatePathElement,
   startCreateNodeElement,
+  splitAnchor,
 } from "./redux/actions/index.js";
 
 const drawerWidth = 180;
@@ -60,6 +61,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(startCreatePathElement(elementType)),
     startCreateNodeElement: (elementType) =>
       dispatch(startCreateNodeElement(elementType)),
+    splitAnchor: () => dispatch(splitAnchor()),
   };
 };
 
@@ -70,8 +72,25 @@ function App({
   startCreateAnchor,
   startCreatePathElement,
   startCreateNodeElement,
+  splitAnchor,
 }) {
   const classes = useStyles();
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "s") {
+        splitAnchor();
+      } else {
+        console.log(event);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [splitAnchor]);
+
   return (
     // TODO : Proper listen key event
     <div className={classes.root} tabIndex="0" onMouseDown={startSelect}>

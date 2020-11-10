@@ -102,3 +102,11 @@ export function nextStepOfElementCreation() {
     type: ELEMENT_CREATION_NEXT_STEP,
   };
 }
+
+export const SPLIT_ANCHOR = "SPLIT_ANCHOR";
+export function splitAnchor(anchorId) {
+  return {
+    type: SPLIT_ANCHOR,
+    anchorId: anchorId || null,
+  };
+}
