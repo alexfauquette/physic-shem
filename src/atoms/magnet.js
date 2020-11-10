@@ -14,6 +14,18 @@ const Magnet = ({ id, x, y, dx, dy, color, updatePosition }) => {
 
   return (
     <>
+      {isUsed && (
+        <circle
+          cx={x}
+          cy={y}
+          r={5}
+          style={{
+            fill: "none",
+            stroke: "red",
+            strokeWidth: 2,
+          }}
+        />
+      )}
       <circle
         cx={x + dx}
         cy={y + dy}
@@ -31,18 +43,6 @@ const Magnet = ({ id, x, y, dx, dy, color, updatePosition }) => {
           (event) => event.stopPropagation() //stop the propagation
         }
       />
-      {isUsed && (
-        <circle
-          cx={x}
-          cy={y}
-          r={5}
-          style={{
-            fill: "none",
-            stroke: "red",
-            strokeWidth: 2,
-          }}
-        />
-      )}
     </>
   );
 };
