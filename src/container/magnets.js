@@ -27,7 +27,7 @@ const isMoving = (element, anchorsToMove) => {
   if (!anchorsToMove) {
     return false;
   }
-  if (typeof element == "number" && anchorsToMove.includes(element)) {
+  if (typeof element == "string" && anchorsToMove.includes(element)) {
     return true;
   }
   if (element.from && anchorsToMove.includes(element.from)) {
