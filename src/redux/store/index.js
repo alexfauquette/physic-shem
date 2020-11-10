@@ -18,7 +18,6 @@ import {
 import { getElementAnchors, isPath } from "../../components";
 
 import { v4 as uuid } from "uuid";
-import anchors from "../../container/anchors";
 
 export const MODE_SELECT = "MODE_SELECT";
 export const MODE_DRAG = "MODE_DRAG";
@@ -61,6 +60,21 @@ const getAdhesivePoints = (elementType) => {
     });
   }
   return adhesivePoints;
+};
+
+
+const replaceComponentAnchor = (element, previousAnchorId, newAnchorId) => {
+  const newElement = { ...element };
+  if (element.from && element.from === previousAnchorId) {
+    newElement.from = newAnchorId;
+  }
+  if (element.to && element.to === previousAnchorId) {
+    newElement.to = newAnchorId;
+  }
+  if (element.position && element.position === previousAnchorId) {
+    newElement.position = newAnchorId;
+  }
+  return { ...newElement };
 };
 
 const initial_state = {
@@ -369,21 +383,11 @@ function update(state = initial_state, action) {
         //const update elements
         const newByIDElements = {};
         state.pathComponents.allIds.forEach((id) => {
-          const element = state.pathComponents.byId[id];
-          if (element.position && element.position === anchorToRemoveID) {
-            newByIDElements[id] = { ...element, position: anchorToUseId };
-            element.position = anchorToUseId;
-          }
-          if (element.from && element.from === anchorToRemoveID) {
-            newByIDElements[id] = { ...element, from: anchorToUseId };
-            element.from = anchorToUseId;
-          }
-
-          if (element.to && element.to === anchorToRemoveID) {
-            newByIDElements[id] = { ...element, to: anchorToUseId };
-            element.to = anchorToUseId;
-          }
-          newByIDElements[id] = element;
+          newByIDElements[id] = replaceComponentAnchor(
+            state.pathComponents.byId[id],
+            anchorToRemoveID,
+            anchorToUseId
+          );
         });
 
         return {
