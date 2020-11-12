@@ -14,6 +14,8 @@ import {
   SAVE_PATH_ELEMENT_CREATION,
   UPDATE_POSITION,
   SPLIT_ANCHOR,
+  START_RECTANGLE_SELECTION,
+  STOP_RECTANGLE_SELECTION,
 } from "../actions";
 
 import { getElementAnchors, isPath } from "../../components";
@@ -27,6 +29,7 @@ export const MODE_SPLIT_ANCHOR = "MODE_SPLIT_ANCHOR";
 export const MODE_CREATE_ANCHOR = "MODE_CREATE_ANCHOR";
 export const MODE_CREATE_PATH_ELEMENT = "MODE_CREATE_PATH_ELEMENT";
 export const MODE_CREATE_NODE_ELEMENT = "MODE_CREATE_NODE_ELEMENT";
+export const MODE_RECTANGLE_SELECTION = "MODE_RECTANGLE_SELECTION";
 
 const getAdhesivePoints = (elementType) => {
   const adhesivePoints = [];
@@ -88,6 +91,13 @@ const replaceComponentAnchor = (element, previousAnchorId, newAnchorId) => {
     newElement.position = newAnchorId;
   }
   return { ...newElement };
+};
+
+const isInRectangle = ({ x, y }, { x0, y0, x1, y1 }) => {
+  return (
+    Math.abs(x - x0) + Math.abs(x - x1) <= Math.abs(x1 - x0) &&
+    Math.abs(y - y0) + Math.abs(y - y1) <= Math.abs(y1 - y0)
+  );
 };
 
 const initial_state = {
@@ -509,7 +519,26 @@ function update(state = initial_state, action) {
               position: { x: action.x, y: action.y, id: action.id },
             },
           };
+        case MODE_RECTANGLE_SELECTION:
+          const newRectangle = {
+            ...state.rectangleSelection,
+            x1: x,
+            y1: y,
+          };
 
+          return {
+            ...state,
+            selection: [
+              ...state.anchors.allIds.filter((id) =>
+                isInRectangle(state.anchors.byId[id], newRectangle)
+              ),
+            ],
+            rectangleSelection: {
+              ...state.rectangleSelection,
+              x1: x,
+              y1: y,
+            },
+          };
         default:
           return state;
       }
@@ -769,6 +798,30 @@ function update(state = initial_state, action) {
         };
       }
       return state;
+    case START_RECTANGLE_SELECTION:
+      return {
+        ...state,
+        mode: MODE_RECTANGLE_SELECTION,
+        rectangleSelection: {
+          x0: action.x,
+          y0: action.y,
+          x1: action.x,
+          y1: action.y,
+        },
+      };
+    case STOP_RECTANGLE_SELECTION:
+      // add equality verification, if rectangle has no area it's probably a single click
+      // so we reset the selection
+      return {
+        ...state,
+        mode: MODE_SELECT,
+        rectangleSelection: {},
+        selection:
+          state.rectangleSelection.x0 === state.rectangleSelection.x1 ||
+          state.rectangleSelection.y0 === state.rectangleSelection.y1
+            ? []
+            : [...state.selection],
+      };
     default:
       return state;
   }

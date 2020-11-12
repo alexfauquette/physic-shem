@@ -110,3 +110,19 @@ export function splitAnchor(anchorId) {
     anchorId: anchorId || null,
   };
 }
+
+export const START_RECTANGLE_SELECTION = "START_RECTANGLE_SELECTION";
+export function startRectangleSelection(x, y) {
+  return {
+    type: START_RECTANGLE_SELECTION,
+    x,
+    y,
+  };
+}
+
+export const STOP_RECTANGLE_SELECTION = "STOP_RECTANGLE_SELECTION";
+export function stopRectangleSelection() {
+  return {
+    type: STOP_RECTANGLE_SELECTION,
+  };
+}

@@ -9,12 +9,16 @@ import {
   invalidateFirstStepPathElementCreation,
   savePathElementCreation,
   nextStepOfElementCreation,
+  startRectangleSelection,
+  stopRectangleSelection,
 } from "../redux/actions";
 import {
   MODE_DRAG,
   MODE_CREATE_ANCHOR,
   MODE_CREATE_PATH_ELEMENT,
   MODE_CREATE_NODE_ELEMENT,
+  MODE_SELECT,
+  MODE_RECTANGLE_SELECTION,
 } from "../redux/store";
 import Components from "./components";
 import Anchors from "./anchors";
@@ -32,6 +36,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(invalidateFirstStepPathElementCreation()),
     savePathElementCreation: () => dispatch(savePathElementCreation()),
     nextStepOfElementCreation: () => dispatch(nextStepOfElementCreation()),
+    startRectangleSelection: (x, y) => dispatch(startRectangleSelection(x, y)),
+    stopRectangleSelection: () => dispatch(stopRectangleSelection()),
   };
 };
 const mapStateToProps = (state) => {
@@ -43,6 +49,7 @@ const Container = ({
   newAnchor,
   newPath,
   newNode,
+  rectangleSelection,
   stopDragging,
   updatePosition,
   saveAnchorCreation,
@@ -50,12 +57,15 @@ const Container = ({
   invalidateFirstStepPathElementCreation,
   savePathElementCreation,
   nextStepOfElementCreation,
+  startRectangleSelection,
+  stopRectangleSelection,
 }) => {
   const followMouse = (event) => {
     switch (mode) {
       case MODE_DRAG:
       case MODE_CREATE_PATH_ELEMENT:
       case MODE_CREATE_NODE_ELEMENT:
+      case MODE_RECTANGLE_SELECTION:
         updatePosition(
           event.nativeEvent.offsetX,
           event.nativeEvent.offsetY,
@@ -76,6 +86,13 @@ const Container = ({
 
   const click = (event) => {
     switch (mode) {
+      case MODE_SELECT:
+        event.stopPropagation();
+        startRectangleSelection(
+          event.nativeEvent.offsetX,
+          event.nativeEvent.offsetY
+        );
+        break;
       case MODE_CREATE_ANCHOR:
         event.stopPropagation();
         saveAnchorCreation();
@@ -113,12 +130,22 @@ const Container = ({
           mode === MODE_DRAG ||
           mode === MODE_CREATE_ANCHOR ||
           mode === MODE_CREATE_PATH_ELEMENT ||
-          mode === MODE_CREATE_NODE_ELEMENT
+          mode === MODE_CREATE_NODE_ELEMENT ||
+          mode === MODE_RECTANGLE_SELECTION
             ? followMouse
             : null
         }
         onMouseDown={click}
-        onMouseUp={mode === MODE_DRAG ? () => stopDragging() : null}
+        onMouseUp={
+          mode === MODE_DRAG
+            ? () => stopDragging()
+            : mode === MODE_RECTANGLE_SELECTION
+            ? (event) => {
+                event.stopPropagation();
+                stopRectangleSelection();
+              }
+            : null
+        }
       >
         <Components />
         {mode === MODE_CREATE_ANCHOR &&
@@ -183,6 +210,13 @@ const Container = ({
 
         <Anchors />
         <Magnets />
+
+        {mode === MODE_RECTANGLE_SELECTION && (
+          <path
+            d={`M ${rectangleSelection.x0} ${rectangleSelection.y0} L  ${rectangleSelection.x0} ${rectangleSelection.y1} L ${rectangleSelection.x1} ${rectangleSelection.y1} L  ${rectangleSelection.x1} ${rectangleSelection.y0} Z`}
+            style={{ fill: "transparent", stroke: "red", strokeWidth: 1 }}
+          />
+        )}
       </svg>
     </>
   );
