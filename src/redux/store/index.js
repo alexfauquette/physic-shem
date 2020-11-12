@@ -16,6 +16,7 @@ import {
   SPLIT_ANCHOR,
   START_RECTANGLE_SELECTION,
   STOP_RECTANGLE_SELECTION,
+  STACK_SELECTED_ANCHORS,
 } from "../actions";
 
 import { getElementAnchors, isPath } from "../../components";
@@ -822,6 +823,58 @@ function update(state = initial_state, action) {
             ? []
             : [...state.selection],
       };
+    case STACK_SELECTED_ANCHORS:
+      const anchorsSelected = state.selection.filter(
+        (id) => id in state.anchors.byId
+      );
+      console.log(anchorsSelected);
+      if (
+        anchorsSelected.length <= 1 ||
+        !["U", "D", "L", "R"].includes(action.direction)
+      ) {
+        return state;
+      } else {
+        const newPosition = {};
+
+        anchorsSelected.forEach((id, index) => {
+          const anchor = state.anchors.byId[id];
+
+          switch (action.direction) {
+            case "U":
+              newPosition.y =
+                index === 0 ? anchor.y : Math.min(newPosition.y, anchor.y);
+              break;
+            case "D":
+              newPosition.y =
+                index === 0 ? anchor.y : Math.max(newPosition.y, anchor.y);
+              break;
+            case "L":
+              newPosition.x =
+                index === 0 ? anchor.x : Math.min(newPosition.x, anchor.x);
+              break;
+            case "R":
+              newPosition.x =
+                index === 0 ? anchor.x : Math.max(newPosition.x, anchor.x);
+              break;
+            default:
+              break;
+          }
+        });
+
+        anchorsSelected.forEach((id) => {
+          state.anchors.byId[id] = {
+            ...state.anchors.byId[id],
+            ...newPosition,
+          };
+        });
+        return {
+          ...state,
+          anchors: {
+            byId: { ...state.anchors.byId },
+            allIds: state.anchors.allIds,
+          },
+        };
+      }
     default:
       return state;
   }

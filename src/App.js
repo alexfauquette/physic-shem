@@ -20,6 +20,7 @@ import {
   startCreatePathElement,
   startCreateNodeElement,
   splitAnchor,
+  stackSelectedAnchors,
 } from "./redux/actions/index.js";
 
 const drawerWidth = 180;
@@ -62,6 +63,8 @@ const mapDispatchToProps = (dispatch) => {
     startCreateNodeElement: (elementType) =>
       dispatch(startCreateNodeElement(elementType)),
     splitAnchor: () => dispatch(splitAnchor()),
+    stackSelectedAnchors: (direction) =>
+      dispatch(stackSelectedAnchors(direction)),
   };
 };
 
@@ -73,15 +76,31 @@ function App({
   startCreatePathElement,
   startCreateNodeElement,
   splitAnchor,
+  stackSelectedAnchors,
 }) {
   const classes = useStyles();
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === "s") {
-        splitAnchor();
-      } else {
-        console.log(event);
+      switch (event.key) {
+        case "ArrowRight":
+          stackSelectedAnchors("R");
+          break;
+        case "ArrowLeft":
+          stackSelectedAnchors("L");
+          break;
+        case "ArrowUp":
+          stackSelectedAnchors("U");
+          break;
+        case "ArrowDown":
+          stackSelectedAnchors("D");
+          break;
+        case "s":
+          splitAnchor();
+          break;
+        default:
+          console.log(event.key);
+          break;
       }
     };
     document.addEventListener("keydown", handleKeyDown);
@@ -89,7 +108,7 @@ function App({
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [splitAnchor]);
+  }, [splitAnchor, stackSelectedAnchors]);
 
   return (
     // TODO : Proper listen key event

@@ -126,3 +126,11 @@ export function stopRectangleSelection() {
     type: STOP_RECTANGLE_SELECTION,
   };
 }
+
+export const STACK_SELECTED_ANCHORS = "STACK_SELECTED_ANCHORS";
+export function stackSelectedAnchors(direction) {
+  return {
+    type: STACK_SELECTED_ANCHORS,
+    direction,
+  };
+}
