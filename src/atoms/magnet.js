@@ -5,7 +5,8 @@ import { updatePosition, stopDragging } from "../redux/actions";
 import { MODE_DRAG } from "../redux/store";
 const mapDispatchToProps = (dispatch, { attractor, attracted }) => {
   return {
-    updatePosition: (x, y, id) => dispatch(updatePosition({ x, y, id })),
+    updatePosition: (x, y) =>
+      dispatch(updatePosition({ x, y, id: attractor.id })),
     stopDragging: () => dispatch(stopDragging(attractor, attracted)),
   };
 };
@@ -46,7 +47,7 @@ const Magnet = ({
         }}
         onMouseEnter={(event) => {
           event.stopPropagation();
-          updatePosition(x + dx, y + dy, id);
+          updatePosition(x + dx, y + dy);
           setIsUsed(true);
         }}
         onMouseLeave={() => setIsUsed(false)}
