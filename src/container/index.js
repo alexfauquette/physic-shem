@@ -70,15 +70,15 @@ const Container = ({
       case MODE_CREATE_NODE_ELEMENT:
       case MODE_RECTANGLE_SELECTION:
         updatePosition(
-          event.nativeEvent.offsetX,
-          event.nativeEvent.offsetY,
+          event.nativeEvent.clientX,
+          event.nativeEvent.clientY,
           event.shiftKey
         );
         break;
       case MODE_CREATE_ANCHOR:
         updatePosition(
-          event.nativeEvent.offsetX,
-          event.nativeEvent.offsetY,
+          event.nativeEvent.clientX,
+          event.nativeEvent.clientY,
           null
         );
         break;
@@ -92,8 +92,8 @@ const Container = ({
       case MODE_SELECT:
         event.stopPropagation();
         startRectangleSelection(
-          event.nativeEvent.offsetX,
-          event.nativeEvent.offsetY
+          event.nativeEvent.clientX,
+          event.nativeEvent.clientY
         );
         break;
       case MODE_CREATE_ANCHOR:
@@ -104,8 +104,8 @@ const Container = ({
         event.stopPropagation();
         if (newPath.isFromValidated) {
           savePathElementCreation(
-            event.nativeEvent.offsetX,
-            event.nativeEvent.offsetY
+            event.nativeEvent.clientX,
+            event.nativeEvent.clientY
           );
         } else {
           validateFirstStepPathElementCreation();

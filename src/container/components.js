@@ -41,8 +41,8 @@ const Components = ({
                     selection.includes(pathComponents.byId[id].id)
                   ) {
                     startDragging(
-                      event.nativeEvent.offsetX,
-                      event.nativeEvent.offsetY
+                      event.nativeEvent.clientX,
+                      event.nativeEvent.clientY
                     );
                   } else {
                     toggleSelection(pathComponents.byId[id].id, !event.ctrlKey);

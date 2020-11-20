@@ -41,8 +41,8 @@ const Anchor = ({
             event.stopPropagation();
             if (!event.ctrlKey && selected) {
               startDragging(
-                event.nativeEvent.offsetX,
-                event.nativeEvent.offsetY
+                event.nativeEvent.clientX,
+                event.nativeEvent.clientY
               );
             } else {
               toggleSelection(id, !event.ctrlKey);
