@@ -1,26 +1,15 @@
 import React from "react";
+
+import "./style.scss";
 import { connect } from "react-redux";
-import {
-  MODE_SELECT,
-  MODE_CREATE_ANCHOR,
-  MODE_CREATE_PATH_ELEMENT,
-  MODE_CREATE_NODE_ELEMENT,
-} from "../redux/store";
-import {
-  toggleSelection,
-  startDragging,
-  updatePosition,
-  invalidateFirstStepPathElementCreation,
-} from "../redux/actions";
+import { MODE_SELECT } from "../redux/store";
+import { toggleSelection, startDragging } from "../redux/actions";
 
 const mapDispatchToProps = (dispatch) => {
   return {
     toggleSelection: (objectId, reset) =>
       dispatch(toggleSelection(objectId, reset)),
     startDragging: (x, y) => dispatch(startDragging(x, y)),
-    updatePosition: (x, y, id) => dispatch(updatePosition({ x, y, id })),
-    invalidateFirstStepPathElementCreation: () =>
-      dispatch(invalidateFirstStepPathElementCreation()),
   };
 };
 const mapStateToProps = (state, { id }) => {
@@ -28,7 +17,6 @@ const mapStateToProps = (state, { id }) => {
     x: state.anchors.byId[id].x,
     y: state.anchors.byId[id].y,
     mode: state.mode,
-    newPath: state.mode === MODE_CREATE_PATH_ELEMENT ? state.newPath : null, //Think it elps to not rerende (not sure)
     selected: state.selection.includes(id),
   };
 };
@@ -41,36 +29,12 @@ const Anchor = ({
   selected,
   startDragging,
   toggleSelection,
-  newPath,
-  updatePosition,
-  invalidateFirstStepPathElementCreation,
 }) => (
   <circle
     cx={x}
     cy={y}
     r={5}
-    style={{
-      fill: selected ? "red" : null,
-    }}
-    onMouseEnter={
-      mode === MODE_CREATE_ANCHOR || mode === MODE_CREATE_NODE_ELEMENT
-        ? () => updatePosition(x, y, id)
-        : mode === MODE_CREATE_PATH_ELEMENT
-        ? newPath.isFromValidated && id === newPath.from.id
-          ? () => invalidateFirstStepPathElementCreation()
-          : () => updatePosition(x, y, id)
-        : null
-    }
-    onMouseMove={
-      // revent from moving the "increation anchor when moving on the anchor"
-      mode === MODE_CREATE_PATH_ELEMENT ||
-      mode === MODE_CREATE_ANCHOR ||
-      mode === MODE_CREATE_NODE_ELEMENT
-        ? (event) => {
-            event.stopPropagation();
-          }
-        : null
-    }
+    className={`anchor ${selected ? "selected" : ""}`}
     onMouseDown={
       mode === MODE_SELECT
         ? (event) => {

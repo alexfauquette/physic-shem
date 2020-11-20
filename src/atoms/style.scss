@@ -1,0 +1,14 @@
+.anchor {
+  &:hover {
+    stroke: red;
+    stroke-width: 2;
+    cursor: pointer;
+  }
+  fill: transparent;
+}
+.anchor.selected {
+  fill: red;
+}
+
+.magnet {
+}
