@@ -174,22 +174,22 @@ const initial_state = {
       anchor1: {
         id: "anchor1",
         x: 10,
-        y: 100,
+        y: 200,
       },
       anchor2: {
         id: "anchor2",
         x: 500,
-        y: 100,
+        y: 200,
       },
       anchor3: {
         id: "anchor3",
         x: 250,
-        y: 100,
+        y: 200,
       },
       anchor4: {
         id: "anchor4",
         x: 250,
-        y: 200,
+        y: 400,
       },
       anchor5: {
         id: "anchor5",
@@ -199,12 +199,12 @@ const initial_state = {
       anchor6: {
         id: "anchor6",
         x: 100,
-        y: 200,
+        y: 400,
       },
       anchor7: {
         id: "anchor7",
         x: 100,
-        y: 200,
+        y: 400,
       },
     },
     allIds: [
