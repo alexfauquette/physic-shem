@@ -79,4 +79,9 @@ const PR = ({
   );
 };
 
+export const drawer = (element, from, to) =>
+  `\\draw (${(from.x / 120).toFixed(2)}, ${(-from.y / 120).toFixed(
+    2
+  )}) to[pR] (${(to.x / 120).toFixed(2)}, ${(-to.y / 120).toFixed(2)});`;
+
 export default connect(mapStateToProps)(PR);

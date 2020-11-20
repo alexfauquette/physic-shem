@@ -105,4 +105,14 @@ const NMOS = ({
   );
 };
 
+export const drawer = (element, position) => {
+  return `\\draw (${(position.x / 120).toFixed(2)}, ${(
+    -position.y / 120
+  ).toFixed(2)}) node[nmos${
+    element.positionAnchor ? " ,anchor=" + element.positionAnchor : ""
+  }${
+    element.angle && element.angle !== 0 ? " ,rotate=" + element.angle : ""
+  }]{};`;
+};
+
 export default connect(mapStateToProps)(NMOS);

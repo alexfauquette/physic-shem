@@ -20,6 +20,8 @@ import {
   MODE_SELECT,
   MODE_RECTANGLE_SELECTION,
 } from "../redux/store";
+import getCircuitikz from "../redux/store/getCircuitikz";
+
 import Components from "./components";
 import Anchors from "./anchors";
 import Magnets from "./magnets";
@@ -41,7 +43,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 const mapStateToProps = (state) => {
-  return state;
+  return { ...state, state: state };
 };
 
 const Container = ({
@@ -59,6 +61,7 @@ const Container = ({
   nextStepOfElementCreation,
   startRectangleSelection,
   stopRectangleSelection,
+  state,
 }) => {
   const followMouse = (event) => {
     switch (mode) {
@@ -218,6 +221,14 @@ const Container = ({
           />
         )}
       </svg>
+      <p>
+        {getCircuitikz(state).map((line) => (
+          <>
+            {line}
+            <br />
+          </>
+        ))}
+      </p>
     </>
   );
 };

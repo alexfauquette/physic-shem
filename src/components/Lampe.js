@@ -95,4 +95,9 @@ const Lampe = ({
   );
 };
 
+export const drawer = (element, from, to) =>
+  `\\draw (${(from.x / 120).toFixed(2)}, ${(-from.y / 120).toFixed(
+    2
+  )}) to[lamp] (${(to.x / 120).toFixed(2)}, ${(-to.y / 120).toFixed(2)});`;
+
 export default connect(mapStateToProps, mapDispatchToProps)(Lampe);
