@@ -5,11 +5,14 @@ import { connect } from "react-redux";
 import { MODE_SELECT } from "../redux/store";
 import { toggleSelection, startDragging } from "../redux/actions";
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, { svgRef }) => {
   return {
     toggleSelection: (objectId, reset) =>
       dispatch(toggleSelection(objectId, reset)),
-    startDragging: (x, y) => dispatch(startDragging(x, y)),
+    startDragging: (x, y) => {
+      const { x: xOffset, y: yOffset } = svgRef.current.getBoundingClientRect();
+      dispatch(startDragging(x - xOffset, y - yOffset));
+    },
   };
 };
 const mapStateToProps = (state, { id }) => {

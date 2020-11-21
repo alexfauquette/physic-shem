@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { connect } from "react-redux";
 import components from "../components";
 import {
@@ -63,22 +63,26 @@ const Container = ({
   stopRectangleSelection,
   state,
 }) => {
+  const svgRef = useRef();
+
   const followMouse = (event) => {
+    const { x: xOffset, y: yOffset } = svgRef.current.getBoundingClientRect();
+
     switch (mode) {
       case MODE_DRAG:
       case MODE_CREATE_PATH_ELEMENT:
       case MODE_CREATE_NODE_ELEMENT:
       case MODE_RECTANGLE_SELECTION:
         updatePosition(
-          event.nativeEvent.clientX,
-          event.nativeEvent.clientY,
+          event.nativeEvent.clientX - xOffset,
+          event.nativeEvent.clientY - yOffset,
           event.shiftKey
         );
         break;
       case MODE_CREATE_ANCHOR:
         updatePosition(
-          event.nativeEvent.clientX,
-          event.nativeEvent.clientY,
+          event.nativeEvent.clientX - xOffset,
+          event.nativeEvent.clientY - yOffset,
           null
         );
         break;
@@ -88,12 +92,14 @@ const Container = ({
   };
 
   const click = (event) => {
+    const { x: xOffset, y: yOffset } = svgRef.current.getBoundingClientRect();
+
     switch (mode) {
       case MODE_SELECT:
         event.stopPropagation();
         startRectangleSelection(
-          event.nativeEvent.clientX,
-          event.nativeEvent.clientY
+          event.nativeEvent.clientX - xOffset,
+          event.nativeEvent.clientY - yOffset
         );
         break;
       case MODE_CREATE_ANCHOR:
@@ -104,8 +110,8 @@ const Container = ({
         event.stopPropagation();
         if (newPath.isFromValidated) {
           savePathElementCreation(
-            event.nativeEvent.clientX,
-            event.nativeEvent.clientY
+            event.nativeEvent.clientX - xOffset,
+            event.nativeEvent.clientY - yOffset
           );
         } else {
           validateFirstStepPathElementCreation();
@@ -149,8 +155,9 @@ const Container = ({
               }
             : null
         }
+        ref={svgRef}
       >
-        <Components />
+        <Components svgRef={svgRef} />
         {mode === MODE_CREATE_ANCHOR &&
           newAnchor &&
           newAnchor.x !== null &&
@@ -211,8 +218,8 @@ const Container = ({
             <circle cx={newNode.position.x} cy={newNode.position.y} r={5} />
           )}
 
-        <Anchors />
-        <Magnets />
+        <Anchors svgRef={svgRef} />
+        <Magnets svgRef={svgRef} />
 
         {mode === MODE_RECTANGLE_SELECTION && (
           <path
