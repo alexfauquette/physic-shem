@@ -4,8 +4,6 @@ import {
   START_SELECT,
   TOGGLE_SELECTION,
   STOP_DRAGGING,
-  START_CREATE_ANCHOR,
-  SAVE_ANCHOR_CREATION,
   START_CREATE_PATH_ELEMENT,
   START_CREATE_NODE_ELEMENT,
   ELEMENT_CREATION_NEXT_STEP,
@@ -27,7 +25,6 @@ export const MODE_SELECT = "MODE_SELECT";
 export const MODE_DRAG = "MODE_DRAG";
 export const MODE_DELETE = "MODE_DELETE";
 export const MODE_SPLIT_ANCHOR = "MODE_SPLIT_ANCHOR";
-export const MODE_CREATE_ANCHOR = "MODE_CREATE_ANCHOR";
 export const MODE_CREATE_PATH_ELEMENT = "MODE_CREATE_PATH_ELEMENT";
 export const MODE_CREATE_NODE_ELEMENT = "MODE_CREATE_NODE_ELEMENT";
 export const MODE_RECTANGLE_SELECTION = "MODE_RECTANGLE_SELECTION";
@@ -483,15 +480,6 @@ function update(state = initial_state, action) {
               y: newMoveY,
             },
           };
-        case MODE_CREATE_ANCHOR:
-          return {
-            ...state,
-            newAnchor: {
-              x: x,
-              y: y,
-              id: id,
-            },
-          };
 
         case MODE_CREATE_PATH_ELEMENT:
           if (state.newPath.isFromValidated) {
@@ -543,42 +531,7 @@ function update(state = initial_state, action) {
         default:
           return state;
       }
-    case START_CREATE_ANCHOR:
-      return {
-        ...state,
-        selection: [],
-        adhesivePoints: [{ type: "ANCHOR", id: null, dx: 0, dy: 0 }],
-        mode: MODE_CREATE_ANCHOR,
-        newAnchor: {
-          x: null,
-          y: null,
-          id: null,
-        },
-      };
 
-    case SAVE_ANCHOR_CREATION:
-      if (state.newAnchor.id === null) {
-        const newId = uuid();
-        return {
-          ...state,
-          anchors: {
-            byId: {
-              ...state.anchors.byId,
-              [newId]: {
-                ...state.newAnchor,
-                id: newId,
-              },
-            },
-            allIds: [...state.anchors.allIds, newId],
-          },
-          newAnchor: {
-            x: action.x,
-            y: action.y,
-            id: newId,
-          },
-        };
-      }
-      return state;
     case START_CREATE_PATH_ELEMENT: {
       return {
         ...state,

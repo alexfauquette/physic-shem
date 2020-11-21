@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 
 import {
-  MODE_CREATE_ANCHOR,
   MODE_CREATE_PATH_ELEMENT,
   MODE_CREATE_NODE_ELEMENT,
   MODE_DRAG,
@@ -52,8 +51,7 @@ const Magnets = ({
   if (
     mode !== MODE_DRAG &&
     mode !== MODE_CREATE_NODE_ELEMENT &&
-    mode !== MODE_CREATE_PATH_ELEMENT &&
-    mode !== MODE_CREATE_ANCHOR
+    mode !== MODE_CREATE_PATH_ELEMENT
   ) {
     return null;
   }

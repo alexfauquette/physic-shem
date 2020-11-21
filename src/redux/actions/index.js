@@ -43,20 +43,6 @@ export function toggleSelection(objectId, reset) {
   };
 }
 
-export const START_CREATE_ANCHOR = "START_CREATE_ANCHOR";
-export function startCreateAnchor() {
-  return {
-    type: START_CREATE_ANCHOR,
-  };
-}
-
-export const SAVE_ANCHOR_CREATION = "SAVE_ANCHOR_CREATION";
-export function saveAnchorCreation() {
-  return {
-    type: SAVE_ANCHOR_CREATION,
-  };
-}
-
 export const START_CREATE_PATH_ELEMENT = "START_CREATE_PATH_ELEMENT";
 export function startCreatePathElement(elementType) {
   return {

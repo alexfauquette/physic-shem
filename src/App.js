@@ -16,7 +16,6 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import {
   startSelect,
-  startCreateAnchor,
   startCreatePathElement,
   startCreateNodeElement,
   splitAnchor,
@@ -57,7 +56,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     startSelect: () => dispatch(startSelect()),
-    startCreateAnchor: () => dispatch(startCreateAnchor()),
     startCreatePathElement: (elementType) =>
       dispatch(startCreatePathElement(elementType)),
     startCreateNodeElement: (elementType) =>
@@ -72,7 +70,6 @@ function App({
   mode,
   selection,
   startSelect,
-  startCreateAnchor,
   startCreatePathElement,
   startCreateNodeElement,
   splitAnchor,
@@ -155,7 +152,6 @@ function App({
                 </svg>
               </ListItem>
             ))}
-            <button onClick={startCreateAnchor}>Anchor</button>
           </List>
         </div>
       </Drawer>

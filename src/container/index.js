@@ -4,7 +4,6 @@ import components from "../components";
 import {
   updatePosition,
   stopDragging,
-  saveAnchorCreation,
   validateFirstStepPathElementCreation,
   invalidateFirstStepPathElementCreation,
   savePathElementCreation,
@@ -14,7 +13,6 @@ import {
 } from "../redux/actions";
 import {
   MODE_DRAG,
-  MODE_CREATE_ANCHOR,
   MODE_CREATE_PATH_ELEMENT,
   MODE_CREATE_NODE_ELEMENT,
   MODE_SELECT,
@@ -31,7 +29,6 @@ const mapDispatchToProps = (dispatch) => {
     updatePosition: (x, y, shiftPress) =>
       dispatch(updatePosition({ x, y, shiftPress })),
     stopDragging: () => dispatch(stopDragging()),
-    saveAnchorCreation: () => dispatch(saveAnchorCreation()),
     validateFirstStepPathElementCreation: () =>
       dispatch(validateFirstStepPathElementCreation()),
     invalidateFirstStepPathElementCreation: () =>
@@ -43,18 +40,22 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 const mapStateToProps = (state) => {
-  return { ...state, state: state };
+  return {
+    mode: state.mode,
+    newPath: state.newPath,
+    newNode: state.newNode,
+    rectangleSelection: state.rectangleSelection,
+    state: state,
+  };
 };
 
 const Container = ({
   mode,
-  newAnchor,
   newPath,
   newNode,
   rectangleSelection,
   stopDragging,
   updatePosition,
-  saveAnchorCreation,
   validateFirstStepPathElementCreation,
   invalidateFirstStepPathElementCreation,
   savePathElementCreation,
@@ -79,13 +80,6 @@ const Container = ({
           event.shiftKey
         );
         break;
-      case MODE_CREATE_ANCHOR:
-        updatePosition(
-          event.nativeEvent.clientX - xOffset,
-          event.nativeEvent.clientY - yOffset,
-          null
-        );
-        break;
       default:
         break;
     }
@@ -101,10 +95,6 @@ const Container = ({
           event.nativeEvent.clientX - xOffset,
           event.nativeEvent.clientY - yOffset
         );
-        break;
-      case MODE_CREATE_ANCHOR:
-        event.stopPropagation();
-        saveAnchorCreation();
         break;
       case MODE_CREATE_PATH_ELEMENT:
         event.stopPropagation();
@@ -137,7 +127,6 @@ const Container = ({
         style={{ width: 1000, height: 600 }}
         onMouseMove={
           mode === MODE_DRAG ||
-          mode === MODE_CREATE_ANCHOR ||
           mode === MODE_CREATE_PATH_ELEMENT ||
           mode === MODE_CREATE_NODE_ELEMENT ||
           mode === MODE_RECTANGLE_SELECTION
@@ -158,12 +147,6 @@ const Container = ({
         ref={svgRef}
       >
         <Components svgRef={svgRef} />
-        {mode === MODE_CREATE_ANCHOR &&
-          newAnchor &&
-          newAnchor.x !== null &&
-          newAnchor.y !== null && (
-            <circle cx={newAnchor.x} cy={newAnchor.y} r={15} />
-          )}
 
         {/* display the path element in during its creation */}
 
