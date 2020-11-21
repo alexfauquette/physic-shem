@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { connect } from "react-redux";
 import components from "../components";
 import {
@@ -18,7 +18,6 @@ import {
   MODE_SELECT,
   MODE_RECTANGLE_SELECTION,
 } from "../redux/store";
-import getCircuitikz from "../redux/store/getCircuitikz";
 
 import Components from "./components";
 import Anchors from "./anchors";
@@ -45,7 +44,6 @@ const mapStateToProps = (state) => {
     newPath: state.newPath,
     newNode: state.newNode,
     rectangleSelection: state.rectangleSelection,
-    state: state,
   };
 };
 
@@ -62,7 +60,6 @@ const Container = ({
   nextStepOfElementCreation,
   startRectangleSelection,
   stopRectangleSelection,
-  state,
 }) => {
   const svgRef = useRef();
 
@@ -211,14 +208,6 @@ const Container = ({
           />
         )}
       </svg>
-      <p>
-        {getCircuitikz(state).map((line) => (
-          <>
-            {line}
-            <br />
-          </>
-        ))}
-      </p>
     </>
   );
 };
