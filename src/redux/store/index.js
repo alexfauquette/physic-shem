@@ -567,7 +567,10 @@ function update(state = initial_state, action) {
         const newId_anchor = uuid();
 
         let newAnchors = state.anchors;
-        if (state.newNode.position.id === null) {
+        if (
+          state.newNode.position.id === null ||
+          !state.anchors.allIds.includes(state.newNode.position.id)
+        ) {
           newAnchors = {
             byId: {
               ...state.anchors.byId,
@@ -581,6 +584,12 @@ function update(state = initial_state, action) {
           };
         }
 
+        const positionId =
+          state.newNode.position.id &&
+          state.anchors.allIds.includes(state.newNode.position.id)
+            ? state.newNode.position.id
+            : newId_anchor;
+
         return {
           ...state,
           newNode: {
@@ -592,7 +601,7 @@ function update(state = initial_state, action) {
               ...state.pathComponents.byId,
               [newId_element]: {
                 id: newId_element,
-                position: state.newNode.position.id || newId_anchor,
+                position: positionId,
                 type: state.newNode.elementType,
               },
             },
