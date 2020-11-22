@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Container from "./container/index.js";
-import LatexDisplay from "./container/latexDisplay";
-
 import { connect } from "react-redux";
 import { MODE_SELECT } from "./redux/store";
+
+import Container from "./container/index.js";
+import LatexDisplay from "./container/latexDisplay";
+import ElementOptions from "./container/elementOptions";
+
 import components, { isPath } from "./components";
 
 import Drawer from "@material-ui/core/Drawer";
@@ -175,7 +177,7 @@ function App({
         open={mode === MODE_SELECT && selection.length === 1}
       >
         <Toolbar />
-        <p>kjdxhfks</p>
+        <ElementOptions />
       </Drawer>
       <main className={classes.content}>
         <Toolbar />
