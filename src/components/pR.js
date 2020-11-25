@@ -1,6 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
 import "./style.scss";
+import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
+
+const height = 0.8;
+const height_2 = 0.3;
+const width = 0.8;
+
+const UNIT_X = 0.5 * width * MULTIPLICATIVE_CONST;
+const UNIT_Y2 = 0.5 * height_2 * MULTIPLICATIVE_CONST;
+const UNIT_Y = 0.5 * height * MULTIPLICATIVE_CONST;
 
 export const getAnchor = ({ fromCoords, toCoords }) => {
   const { x: xFrom, y: yFrom } = fromCoords;
@@ -33,6 +42,7 @@ const PR = ({
   selected,
   showHandles,
   id,
+  wiper_pos = 0.5,
   ...props
 }) => {
   if (!fromCoords || !toCoords) {
@@ -43,7 +53,7 @@ const PR = ({
 
   const d = Math.sqrt((xFrom - xTo) ** 2 + (yFrom - yTo) ** 2);
 
-  const ratio = (d - 120) / (2 * d); // ratio of the line use by connection
+  const ratio = (d - width * MULTIPLICATIVE_CONST) / (2 * d); // ratio of the line use by connection
   const angle = parseInt(
     (180 * Math.atan2(yTo - yFrom, xTo - xFrom)) / Math.PI
   );
@@ -58,9 +68,21 @@ const PR = ({
           }}
         >
           <path
-            d={`M -60 0 L -50 -20 L -30 20 L -10 -20 L 10 20 L 30 -20 L 50 20 L 60 0`}
+            d={`M ${(-6 / 6) * UNIT_X} 0 L ${(-5 / 6) * UNIT_X} ${-UNIT_Y2} L ${
+              (-3 / 6) * UNIT_X
+            } ${UNIT_Y2} L ${(-1 / 6) * UNIT_X} ${-UNIT_Y2} L ${
+              (1 / 6) * UNIT_X
+            } ${UNIT_Y2} L ${(3 / 6) * UNIT_X} ${-UNIT_Y2} L ${
+              (5 / 6) * UNIT_X
+            } ${UNIT_Y2} L ${(6 / 6) * UNIT_X} 0`}
           />
-          <path d={`M 0 -20 L 0 -55`} />
+          <path
+            d={`M ${
+              -(0.5 - wiper_pos) * width * MULTIPLICATIVE_CONST
+            } ${-UNIT_Y} L ${
+              -(0.5 - wiper_pos) * width * MULTIPLICATIVE_CONST
+            } ${-UNIT_Y2}`}
+          />
         </g>
 
         {/* here start the connection between dipole and anchors */}
@@ -80,8 +102,11 @@ const PR = ({
 };
 
 export const drawer = (element, from, to) =>
-  `\\draw (${(from.x / 120).toFixed(2)}, ${(-from.y / 120).toFixed(
+  `\\draw (${((from.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
+    (-from.y / MULTIPLICATIVE_CONST) *
+    R_LEN
+  ).toFixed(2)}) to[pR] (${((to.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(
     2
-  )}) to[pR] (${(to.x / 120).toFixed(2)}, ${(-to.y / 120).toFixed(2)});`;
+  )}, ${((-to.y / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)});`;
 
 export default connect(mapStateToProps)(PR);

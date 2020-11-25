@@ -1,6 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import "./style.scss";
+import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
+
+const height = 0.5;
+const width = 0.4;
+
+const UNIT_X = 0.5 * width * MULTIPLICATIVE_CONST;
+const UNIT_Y = 0.5 * height * MULTIPLICATIVE_CONST;
 
 // If id => it's from scene
 // If no id => it's from adding
@@ -32,7 +39,7 @@ const EmptyDiode = ({
   const { x: xTo, y: yTo } = toCoords;
 
   const d = Math.sqrt((xFrom - xTo) ** 2 + (yFrom - yTo) ** 2);
-  const ratio = 1 / 2 - 30 / d; // ratio of the line use by connection
+  const ratio = (d - width * MULTIPLICATIVE_CONST) / (2 * d); // ratio of the line use by connection
   const angle = parseInt(
     (180 * Math.atan2(yTo - yFrom, xTo - xFrom)) / Math.PI
   );
@@ -46,8 +53,10 @@ const EmptyDiode = ({
             }px) rotate(${angle}deg)`,
           }}
         >
-          <path d={`M -30 35 L -30 -35 L 30 0 Z`} />
-          <path d={`M 30 35 L 30 -35`} />
+          <path
+            d={`M ${UNIT_X} 0 L ${-UNIT_X} ${-UNIT_Y} L ${-UNIT_X} ${UNIT_Y} Z`}
+          />
+          <path d={`M ${UNIT_X} ${UNIT_Y} L ${UNIT_X} ${-UNIT_Y}`} />
         </g>
 
         {/* here start the connection between dipole and anchors */}
@@ -67,10 +76,12 @@ const EmptyDiode = ({
 };
 
 export const drawer = (element, from, to) =>
-  `\\draw (${(from.x / 120).toFixed(2)}, ${(-from.y / 120).toFixed(
-    2
-  )}) to[empty diode] (${(to.x / 120).toFixed(2)}, ${(-to.y / 120).toFixed(
-    2
-  )});`;
+  `\\draw (${((from.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
+    (-from.y / MULTIPLICATIVE_CONST) *
+    R_LEN
+  ).toFixed(2)}) to[empty diode] (${(
+    (to.x / MULTIPLICATIVE_CONST) *
+    R_LEN
+  ).toFixed(2)}, ${((-to.y / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)});`;
 
 export default connect(mapStateToProps)(EmptyDiode);

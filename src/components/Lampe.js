@@ -1,9 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import "./style.scss";
+import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
 
-const R = 60;
-const r = ((Math.sqrt(2) * R) / 2).toFixed(3);
+const R = 0.6 * 0.5 * MULTIPLICATIVE_CONST;
+const r = (0.7071 * R).toFixed(3);
+
 // If id => it's from scene
 // If no id => it's from adding
 const mapStateToProps = (state, props) => {
@@ -68,8 +70,11 @@ const Lampe = ({
 };
 
 export const drawer = (element, from, to) =>
-  `\\draw (${(from.x / 120).toFixed(2)}, ${(-from.y / 120).toFixed(
+  `\\draw (${((from.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
+    (-from.y / MULTIPLICATIVE_CONST) *
+    R_LEN
+  ).toFixed(2)}) to[lamp] (${((to.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(
     2
-  )}) to[lamp] (${(to.x / 120).toFixed(2)}, ${(-to.y / 120).toFixed(2)});`;
+  )}, ${((-to.y / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)});`;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Lampe);

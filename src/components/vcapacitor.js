@@ -1,6 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
 import "./style.scss";
+import { R_LEN, MULTIPLICATIVE_CONST } from "./constantes";
+
+const height = 0.6;
+const width = 0.5;
+const capacitor_width = 0.4;
+
+const UNIT_X = 0.5 * width * MULTIPLICATIVE_CONST;
+const UNIT_Y = 0.5 * height * MULTIPLICATIVE_CONST;
+
+const STEP = capacitor_width * UNIT_X;
 
 export const getAnchor = ({ fromCoords, toCoords }) => {
   const { x: xFrom, y: yFrom } = fromCoords;
@@ -26,8 +36,6 @@ const mapStateToProps = (state, props) => {
     : {};
 };
 
-const constante = 120;
-
 const Vcapacitor = ({
   fromCoords,
   toCoords,
@@ -45,7 +53,7 @@ const Vcapacitor = ({
 
   const d = Math.sqrt((xFrom - xTo) ** 2 + (yFrom - yTo) ** 2);
 
-  const ratio = (d - constante * 2 * 0.13) / (2 * d); // ratio of the line use by connection
+  const ratio = (d - 2 * STEP) / (2 * d); // ratio of the line use by connection
   const angle = parseInt(
     (180 * Math.atan2(yTo - yFrom, xTo - xFrom)) / Math.PI
   );
@@ -59,23 +67,11 @@ const Vcapacitor = ({
             }px) rotate(${angle}deg)`,
           }}
         >
-          <path
-            d={`M  ${-0.13 * constante} ${-0.4 * constante} L ${
-              -0.13 * constante
-            } ${constante * 0.4}`}
-          />
+          <path d={`M  ${-STEP} ${-UNIT_Y} L ${-STEP} ${UNIT_Y}`} />
 
-          <path
-            d={`M  ${constante * 0.13} ${-0.4 * constante} L ${
-              constante * 0.13
-            } ${constante * 0.4}`}
-          />
+          <path d={`M  ${STEP} ${-UNIT_Y} L ${STEP} ${UNIT_Y}`} />
 
-          <path
-            d={`M ${-0.4 * constante} ${-0.4 * constante} L ${
-              constante * 0.4
-            } ${constante * 0.4}`}
-          />
+          <path d={`M ${-UNIT_X} ${-UNIT_Y} L ${UNIT_X} ${UNIT_Y}`} />
         </g>
 
         {/* here start the connection between dipole and anchors */}
@@ -95,10 +91,12 @@ const Vcapacitor = ({
 };
 
 export const drawer = (element, from, to) =>
-  `\\draw (${(from.x / 120).toFixed(2)}, ${(-from.y / 120).toFixed(
-    2
-  )}) to[variable capacitor] (${(to.x / 120).toFixed(2)}, ${(
-    -to.y / 120
-  ).toFixed(2)});`;
+  `\\draw (${((from.x / MULTIPLICATIVE_CONST) * 1.4).toFixed(2)}, ${(
+    (-from.y / MULTIPLICATIVE_CONST) *
+    R_LEN
+  ).toFixed(2)}) to[variable capacitor] (${(
+    (to.x / MULTIPLICATIVE_CONST) *
+    R_LEN
+  ).toFixed(2)}, ${((-to.y / MULTIPLICATIVE_CONST) * 1.4).toFixed(2)});`;
 
 export default connect(mapStateToProps)(Vcapacitor);

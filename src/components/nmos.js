@@ -2,14 +2,32 @@ import React from "react";
 import { connect } from "react-redux";
 import "./style.scss";
 
+import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
+
+const width = 0.7;
+const gate_height = 0.35;
+const base_height = 0.5;
+// const conn_height = 0;
+const height = 1.1;
+const base_width = 0.5;
+const gate_width = 0.62;
+// const arrow_pos = 0.6;
+// const bodydiode_scale = 0.3;
+// const bodydiode_distance = 0.3;
+// const bodydiode_conn = 0.6;
+// const curr_direction = 1;
+
+const UNIT_X = width * MULTIPLICATIVE_CONST;
+const UNIT_Y = 0.5 * height * MULTIPLICATIVE_CONST;
+
 const getElementTranslation = (positionAnchor) => {
   switch (positionAnchor) {
     case "B":
-      return { x: 100, y: 0 };
+      return { x: UNIT_X, y: 0 };
     case "C":
-      return { x: 0, y: 75 };
+      return { x: 0, y: UNIT_Y };
     case "E":
-      return { x: 0, y: -75 };
+      return { x: 0, y: -UNIT_Y };
     default:
       return { x: 0, y: 0 };
   }
@@ -93,11 +111,28 @@ const NMOS = ({
               transform: `translate(${deltaX}px , ${deltaY}px)`,
             }}
           >
-            <path d={`M -100 0 L -60 0`} />
-            <path d={`M -60 -27 L -60 27`} />
-            <path d={`M -50 -37 L -50 37`} />
-            <path d={`M 0 75 L 0 27 L -50 27`} />
-            <path d={`M 0 -75 L 0 -27 L -50 -27`} />
+            <circle cx={0} cy={0} r="5" />
+            <path
+              d={`M ${0} ${-UNIT_Y} 
+                  L ${0} ${-gate_height * UNIT_Y}
+                  L ${-base_width * UNIT_X} ${-gate_height * UNIT_Y}`}
+            />
+            <path
+              d={`M ${-base_width * UNIT_X} ${-base_height * UNIT_Y}
+                  L ${-base_width * UNIT_X} ${base_height * UNIT_Y}
+                  L ${-base_width * UNIT_X} ${gate_height * UNIT_Y}
+                  L ${0} ${gate_height * UNIT_Y}
+                  L ${0} ${UNIT_Y}`}
+            />
+            <path
+              d={`M ${-gate_width * UNIT_X} ${-gate_height * UNIT_Y}
+                  L ${-gate_width * UNIT_X} ${gate_height * UNIT_Y}`}
+              style={{ strokeWidth: 2 }}
+            />
+            <path
+              d={`M ${-gate_width * UNIT_X} 0
+                      L ${-UNIT_X} 0`}
+            />
           </g>
         </g>
       </g>
@@ -106,9 +141,9 @@ const NMOS = ({
 };
 
 export const drawer = (element, position) => {
-  return `\\draw (${(position.x / 120).toFixed(2)}, ${(
-    -position.y / 120
-  ).toFixed(2)}) node[nmos${
+  return `\\draw (${((position.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(
+    2
+  )}, ${((-position.y / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}) node[nmos${
     element.positionAnchor ? " ,anchor=" + element.positionAnchor : ""
   }${
     element.angle && element.angle !== 0 ? " ,rotate=" + element.angle : ""
