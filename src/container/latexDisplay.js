@@ -10,12 +10,8 @@ import Button from "@material-ui/core/Button";
 
 const copyCode = (code) => {
   navigator.clipboard.writeText(code).then(
-    function () {
-      alert("success");
-    },
-    function () {
-      alert("a pb occurred");
-    }
+    function () {},
+    function () {}
   );
 };
 
