@@ -41,14 +41,17 @@ const Lampe = ({
 
   const d = Math.sqrt((xFrom - xTo) ** 2 + (yFrom - yTo) ** 2);
   const ratio = 1 / 2 - R / d;
+  const angle = parseInt(
+    (180 * Math.atan2(yTo - yFrom, xTo - xFrom)) / Math.PI
+  );
   return (
     <g className={`component ${selected ? "red" : "black"}`}>
       <g {...props}>
         <g
           style={{
-            transform: `translate(${(xFrom + xTo) / 2}px, ${
+            transform: `translate(${(xFrom + xTo) / 2}px , ${
               (yFrom + yTo) / 2
-            }px)`,
+            }px) rotate(${angle}deg)`,
           }}
         >
           <circle cx={0} cy={0} r={R} />

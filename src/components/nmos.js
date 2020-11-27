@@ -111,7 +111,6 @@ const NMOS = ({
               transform: `translate(${deltaX}px , ${deltaY}px)`,
             }}
           >
-            <circle cx={0} cy={0} r="5" />
             <path
               d={`M ${0} ${-UNIT_Y} 
                   L ${0} ${-gate_height * UNIT_Y}
