@@ -704,8 +704,17 @@ function update(state = initial_state, action) {
         newPath: {
           ...state.newPath,
           isFromValidated: false,
-          from: { ...state.newPath.to },
-          to: { x: null, y: null, id: null },
+          from: {
+            ...state.newPath.to,
+            id: isAnchor(state, state.newPath.to.id)
+              ? state.newPath.to.id
+              : newId_anchor_to,
+          },
+          to: {
+            x: null,
+            y: null,
+            id: null,
+          },
         },
         pathComponents: {
           byId: {
