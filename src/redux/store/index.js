@@ -98,6 +98,9 @@ const isInRectangle = ({ x, y }, { x0, y0, x1, y1 }) => {
   );
 };
 
+const isAnchor = (state, id) =>
+  id !== null && state.anchors.allIds.includes(id);
+
 const initial_state = {
   mode: MODE_SELECT,
   selection: [],
@@ -645,7 +648,10 @@ function update(state = initial_state, action) {
 
       let newAnchors = { ...state.anchors };
 
-      if (state.newPath.from.id === null && !!state.newPath.to.id) {
+      if (
+        !isAnchor(state, state.newPath.from.id) &&
+        isAnchor(state, state.newPath.to.id)
+      ) {
         newAnchors = {
           byId: {
             ...state.anchors.byId,
@@ -657,7 +663,10 @@ function update(state = initial_state, action) {
           },
           allIds: [...state.anchors.allIds, newId_anchor_from],
         };
-      } else if (state.newPath.to.id === null && !!state.newPath.from.id) {
+      } else if (
+        !isAnchor(state, state.newPath.to.id) &&
+        isAnchor(state, state.newPath.from.id)
+      ) {
         newAnchors = {
           byId: {
             ...state.anchors.byId,
@@ -670,8 +679,8 @@ function update(state = initial_state, action) {
           allIds: [...state.anchors.allIds, newId_anchor_to],
         };
       } else if (
-        state.newPath.to.id === null &&
-        state.newPath.from.id === null
+        !isAnchor(state, state.newPath.from.id) &&
+        !isAnchor(state, state.newPath.to.id)
       ) {
         newAnchors = {
           byId: {
@@ -703,8 +712,12 @@ function update(state = initial_state, action) {
             ...state.pathComponents.byId,
             [newId_element]: {
               id: newId_element,
-              from: state.newPath.from.id || newId_anchor_from,
-              to: state.newPath.to.id || newId_anchor_to,
+              from: isAnchor(state, state.newPath.from.id)
+                ? state.newPath.from.id
+                : newId_anchor_from,
+              to: isAnchor(state, state.newPath.to.id)
+                ? state.newPath.to.id
+                : newId_anchor_to,
               type: state.newPath.elementType,
             },
           },
