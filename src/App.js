@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { MODE_SELECT } from "./redux/store";
+import { MODE_DRAG, MODE_SELECT } from "./redux/store";
 
 import Container from "./container/index.js";
 import LatexDisplay from "./container/latexDisplay";
@@ -174,7 +174,9 @@ function App({
       <Drawer
         anchor="right"
         variant="persistent"
-        open={mode === MODE_SELECT && selection.length === 1}
+        open={
+          (mode === MODE_SELECT || mode === MODE_DRAG) && selection.length === 1
+        }
       >
         <Toolbar />
         <ElementOptions />
