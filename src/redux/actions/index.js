@@ -120,3 +120,11 @@ export function stackSelectedAnchors(direction) {
     direction,
   };
 }
+
+export const DELETE_ELEMENT = "DELETE_ELEMENT";
+export function deleteElement(selection) {
+  return {
+    type: DELETE_ELEMENT,
+    selection,
+  };
+}

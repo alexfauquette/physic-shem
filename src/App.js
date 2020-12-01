@@ -28,6 +28,7 @@ import {
   startCreateNodeElement,
   splitAnchor,
   stackSelectedAnchors,
+  deleteElement,
 } from "./redux/actions";
 
 const drawerWidth = 180;
@@ -74,6 +75,9 @@ const mapDispatchToProps = (dispatch) => {
     splitAnchor: () => dispatch(splitAnchor()),
     stackSelectedAnchors: (direction) =>
       dispatch(stackSelectedAnchors(direction)),
+    deleteElement: (selection) => {
+      dispatch(deleteElement(selection));
+    },
   };
 };
 
@@ -85,6 +89,7 @@ function App({
   startCreateNodeElement,
   splitAnchor,
   stackSelectedAnchors,
+  deleteElement,
 }) {
   const classes = useStyles();
   const [showColde, setShowCode] = useState(false);
@@ -107,6 +112,9 @@ function App({
         case "s":
           splitAnchor();
           break;
+        case "Delete":
+          deleteElement(selection);
+          break;
         default:
           console.log(event.key);
           break;
@@ -117,7 +125,7 @@ function App({
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [splitAnchor, stackSelectedAnchors]);
+  }, [splitAnchor, stackSelectedAnchors, deleteElement, selection]);
 
   return (
     // TODO : Proper listen key event
