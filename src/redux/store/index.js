@@ -18,207 +18,28 @@ import {
   DELETE_ELEMENT,
 } from "../actions";
 
-import { getElementAnchors, isPath } from "../../components";
+import {
+  getAdhesivePoints,
+  componentUseThisAnchor,
+  replaceComponentAnchor,
+  isInRectangle,
+  isAnchor,
+} from "./utils";
 
 import { v4 as uuid } from "uuid";
 
-export const MODE_SELECT = "MODE_SELECT";
-export const MODE_DRAG = "MODE_DRAG";
-export const MODE_DELETE = "MODE_DELETE";
-export const MODE_SPLIT_ANCHOR = "MODE_SPLIT_ANCHOR";
-export const MODE_CREATE_PATH_ELEMENT = "MODE_CREATE_PATH_ELEMENT";
-export const MODE_CREATE_NODE_ELEMENT = "MODE_CREATE_NODE_ELEMENT";
-export const MODE_RECTANGLE_SELECTION = "MODE_RECTANGLE_SELECTION";
+import { initial_state } from "./debugInitialState";
+import startDragging from "./startDragging";
+import stopDragging from "./stopDragging";
+import deleteElement from "./delete";
 
-const getAdhesivePoints = (elementType) => {
-  const adhesivePoints = [];
-  if (isPath[elementType]) {
-    adhesivePoints.push({
-      type: "ANCHOR",
-      id: null,
-      dx: 0,
-      dy: 0,
-    });
-  } else {
-    adhesivePoints.push({
-      type: "ANCHOR",
-      id: null,
-      dx: 0,
-      dy: 0,
-    });
-    const anchors = getElementAnchors({
-      type: elementType,
-      fromCoords: { x: 0, y: 0 },
-      toCoords: { x: 0, y: 0 },
-      positionCoords: { x: 0, y: 0 },
-    });
-    anchors.forEach(({ x, y, name }) => {
-      adhesivePoints.push({
-        type: "COMPONENT", // TODO use constant file
-        name: name,
-        id: null,
-        dx: -x,
-        dy: -y,
-      });
-    });
-  }
-  return adhesivePoints;
-};
-
-const componentUseThisAnchor = (element, anchorId) => {
-  if (element.from && element.from === anchorId) {
-    return true;
-  }
-  if (element.to && element.to === anchorId) {
-    return true;
-  }
-  if (element.position && element.position === anchorId) {
-    return true;
-  }
-  return false;
-};
-
-const replaceComponentAnchor = (element, previousAnchorId, newAnchorId) => {
-  const newElement = { ...element };
-  if (element.from && element.from === previousAnchorId) {
-    newElement.from = newAnchorId;
-  }
-  if (element.to && element.to === previousAnchorId) {
-    newElement.to = newAnchorId;
-  }
-  if (element.position && element.position === previousAnchorId) {
-    newElement.position = newAnchorId;
-  }
-  return { ...newElement };
-};
-
-const isInRectangle = ({ x, y }, { x0, y0, x1, y1 }) => {
-  return (
-    Math.abs(x - x0) + Math.abs(x - x1) <= Math.abs(x1 - x0) &&
-    Math.abs(y - y0) + Math.abs(y - y1) <= Math.abs(y1 - y0)
-  );
-};
-
-const isAnchor = (state, id) =>
-  id !== null && state.anchors.allIds.includes(id);
-
-const initial_state = {
-  mode: MODE_SELECT,
-  selection: [],
-  links: [],
-  adhesivePoints: [],
-  scene: [
-    {
-      id: uuid(),
-      x: 50,
-      y: 50,
-      type: "lampe",
-    },
-    {
-      id: uuid(),
-      x: 150,
-      y: 150,
-      type: "lampe",
-    },
-    {
-      id: uuid(),
-      x: 50,
-      y: 150,
-      type: "resistance",
-    },
-  ],
-  pathComponents: {
-    byId: {
-      id1: {
-        id: "id1",
-        from: "anchor1",
-        to: "anchor3",
-        type: "pR",
-      },
-      id2: {
-        id: "id2",
-        from: "anchor2",
-        to: "anchor3",
-        type: "empty led",
-      },
-      id3: {
-        id: "id3",
-        from: "anchor4",
-        to: "anchor3",
-        type: "lampe",
-      },
-      id4: {
-        id: "id4",
-        from: "anchor5",
-        to: "anchor3",
-        type: "lampe",
-      },
-      id5: {
-        id: "id5",
-        position: "anchor6",
-        type: "nmos",
-        angle: -45,
-        positionAnchor: "B",
-      },
-      id6: {
-        id: "id6",
-        position: "anchor7",
-        type: "nmos",
-        angle: "",
-        positionAnchor: "",
-      },
-    },
-    allIds: ["id1", "id2", "id3", "id4", "id5", "id6"],
-  },
-  anchors: {
-    byId: {
-      anchor1: {
-        id: "anchor1",
-        x: 10,
-        y: 200,
-      },
-      anchor2: {
-        id: "anchor2",
-        x: 500,
-        y: 200,
-      },
-      anchor3: {
-        id: "anchor3",
-        x: 250,
-        y: 200,
-      },
-      anchor4: {
-        id: "anchor4",
-        x: 250,
-        y: 400,
-      },
-      anchor5: {
-        id: "anchor5",
-        x: 250,
-        y: 10,
-      },
-      anchor6: {
-        id: "anchor6",
-        x: 100,
-        y: 400,
-      },
-      anchor7: {
-        id: "anchor7",
-        x: 100,
-        y: 400,
-      },
-    },
-    allIds: [
-      "anchor1",
-      "anchor2",
-      "anchor3",
-      "anchor4",
-      "anchor5",
-      "anchor6",
-      "anchor7",
-    ],
-  },
-};
+import {
+  MODE_SELECT,
+  MODE_DRAG,
+  MODE_CREATE_PATH_ELEMENT,
+  MODE_CREATE_NODE_ELEMENT,
+  MODE_RECTANGLE_SELECTION,
+} from "./interactionModes";
 
 function update(state = initial_state, action) {
   switch (action.type) {
@@ -253,195 +74,9 @@ function update(state = initial_state, action) {
         mode: MODE_SELECT,
       };
     case START_DRAGGING:
-      const anchorsToMove = [];
-      const adhesivePoints = [];
-
-      state.selection.forEach((selectedId) => {
-        if (state.anchors.allIds.includes(selectedId)) {
-          if (
-            adhesivePoints.findIndex((elem) => elem.id === selectedId) === -1
-          ) {
-            adhesivePoints.push({
-              type: "ANCHOR",
-              id: selectedId,
-              dx: action.x - state.anchors.byId[selectedId].x,
-              dy: action.y - state.anchors.byId[selectedId].y,
-            });
-          }
-        } else if (state.pathComponents.allIds.includes(selectedId)) {
-          const anchors = getElementAnchors({
-            ...state.pathComponents.byId[selectedId],
-            fromCoords:
-              state.pathComponents.byId[selectedId].from &&
-              state.anchors.byId[state.pathComponents.byId[selectedId].from],
-            toCoords:
-              state.pathComponents.byId[selectedId].to &&
-              state.anchors.byId[state.pathComponents.byId[selectedId].to],
-            positionCoords:
-              state.pathComponents.byId[selectedId].position &&
-              state.anchors.byId[
-                state.pathComponents.byId[selectedId].position
-              ],
-          });
-          anchors.forEach(({ x, y, name }) => {
-            if (
-              !(
-                state.pathComponents.byId[selectedId].positionAnchor &&
-                name === state.pathComponents.byId[selectedId].positionAnchor
-              )
-            ) {
-              // if the anchor is not the one giving the position
-              adhesivePoints.push({
-                type: "COMPONENT", // TODO use constant file
-                name: name,
-                id: selectedId,
-                dx: action.x - x,
-                dy: action.y - y,
-              });
-            }
-          });
-          if (
-            state.pathComponents.byId[selectedId].from &&
-            adhesivePoints.findIndex(
-              (elem) => elem.id === state.pathComponents.byId[selectedId].from
-            ) === -1
-          ) {
-            //the from anchor is new
-            const fromId = state.pathComponents.byId[selectedId].from;
-            adhesivePoints.push({
-              type: "ANCHOR", // TODO use constant file
-              id: fromId,
-              dx: action.x - state.anchors.byId[fromId].x,
-              dy: action.y - state.anchors.byId[fromId].y,
-            });
-          }
-          if (
-            state.pathComponents.byId[selectedId].to &&
-            adhesivePoints.findIndex(
-              (elem) => elem.id === state.pathComponents.byId[selectedId].to
-            ) === -1
-          ) {
-            //the to anchor is new
-            const toId = state.pathComponents.byId[selectedId].to;
-            adhesivePoints.push({
-              type: "ANCHOR",
-              id: toId,
-              dx: action.x - state.anchors.byId[toId].x,
-              dy: action.y - state.anchors.byId[toId].y,
-            });
-          }
-          if (
-            state.pathComponents.byId[selectedId].position &&
-            adhesivePoints.findIndex(
-              (elem) =>
-                elem.id === state.pathComponents.byId[selectedId].position
-            ) === -1
-          ) {
-            //the position anchor is new
-            const positionId = state.pathComponents.byId[selectedId].position;
-            adhesivePoints.push({
-              type: "ANCHOR",
-              id: positionId,
-              dx: action.x - state.anchors.byId[positionId].x,
-              dy: action.y - state.anchors.byId[positionId].y,
-            });
-          }
-        }
-      });
-
-      state.selection.forEach((selectedId) => {
-        if (state.anchors.allIds.includes(selectedId)) {
-          if (!anchorsToMove.includes(selectedId)) {
-            anchorsToMove.push(selectedId);
-          }
-        } else if (state.pathComponents.allIds.includes(selectedId)) {
-          if (
-            state.pathComponents.byId[selectedId].from &&
-            !anchorsToMove.includes(state.pathComponents.byId[selectedId].from)
-          ) {
-            anchorsToMove.push(state.pathComponents.byId[selectedId].from);
-          }
-          if (
-            state.pathComponents.byId[selectedId].to &&
-            !anchorsToMove.includes(state.pathComponents.byId[selectedId].to)
-          ) {
-            anchorsToMove.push(state.pathComponents.byId[selectedId].to);
-          }
-          if (
-            state.pathComponents.byId[selectedId].position &&
-            !anchorsToMove.includes(
-              state.pathComponents.byId[selectedId].position
-            )
-          ) {
-            anchorsToMove.push(state.pathComponents.byId[selectedId].position);
-          }
-        }
-      });
-      return {
-        ...state,
-        mode: MODE_DRAG,
-        anchorsToMove: [...anchorsToMove],
-        adhesivePoints: [...adhesivePoints],
-        originalPosition: { x: action.x, y: action.y },
-        alreadyMoved: { x: 0, y: 0 },
-      };
+      return startDragging(state, action);
     case STOP_DRAGGING:
-      if (
-        action.attractor &&
-        action.attracted &&
-        action.attracted.type === "ANCHOR" &&
-        action.attractor.type === "ANCHOR"
-      ) {
-        // we need to fusion those anchors
-        const anchorToRemoveID = action.attracted.id;
-        const anchorToUseId = action.attractor.id;
-
-        // remove anchor
-        const anchorToRemoveIDIndex = state.anchors.allIds.findIndex(
-          (id) => id === anchorToRemoveID
-        );
-        const {
-          [anchorToRemoveID]: anchorToRemove,
-          ...remainingAnchors
-        } = state.anchors.byId;
-
-        //const update elements
-        const newByIDElements = {};
-        state.pathComponents.allIds.forEach((id) => {
-          newByIDElements[id] = replaceComponentAnchor(
-            state.pathComponents.byId[id],
-            anchorToRemoveID,
-            anchorToUseId
-          );
-        });
-
-        return {
-          ...state,
-          anchors: {
-            byId: { ...remainingAnchors },
-            allIds: [
-              ...state.anchors.allIds.slice(0, anchorToRemoveIDIndex),
-              ...state.anchors.allIds.slice(anchorToRemoveIDIndex + 1),
-            ],
-          },
-          pathComponents: {
-            ...state.pathComponents,
-            byId: { ...newByIDElements },
-          },
-          mode: MODE_SELECT,
-          anchorsToMove: [],
-          originalPosition: {},
-          alreadyMoved: {},
-        };
-      }
-
-      return {
-        ...state,
-        mode: MODE_SELECT,
-        anchorsToMove: [],
-        originalPosition: {},
-        alreadyMoved: {},
-      };
+      return stopDragging(state, action);
 
     case UPDATE_POSITION:
       const { x, y, id, shiftPress } = action;
@@ -812,7 +447,6 @@ function update(state = initial_state, action) {
       const anchorsSelected = state.selection.filter(
         (id) => id in state.anchors.byId
       );
-      console.log(anchorsSelected);
       if (
         anchorsSelected.length <= 1 ||
         !["U", "D", "L", "R"].includes(action.direction)
@@ -861,55 +495,7 @@ function update(state = initial_state, action) {
         };
       }
     case DELETE_ELEMENT:
-      const selection = action.selection;
-      if (
-        selection.length === 1 &&
-        state.pathComponents.allIds.includes(selection[0])
-      ) {
-        const componentId = selection[0];
-
-        const anchorToChange = ["from", "to", "position"]
-          .map((arg) => state.pathComponents.byId[componentId][arg])
-          .filter((id) => !!id);
-
-        const anchorToRemove = anchorToChange.filter((anchorId) => {
-          return (
-            state.pathComponents.allIds.filter((elementId) =>
-              componentUseThisAnchor(
-                state.pathComponents.byId[elementId],
-                anchorId
-              )
-            ).length == 1
-          );
-        });
-
-        const newAnchors = { ...state.anchors.byId };
-        anchorToRemove.forEach((id) => delete newAnchors[id]);
-
-        const {
-          [componentId]: toRemove,
-          ...newPathComponents
-        } = state.pathComponents.byId;
-        return {
-          ...state,
-          pathComponents: {
-            allIds: [
-              ...state.pathComponents.allIds.filter((id) => id !== componentId),
-            ],
-            byId: { ...newPathComponents },
-          },
-          anchors: {
-            byId: { ...newAnchors },
-            allIds: [
-              ...state.anchors.allIds.filter(
-                (id) => !anchorToRemove.includes(id)
-              ),
-            ],
-          },
-        };
-      } else {
-        return state;
-      }
+      return deleteElement(state, action);
     default:
       return state;
   }

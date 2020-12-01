@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 
 import { updatePosition, stopDragging } from "../redux/actions";
-import { MODE_DRAG } from "../redux/store";
+import { MODE_DRAG } from "../redux/store/interactionModes";
 const mapDispatchToProps = (dispatch, { attractor, attracted }) => {
   return {
     updatePosition: (x, y) =>

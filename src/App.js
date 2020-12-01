@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { MODE_DRAG, MODE_SELECT } from "./redux/store";
+import { MODE_DRAG, MODE_SELECT } from "./redux/store/interactionModes";
 
 import Container from "./container/index.js";
 import LatexDisplay from "./container/latexDisplay";

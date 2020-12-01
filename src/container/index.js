@@ -17,7 +17,7 @@ import {
   MODE_CREATE_NODE_ELEMENT,
   MODE_SELECT,
   MODE_RECTANGLE_SELECTION,
-} from "../redux/store";
+} from "../redux/store/interactionModes";
 
 import Components from "./components";
 import Anchors from "./anchors";
@@ -121,7 +121,7 @@ const Container = ({
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 1000 600"
-        style={{ width: 1000, height: 600 }}
+        style={{ width: 1000, height: 600, background: "lightgray" }}
         onMouseMove={
           mode === MODE_DRAG ||
           mode === MODE_CREATE_PATH_ELEMENT ||

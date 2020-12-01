@@ -2,7 +2,7 @@ import React from "react";
 
 import "./style.scss";
 import { connect } from "react-redux";
-import { MODE_SELECT } from "../redux/store";
+import { MODE_SELECT } from "../redux/store/interactionModes";
 import { toggleSelection, startDragging } from "../redux/actions";
 
 const mapDispatchToProps = (dispatch, { svgRef }) => {
