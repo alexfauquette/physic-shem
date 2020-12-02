@@ -28,8 +28,12 @@ import {
 import { v4 as uuid } from "uuid";
 
 import { initial_state } from "./debugInitialState";
-import startDragging from "./startDragging";
-import stopDragging from "./stopDragging";
+import {
+  startDragging,
+  stopDragging,
+  updatePosition as draggingUpdatePosition,
+} from "./dragging";
+
 import deleteElement from "./delete";
 import {
   startCreatePathElement,
@@ -87,43 +91,7 @@ function update(state = initial_state, action) {
       const { x, y, id, shiftPress } = action;
       switch (state.mode) {
         case MODE_DRAG:
-          let newMoveX, newMoveY;
-          if (shiftPress) {
-            if (
-              Math.abs(x - state.originalPosition.x) >
-              Math.abs(y - state.originalPosition.y)
-            ) {
-              newMoveX = x - state.originalPosition.x;
-              newMoveY = 0;
-            } else {
-              newMoveX = 0;
-              newMoveY = y - state.originalPosition.y;
-            }
-          } else {
-            newMoveX = x - state.originalPosition.x;
-            newMoveY = y - state.originalPosition.y;
-          }
-
-          const anchorById = state.anchors.byId;
-          state.anchorsToMove.forEach((anchorId) => {
-            anchorById[anchorId] = {
-              ...anchorById[anchorId],
-              x: anchorById[anchorId].x + newMoveX - state.alreadyMoved.x,
-              y: anchorById[anchorId].y + newMoveY - state.alreadyMoved.y,
-            };
-          });
-
-          return {
-            ...state,
-            anchors: {
-              ...state.anchors,
-              byId: { ...anchorById },
-            },
-            alreadyMoved: {
-              x: newMoveX,
-              y: newMoveY,
-            },
-          };
+          return draggingUpdatePosition(state, action);
 
         case MODE_CREATE_PATH_ELEMENT:
           if (state.newPath.isFromValidated) {

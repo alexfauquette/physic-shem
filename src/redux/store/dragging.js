@@ -1,8 +1,10 @@
 import { getElementAnchors } from "../../components";
 
-import { MODE_DRAG } from "./interactionModes";
+import { replaceComponentAnchor } from "./utils";
 
-const startDragging = (state, action) => {
+import { MODE_DRAG, MODE_SELECT } from "./interactionModes";
+
+export const startDragging = (state, action) => {
   const anchorsToMove = [];
   const adhesivePoints = [];
 
@@ -130,4 +132,102 @@ const startDragging = (state, action) => {
   };
 };
 
-export default startDragging;
+export const stopDragging = (state, action) => {
+  if (
+    action.attractor &&
+    action.attracted &&
+    action.attracted.type === "ANCHOR" &&
+    action.attractor.type === "ANCHOR"
+  ) {
+    // we need to fusion those anchors
+    const anchorToRemoveID = action.attracted.id;
+    const anchorToUseId = action.attractor.id;
+
+    // remove anchor
+    const anchorToRemoveIDIndex = state.anchors.allIds.findIndex(
+      (id) => id === anchorToRemoveID
+    );
+    const {
+      [anchorToRemoveID]: anchorToRemove,
+      ...remainingAnchors
+    } = state.anchors.byId;
+
+    //const update elements
+    const newByIDElements = {};
+    state.pathComponents.allIds.forEach((id) => {
+      newByIDElements[id] = replaceComponentAnchor(
+        state.pathComponents.byId[id],
+        anchorToRemoveID,
+        anchorToUseId
+      );
+    });
+
+    return {
+      ...state,
+      anchors: {
+        byId: { ...remainingAnchors },
+        allIds: [
+          ...state.anchors.allIds.slice(0, anchorToRemoveIDIndex),
+          ...state.anchors.allIds.slice(anchorToRemoveIDIndex + 1),
+        ],
+      },
+      pathComponents: {
+        ...state.pathComponents,
+        byId: { ...newByIDElements },
+      },
+      mode: MODE_SELECT,
+      anchorsToMove: [],
+      originalPosition: {},
+      alreadyMoved: {},
+    };
+  }
+
+  return {
+    ...state,
+    mode: MODE_SELECT,
+    anchorsToMove: [],
+    originalPosition: {},
+    alreadyMoved: {},
+  };
+};
+
+export const updatePosition = (state, action) => {
+  const { x, y, shiftPress } = action;
+  const { x: originalX, y: originalY } = state.originalPosition;
+
+  let newMoveX, newMoveY;
+  // if shift is pressed only allow to move along x or y axis
+  if (shiftPress) {
+    if (Math.abs(x - originalX) > Math.abs(y - originalY)) {
+      newMoveX = x - originalX;
+      newMoveY = 0;
+    } else {
+      newMoveX = 0;
+      newMoveY = y - originalY;
+    }
+  } else {
+    newMoveX = x - originalX;
+    newMoveY = y - originalY;
+  }
+
+  const anchorById = state.anchors.byId;
+  state.anchorsToMove.forEach((anchorId) => {
+    anchorById[anchorId] = {
+      ...anchorById[anchorId],
+      x: anchorById[anchorId].x + newMoveX - state.alreadyMoved.x,
+      y: anchorById[anchorId].y + newMoveY - state.alreadyMoved.y,
+    };
+  });
+
+  return {
+    ...state,
+    anchors: {
+      ...state.anchors,
+      byId: { ...anchorById },
+    },
+    alreadyMoved: {
+      x: newMoveX,
+      y: newMoveY,
+    },
+  };
+};
