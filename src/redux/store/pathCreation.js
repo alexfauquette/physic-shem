@@ -141,3 +141,25 @@ export const savePathElement = (state, action) => {
     anchors: { ...newAnchors },
   };
 };
+
+export const updatePosition = (state, action) => {
+  const { x, y, id } = action;
+  if (state.newPath.isFromValidated) {
+    return {
+      ...state,
+      newPath: {
+        ...state.newPath,
+        to: { x: x, y: y, id: id },
+        movedAfterFromCreation: true,
+      },
+    };
+  } else {
+    return {
+      ...state,
+      newPath: {
+        ...state.newPath,
+        from: { x: x, y: y, id: id },
+      },
+    };
+  }
+};

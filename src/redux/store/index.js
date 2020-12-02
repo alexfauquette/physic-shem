@@ -19,15 +19,15 @@ import {
 } from "../actions";
 
 import {
-  getAdhesivePoints,
-  componentUseThisAnchor,
-  replaceComponentAnchor,
-  isInRectangle,
-} from "./utils";
-
-import { v4 as uuid } from "uuid";
+  MODE_SELECT,
+  MODE_DRAG,
+  MODE_CREATE_PATH_ELEMENT,
+  MODE_CREATE_NODE_ELEMENT,
+  MODE_RECTANGLE_SELECTION,
+} from "./interactionModes";
 
 import { initial_state } from "./debugInitialState";
+
 import {
   startDragging,
   stopDragging,
@@ -40,15 +40,22 @@ import {
   validateFirstStepPathElement,
   invalidateFirstStepPathElement,
   savePathElement,
+  updatePosition as pathCreationUpdatePosition,
 } from "./pathCreation";
 
 import {
-  MODE_SELECT,
-  MODE_DRAG,
-  MODE_CREATE_PATH_ELEMENT,
-  MODE_CREATE_NODE_ELEMENT,
-  MODE_RECTANGLE_SELECTION,
-} from "./interactionModes";
+  stopRectangleSelection,
+  startRectangleSelection,
+  updatePosition as rectangleSelectionUpdatePosition,
+} from "./rectangleSelection";
+
+import {
+  startNodeCreation,
+  saveNodeCreation,
+  updatePosition as nodeCreationUpdatePosition,
+} from "./nodeCreation";
+
+import { stackAnchors, splitAnchor } from "./anchorHelper";
 
 function update(state = initial_state, action) {
   switch (action.type) {
@@ -82,64 +89,27 @@ function update(state = initial_state, action) {
         adhesivePoints: [],
         mode: MODE_SELECT,
       };
+
     case START_DRAGGING:
       return startDragging(state, action);
+
     case STOP_DRAGGING:
       return stopDragging(state, action);
 
     case UPDATE_POSITION:
-      const { x, y, id, shiftPress } = action;
       switch (state.mode) {
         case MODE_DRAG:
           return draggingUpdatePosition(state, action);
 
         case MODE_CREATE_PATH_ELEMENT:
-          if (state.newPath.isFromValidated) {
-            return {
-              ...state,
-              newPath: {
-                ...state.newPath,
-                to: { x: action.x, y: action.y, id: action.id },
-                movedAfterFromCreation: true,
-              },
-            };
-          } else {
-            return {
-              ...state,
-              newPath: {
-                ...state.newPath,
-                from: { x: action.x, y: action.y, id: action.id },
-              },
-            };
-          }
-        case MODE_CREATE_NODE_ELEMENT:
-          return {
-            ...state,
-            newNode: {
-              ...state.newNode,
-              position: { x: action.x, y: action.y, id: action.id },
-            },
-          };
-        case MODE_RECTANGLE_SELECTION:
-          const newRectangle = {
-            ...state.rectangleSelection,
-            x1: x,
-            y1: y,
-          };
+          return pathCreationUpdatePosition(state, action);
 
-          return {
-            ...state,
-            selection: [
-              ...state.anchors.allIds.filter((id) =>
-                isInRectangle(state.anchors.byId[id], newRectangle)
-              ),
-            ],
-            rectangleSelection: {
-              ...state.rectangleSelection,
-              x1: x,
-              y1: y,
-            },
-          };
+        case MODE_CREATE_NODE_ELEMENT:
+          return nodeCreationUpdatePosition(state, action);
+
+        case MODE_RECTANGLE_SELECTION:
+          return rectangleSelectionUpdatePosition(state, action);
+
         default:
           return state;
       }
@@ -148,70 +118,11 @@ function update(state = initial_state, action) {
       return startCreatePathElement(state, action);
 
     case START_CREATE_NODE_ELEMENT:
-      return {
-        ...state,
-        selection: [],
-        adhesivePoints: [...getAdhesivePoints(action.elementType)],
-        mode: MODE_CREATE_NODE_ELEMENT,
-        newNode: {
-          elementType: action.elementType,
-          position: { x: null, y: null, id: null },
-        },
-      };
+      return startNodeCreation(state, action);
+
     case ELEMENT_CREATION_NEXT_STEP:
-      if (
-        state.mode === MODE_CREATE_NODE_ELEMENT &&
-        state.newNode.position.x !== null &&
-        state.newNode.position.y !== null
-      ) {
-        const newId_element = uuid();
-        const newId_anchor = uuid();
+      return saveNodeCreation(state, action);
 
-        let newAnchors = state.anchors;
-        if (
-          state.newNode.position.id === null ||
-          !state.anchors.allIds.includes(state.newNode.position.id)
-        ) {
-          newAnchors = {
-            byId: {
-              ...state.anchors.byId,
-              [newId_anchor]: {
-                id: newId_anchor,
-                x: state.newNode.position.x,
-                y: state.newNode.position.y,
-              },
-            },
-            allIds: [...state.anchors.allIds, newId_anchor],
-          };
-        }
-
-        const positionId =
-          state.newNode.position.id &&
-          state.anchors.allIds.includes(state.newNode.position.id)
-            ? state.newNode.position.id
-            : newId_anchor;
-
-        return {
-          ...state,
-          newNode: {
-            ...state.newNode,
-            position: { x: null, y: null, id: null },
-          },
-          pathComponents: {
-            byId: {
-              ...state.pathComponents.byId,
-              [newId_element]: {
-                id: newId_element,
-                position: positionId,
-                type: state.newNode.elementType,
-              },
-            },
-            allIds: [...state.pathComponents.allIds, newId_element],
-          },
-          anchors: { ...newAnchors },
-        };
-      }
-      return state;
     case VALIDATE_FIRST_STEP_PATH_ELEMENT_CREATION:
       return validateFirstStepPathElement(state, action);
 
@@ -222,131 +133,20 @@ function update(state = initial_state, action) {
       return savePathElement(state, action);
 
     case SPLIT_ANCHOR:
-      let anchorId = action.anchorId;
-      if (
-        !anchorId &&
-        state.selection.length === 1 &&
-        state.anchors.allIds.includes(state.selection[0])
-      ) {
-        anchorId = state.selection[0];
-      }
-      if (anchorId && state.anchors.allIds.includes(anchorId)) {
-        const componentsToChange = state.pathComponents.allIds.filter((id) =>
-          componentUseThisAnchor(state.pathComponents.byId[id], anchorId)
-        );
-        if (componentsToChange.length <= 1) {
-          return state;
-        }
+      return splitAnchor(state, action);
 
-        const newAnchors = state.anchors;
-        const newComponents = state.pathComponents.byId;
-
-        componentsToChange.slice(1).forEach((componentId) => {
-          const newAnchorId = uuid();
-
-          newComponents[componentId] = replaceComponentAnchor(
-            state.pathComponents.byId[componentId],
-            anchorId,
-            newAnchorId
-          );
-
-          newAnchors.allIds = [newAnchorId, ...newAnchors.allIds];
-          newAnchors.byId = {
-            ...newAnchors.byId,
-            [newAnchorId]: { ...newAnchors.byId[anchorId] },
-          };
-        });
-
-        return {
-          ...state,
-          pathComponents: {
-            ...state.pathComponents,
-            byId: { ...newComponents },
-          },
-          anchors: {
-            allIds: [...newAnchors.allIds],
-            byId: { ...newAnchors.byId },
-          },
-        };
-      }
-      return state;
     case START_RECTANGLE_SELECTION:
-      return {
-        ...state,
-        mode: MODE_RECTANGLE_SELECTION,
-        rectangleSelection: {
-          x0: action.x,
-          y0: action.y,
-          x1: action.x,
-          y1: action.y,
-        },
-      };
+      return startRectangleSelection(state, action);
+
     case STOP_RECTANGLE_SELECTION:
-      // add equality verification, if rectangle has no area it's probably a single click
-      // so we reset the selection
-      return {
-        ...state,
-        mode: MODE_SELECT,
-        rectangleSelection: {},
-        selection:
-          state.rectangleSelection.x0 === state.rectangleSelection.x1 ||
-          state.rectangleSelection.y0 === state.rectangleSelection.y1
-            ? []
-            : [...state.selection],
-      };
+      return stopRectangleSelection(state, action);
+
     case STACK_SELECTED_ANCHORS:
-      const anchorsSelected = state.selection.filter(
-        (id) => id in state.anchors.byId
-      );
-      if (
-        anchorsSelected.length <= 1 ||
-        !["U", "D", "L", "R"].includes(action.direction)
-      ) {
-        return state;
-      } else {
-        const newPosition = {};
+      return stackAnchors(state, action);
 
-        anchorsSelected.forEach((id, index) => {
-          const anchor = state.anchors.byId[id];
-
-          switch (action.direction) {
-            case "U":
-              newPosition.y =
-                index === 0 ? anchor.y : Math.min(newPosition.y, anchor.y);
-              break;
-            case "D":
-              newPosition.y =
-                index === 0 ? anchor.y : Math.max(newPosition.y, anchor.y);
-              break;
-            case "L":
-              newPosition.x =
-                index === 0 ? anchor.x : Math.min(newPosition.x, anchor.x);
-              break;
-            case "R":
-              newPosition.x =
-                index === 0 ? anchor.x : Math.max(newPosition.x, anchor.x);
-              break;
-            default:
-              break;
-          }
-        });
-
-        anchorsSelected.forEach((id) => {
-          state.anchors.byId[id] = {
-            ...state.anchors.byId[id],
-            ...newPosition,
-          };
-        });
-        return {
-          ...state,
-          anchors: {
-            byId: { ...state.anchors.byId },
-            allIds: state.anchors.allIds,
-          },
-        };
-      }
     case DELETE_ELEMENT:
       return deleteElement(state, action);
+
     default:
       return state;
   }
