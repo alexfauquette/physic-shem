@@ -1,6 +1,6 @@
 import { MODE_CREATE_NODE_ELEMENT } from "./interactionModes";
 
-import { getAdhesivePoints } from "./utils";
+import { getAdhesivePoints, isAnchor } from "./utils";
 
 import { v4 as uuid } from "uuid";
 
@@ -27,6 +27,7 @@ export const startNodeCreation = (state, action) => {
     },
   };
 };
+
 export const saveNodeCreation = (state, action) => {
   if (
     state.mode === MODE_CREATE_NODE_ELEMENT &&
@@ -34,31 +35,25 @@ export const saveNodeCreation = (state, action) => {
     state.newNode.position.y !== null
   ) {
     const newId_element = uuid();
-    const newId_anchor = uuid();
 
-    let newAnchors = state.anchors;
-    if (
-      state.newNode.position.id === null ||
-      !state.anchors.allIds.includes(state.newNode.position.id)
-    ) {
-      newAnchors = {
-        byId: {
-          ...state.anchors.byId,
-          [newId_anchor]: {
-            id: newId_anchor,
-            x: state.newNode.position.x,
-            y: state.newNode.position.y,
-          },
+    const newAnchors = { ...state.anchors };
+
+    const positionId = isAnchor(state, state.newNode.position.id)
+      ? state.newNode.position.id
+      : uuid();
+
+    if (!isAnchor(state, state.newNode.position.id)) {
+      // add the new anchor if necessary
+      newAnchors.byId = {
+        ...state.anchors.byId,
+        [positionId]: {
+          id: positionId,
+          x: state.newNode.position.x,
+          y: state.newNode.position.y,
         },
-        allIds: [...state.anchors.allIds, newId_anchor],
       };
+      newAnchors.allIds = [...state.anchors.allIds, positionId];
     }
-
-    const positionId =
-      state.newNode.position.id &&
-      state.anchors.allIds.includes(state.newNode.position.id)
-        ? state.newNode.position.id
-        : newId_anchor;
 
     return {
       ...state,

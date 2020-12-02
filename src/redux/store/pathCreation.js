@@ -49,62 +49,43 @@ export const invalidateFirstStepPathElement = (state, action) => {
 
 export const savePathElement = (state, action) => {
   const newId_element = uuid();
-  const newId_anchor_from = uuid();
-  const newId_anchor_to = uuid();
+
+  const fromAnchor = isAnchor(state, state.newPath.from.id)
+    ? state.newPath.from.id
+    : uuid();
+  const toAnchor = isAnchor(state, state.newPath.to.id)
+    ? state.newPath.to.id
+    : uuid();
 
   let newAnchors = { ...state.anchors };
 
-  if (
-    !isAnchor(state, state.newPath.from.id) &&
-    isAnchor(state, state.newPath.to.id)
-  ) {
+  if (!isAnchor(state, state.newPath.from.id)) {
     newAnchors = {
       byId: {
-        ...state.anchors.byId,
-        [newId_anchor_from]: {
-          id: newId_anchor_from,
+        ...newAnchors.byId,
+        [fromAnchor]: {
+          id: fromAnchor,
           x: state.newPath.from.x,
           y: state.newPath.from.y,
         },
       },
-      allIds: [...state.anchors.allIds, newId_anchor_from],
-    };
-  } else if (
-    !isAnchor(state, state.newPath.to.id) &&
-    isAnchor(state, state.newPath.from.id)
-  ) {
-    newAnchors = {
-      byId: {
-        ...state.anchors.byId,
-        [newId_anchor_to]: {
-          id: newId_anchor_to,
-          x: state.newPath.to.x,
-          y: state.newPath.to.y,
-        },
-      },
-      allIds: [...state.anchors.allIds, newId_anchor_to],
-    };
-  } else if (
-    !isAnchor(state, state.newPath.from.id) &&
-    !isAnchor(state, state.newPath.to.id)
-  ) {
-    newAnchors = {
-      byId: {
-        ...state.anchors.byId,
-        [newId_anchor_from]: {
-          id: newId_anchor_from,
-          x: state.newPath.from.x,
-          y: state.newPath.from.y,
-        },
-        [newId_anchor_to]: {
-          id: newId_anchor_to,
-          x: state.newPath.to.x,
-          y: state.newPath.to.y,
-        },
-      },
-      allIds: [...state.anchors.allIds, newId_anchor_from, newId_anchor_to],
+      allIds: [...newAnchors.allIds, fromAnchor],
     };
   }
+  if (!isAnchor(state, state.newPath.to.id)) {
+    newAnchors = {
+      byId: {
+        ...newAnchors.byId,
+        [toAnchor]: {
+          id: toAnchor,
+          x: state.newPath.to.x,
+          y: state.newPath.to.y,
+        },
+      },
+      allIds: [...newAnchors.allIds, toAnchor],
+    };
+  }
+
   return {
     ...state,
     newPath: {
@@ -112,9 +93,7 @@ export const savePathElement = (state, action) => {
       isFromValidated: false,
       from: {
         ...state.newPath.to,
-        id: isAnchor(state, state.newPath.to.id)
-          ? state.newPath.to.id
-          : newId_anchor_to,
+        id: toAnchor,
       },
       to: {
         x: null,
@@ -127,12 +106,8 @@ export const savePathElement = (state, action) => {
         ...state.pathComponents.byId,
         [newId_element]: {
           id: newId_element,
-          from: isAnchor(state, state.newPath.from.id)
-            ? state.newPath.from.id
-            : newId_anchor_from,
-          to: isAnchor(state, state.newPath.to.id)
-            ? state.newPath.to.id
-            : newId_anchor_to,
+          from: fromAnchor,
+          to: toAnchor,
           type: state.newPath.elementType,
         },
       },
