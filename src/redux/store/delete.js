@@ -41,6 +41,12 @@ const deleteElement = (state, action) => {
           ...state.anchors.allIds.filter((id) => !anchorToRemove.includes(id)),
         ],
       },
+      weakLinks: [
+        ...state.weakLinks.filter(
+          ({ anchorId, nodeId, name }) =>
+            nodeId !== componentId && !anchorToRemove.includes(anchorId)
+        ),
+      ],
     };
   } else {
     return state;
