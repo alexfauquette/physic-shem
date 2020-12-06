@@ -3,8 +3,8 @@ import { MODE_SELECT } from "./interactionModes";
 export const initial_state = {
   mode: MODE_SELECT,
   selection: [],
-  links: [],
   adhesivePoints: [],
+  weakLinks: [],
   pathComponents: {
     byId: {
       id1: {

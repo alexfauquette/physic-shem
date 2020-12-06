@@ -98,7 +98,11 @@ export const startDragging = (state, action) => {
     }
   });
 
-  state.selection.forEach((selectedId) => {
+  const pile = [...state.selection];
+  const nodeSeen = [];
+  while (pile.length > 0) {
+    const selectedId = pile.pop();
+
     if (state.anchors.allIds.includes(selectedId)) {
       if (!anchorsToMove.includes(selectedId)) {
         anchorsToMove.push(selectedId);
@@ -116,14 +120,26 @@ export const startDragging = (state, action) => {
       ) {
         anchorsToMove.push(state.pathComponents.byId[selectedId].to);
       }
-      if (
-        state.pathComponents.byId[selectedId].position &&
-        !anchorsToMove.includes(state.pathComponents.byId[selectedId].position)
-      ) {
-        anchorsToMove.push(state.pathComponents.byId[selectedId].position);
+      if (state.pathComponents.byId[selectedId].position) {
+        if (
+          !anchorsToMove.includes(
+            state.pathComponents.byId[selectedId].position
+          )
+        ) {
+          anchorsToMove.push(state.pathComponents.byId[selectedId].position);
+        }
+        if (!nodeSeen.includes(selectedId)) {
+          nodeSeen.push(selectedId);
+          state.weakLinks.forEach(({ anchorId, nodeId }) => {
+            if (nodeId === selectedId) {
+              anchorsToMove.push(anchorId);
+            }
+          });
+        }
       }
     }
-  });
+  }
+
   return {
     ...state,
     mode: MODE_DRAG,
@@ -131,6 +147,15 @@ export const startDragging = (state, action) => {
     adhesivePoints: [...adhesivePoints],
     originalPosition: { x: action.x, y: action.y },
     alreadyMoved: { x: 0, y: 0 },
+    weakLinksToRemove: [
+      ...state.weakLinks
+        .filter(
+          ({ anchorId, nodeId }) =>
+            anchorsToMove.includes(anchorId) &&
+            !anchorsToMove.includes(state.pathComponents.byId[nodeId].position)
+        )
+        .map(({ anchorId, nodeId }) => anchorId + "-" + nodeId),
+    ],
   };
 };
 
@@ -181,6 +206,49 @@ export const stopDragging = (state, action) => {
       anchorsToMove: [],
       originalPosition: {},
       alreadyMoved: {},
+      weakLinksToRemove: [],
+      weakLinks: [
+        ...state.weakLinks.filter(
+          ({ anchorId, nodeId }) =>
+            !state.weakLinksToRemove.includes(anchorId + "-" + nodeId)
+        ),
+      ],
+    };
+  }
+
+  if (
+    action.attractor &&
+    action.attracted &&
+    ((action.attracted.type === "NODE" && action.attractor.type === "ANCHOR") ||
+      (action.attracted.type === "ANCHOR" && action.attractor.type === "NODE"))
+  ) {
+    const nodeId =
+      action.attracted.type === "NODE"
+        ? action.attracted.id
+        : action.attractor.id;
+    const anchorId =
+      action.attracted.type === "ANCHOR"
+        ? action.attracted.id
+        : action.attractor.id;
+    const name =
+      action.attracted.type === "NODE"
+        ? action.attracted.name
+        : action.attractor.name;
+
+    return {
+      ...state,
+      mode: MODE_SELECT,
+      anchorsToMove: [],
+      originalPosition: {},
+      alreadyMoved: {},
+      weakLinksToRemove: [],
+      weakLinks: [
+        ...state.weakLinks.filter(
+          ({ anchorId, nodeId }) =>
+            !state.weakLinksToRemove.includes(anchorId + "-" + nodeId)
+        ),
+        { anchorId, nodeId, name },
+      ],
     };
   }
 
@@ -190,6 +258,15 @@ export const stopDragging = (state, action) => {
     anchorsToMove: [],
     originalPosition: {},
     alreadyMoved: {},
+
+    weakLinksToRemove: [],
+
+    weakLinks: [
+      ...state.weakLinks.filter(
+        ({ anchorId, nodeId }) =>
+          !state.weakLinksToRemove.includes(anchorId + "-" + nodeId)
+      ),
+    ],
   };
 };
 
