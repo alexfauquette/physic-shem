@@ -8,20 +8,21 @@ export function startDragging(x, y) {
 }
 
 export const STOP_DRAGGING = "STOP_DRAGGING";
-export function stopDragging(attractor, attracted) {
+export function stopDragging() {
   return {
     type: STOP_DRAGGING,
-    attractor: attractor || null,
-    attracted: attracted || null,
   };
 }
 
 export const UPDATE_POSITION = "UPDATE_POSITION";
-export function updatePosition({ x, y, id, shiftPress }) {
+export function updatePosition({ x, y, attractor, attracted, id, shiftPress }) {
+  // TODO : id should be remove
   return {
     type: UPDATE_POSITION,
     x,
     y,
+    attractor: attractor || null,
+    attracted: attracted || null,
     id: id || null,
     shiftPress,
   };

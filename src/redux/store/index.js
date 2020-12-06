@@ -97,21 +97,37 @@ function update(state = initial_state, action) {
       return stopDragging(state, action);
 
     case UPDATE_POSITION:
+      const { attractor, attracted } = action;
       switch (state.mode) {
         case MODE_DRAG:
-          return draggingUpdatePosition(state, action);
+          return {
+            ...draggingUpdatePosition(state, action),
+            currentMagnet: { attractor, attracted },
+          };
 
         case MODE_CREATE_PATH_ELEMENT:
-          return pathCreationUpdatePosition(state, action);
+          return {
+            ...pathCreationUpdatePosition(state, action),
+            currentMagnet: { attractor, attracted },
+          };
 
         case MODE_CREATE_NODE_ELEMENT:
-          return nodeCreationUpdatePosition(state, action);
+          return {
+            ...nodeCreationUpdatePosition(state, action),
+            currentMagnet: { attractor, attracted },
+          };
 
         case MODE_RECTANGLE_SELECTION:
-          return rectangleSelectionUpdatePosition(state, action);
+          return {
+            ...rectangleSelectionUpdatePosition(state, action),
+            currentMagnet: { attractor, attracted },
+          };
 
         default:
-          return state;
+          return {
+            ...state,
+            currentMagnet: { attractor, attracted },
+          };
       }
 
     case START_CREATE_PATH_ELEMENT:

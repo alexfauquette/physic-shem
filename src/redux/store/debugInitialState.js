@@ -5,6 +5,10 @@ export const initial_state = {
   selection: [],
   adhesivePoints: [],
   weakLinks: [],
+  currentMagnet: {
+    attractor: null,
+    attracted: null,
+  },
   pathComponents: {
     byId: {
       id1: {

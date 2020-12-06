@@ -161,14 +161,14 @@ export const startDragging = (state, action) => {
 
 export const stopDragging = (state, action) => {
   if (
-    action.attractor &&
-    action.attracted &&
-    action.attracted.type === "ANCHOR" &&
-    action.attractor.type === "ANCHOR"
+    state.currentMagnet.attractor &&
+    state.currentMagnet.attracted &&
+    state.currentMagnet.attracted.type === "ANCHOR" &&
+    state.currentMagnet.attractor.type === "ANCHOR"
   ) {
     // we need to fusion those anchors
-    const anchorToRemoveID = action.attracted.id;
-    const anchorToUseId = action.attractor.id;
+    const anchorToRemoveID = state.currentMagnet.attracted.id;
+    const anchorToUseId = state.currentMagnet.attractor.id;
 
     // remove anchor
     const anchorToRemoveIDIndex = state.anchors.allIds.findIndex(
@@ -217,23 +217,25 @@ export const stopDragging = (state, action) => {
   }
 
   if (
-    action.attractor &&
-    action.attracted &&
-    ((action.attracted.type === "NODE" && action.attractor.type === "ANCHOR") ||
-      (action.attracted.type === "ANCHOR" && action.attractor.type === "NODE"))
+    state.currentMagnet.attractor &&
+    state.currentMagnet.attracted &&
+    ((state.currentMagnet.attracted.type === "NODE" &&
+      state.currentMagnet.attractor.type === "ANCHOR") ||
+      (state.currentMagnet.attracted.type === "ANCHOR" &&
+        state.currentMagnet.attractor.type === "NODE"))
   ) {
     const nodeId =
-      action.attracted.type === "NODE"
-        ? action.attracted.id
-        : action.attractor.id;
+      state.currentMagnet.attracted.type === "NODE"
+        ? state.currentMagnet.attracted.id
+        : state.currentMagnet.attractor.id;
     const anchorId =
-      action.attracted.type === "ANCHOR"
-        ? action.attracted.id
-        : action.attractor.id;
+      state.currentMagnet.attracted.type === "ANCHOR"
+        ? state.currentMagnet.attracted.id
+        : state.currentMagnet.attractor.id;
     const name =
-      action.attracted.type === "NODE"
-        ? action.attracted.name
-        : action.attractor.name;
+      state.currentMagnet.attracted.type === "NODE"
+        ? state.currentMagnet.attracted.name
+        : state.currentMagnet.attractor.name;
 
     return {
       ...state,
