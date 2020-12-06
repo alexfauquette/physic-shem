@@ -109,7 +109,7 @@ export const startDragging = (state, action) => {
         if (!nodeSeen.includes(selectedId)) {
           nodeSeen.push(selectedId);
           state.weakLinks.forEach(({ anchorId, nodeId }) => {
-            if (nodeId === selectedId) {
+            if (nodeId === selectedId && !anchorsToMove.includes(anchorId)) {
               anchorsToMove.push(anchorId);
             }
           });
