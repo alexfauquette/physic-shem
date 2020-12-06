@@ -24,7 +24,7 @@ export const getAdhesivePoints = (elementType) => {
     });
     anchors.forEach(({ x, y, name }) => {
       adhesivePoints.push({
-        type: "COMPONENT", // TODO use constant file
+        type: isPath[elementType] ? "PATH" : "NODE", // TODO use constant file
         name: name,
         id: null,
         dx: -x,

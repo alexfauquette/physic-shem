@@ -40,7 +40,9 @@ export const startDragging = (state, action) => {
         ) {
           // if the anchor is not the one giving the position
           adhesivePoints.push({
-            type: "COMPONENT", // TODO use constant file
+            type: state.pathComponents.byId[selectedId].position
+              ? "NODE"
+              : "PATH", // TODO use constant file
             name: name,
             id: selectedId,
             dx: action.x - x,

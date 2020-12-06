@@ -89,7 +89,13 @@ const Magnets = ({
                       y={y}
                       dy={dy}
                       mode={mode}
-                      attractor={{ type: "COMPONENT", name: name, id: id }}
+                      attractor={{
+                        type: pathComponents.byId[id].position
+                          ? "NODE"
+                          : "PATH",
+                        name: name,
+                        id: id,
+                      }}
                       attracted={{
                         type: type,
                         name: nameAdhesive,
