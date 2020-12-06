@@ -5,12 +5,12 @@ import { getAdhesivePoints, isAnchor } from "./utils";
 import { v4 as uuid } from "uuid";
 
 export const updatePosition = (state, action) => {
-  const { x, y, id } = action;
+  const { x, y } = action;
   return {
     ...state,
     newNode: {
       ...state.newNode,
-      position: { x: x, y: y, id: id },
+      position: { x: x, y: y },
     },
   };
 };
@@ -23,7 +23,7 @@ export const startNodeCreation = (state, action) => {
     mode: MODE_CREATE_NODE_ELEMENT,
     newNode: {
       elementType: action.elementType,
-      position: { x: null, y: null, id: null },
+      position: { x: null, y: null },
     },
   };
 };
@@ -58,7 +58,7 @@ export const saveNodeCreation = (state, action) => {
       ...state,
       newNode: {
         ...state.newNode,
-        position: { x: null, y: null, id: null },
+        position: { x: null, y: null },
       },
       pathComponents: {
         byId: {

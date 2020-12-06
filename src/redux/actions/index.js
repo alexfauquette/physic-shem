@@ -15,7 +15,7 @@ export function stopDragging() {
 }
 
 export const UPDATE_POSITION = "UPDATE_POSITION";
-export function updatePosition({ x, y, attractor, attracted, id, shiftPress }) {
+export function updatePosition({ x, y, attractor, attracted, shiftPress }) {
   // TODO : id should be remove
   return {
     type: UPDATE_POSITION,
@@ -23,7 +23,6 @@ export function updatePosition({ x, y, attractor, attracted, id, shiftPress }) {
     y,
     attractor: attractor || null,
     attracted: attracted || null,
-    id: id || null,
     shiftPress,
   };
 }

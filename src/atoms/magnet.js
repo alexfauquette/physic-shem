@@ -6,9 +6,7 @@ import { MODE_DRAG } from "../redux/store/interactionModes";
 const mapDispatchToProps = (dispatch, { attractor, attracted }) => {
   return {
     updatePosition: (x, y) =>
-      dispatch(
-        updatePosition({ x, y, attractor, attracted, id: attractor.id })
-      ),
+      dispatch(updatePosition({ x, y, attractor, attracted })),
     stopDragging: () => dispatch(stopDragging()),
   };
 };
