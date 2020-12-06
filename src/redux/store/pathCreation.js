@@ -13,8 +13,10 @@ export const startCreatePathElement = (state, action) => {
     newPath: {
       elementType: action.elementType,
       isFromValidated: false,
-      from: { x: null, y: null, id: null },
-      to: { x: null, y: null, id: null },
+      from: { x: null, y: null },
+      to: { x: null, y: null },
+      attractorTo: null,
+      attractorFrom: null,
     },
   };
 };
@@ -24,7 +26,11 @@ export const validateFirstStepPathElement = (state, action) => {
     ...state,
     newPath: {
       ...state.newPath,
-      to: { x: null, y: null, id: null },
+      attractorFrom: state.currentMagnet.attractor && {
+        ...state.currentMagnet.attractor,
+      },
+      to: { x: null, y: null },
+      attractorTo: null,
       isFromValidated: true,
       movedAfterFromCreation: false,
     },
@@ -38,7 +44,11 @@ export const invalidateFirstStepPathElement = (state, action) => {
       newPath: {
         ...state.newPath,
         from: { ...state.newPath.to },
-        to: { x: null, y: null, id: null },
+        attractorFrom: state.newPath.attractorTo && {
+          ...state.newPath.attractorTo,
+        },
+        to: { x: null, y: null },
+        attractorTo: null,
         isFromValidated: false,
       },
     };
@@ -48,42 +58,64 @@ export const invalidateFirstStepPathElement = (state, action) => {
 };
 
 export const savePathElement = (state, action) => {
+  const attractorTo = state.currentMagnet.attractor && {
+    ...state.currentMagnet.attractor,
+  };
+  const { attractorFrom, from, to, elementType } = state.newPath;
+
   const newId_element = uuid();
 
-  const fromAnchor = isAnchor(state, state.newPath.from.id)
-    ? state.newPath.from.id
-    : uuid();
-  const toAnchor = isAnchor(state, state.newPath.to.id)
-    ? state.newPath.to.id
-    : uuid();
+  const fromAnchor =
+    attractorFrom && attractorFrom.type === "ANCHOR"
+      ? attractorFrom.id
+      : uuid();
+  const toAnchor =
+    attractorTo && attractorTo.type === "ANCHOR" ? attractorTo.id : uuid();
 
+  // create anchors if necessary
   let newAnchors = { ...state.anchors };
-
-  if (!isAnchor(state, state.newPath.from.id)) {
+  if (!attractorFrom || attractorFrom.type !== "ANCHOR") {
     newAnchors = {
       byId: {
         ...newAnchors.byId,
         [fromAnchor]: {
           id: fromAnchor,
-          x: state.newPath.from.x,
-          y: state.newPath.from.y,
+          x: from.x,
+          y: from.y,
         },
       },
       allIds: [...newAnchors.allIds, fromAnchor],
     };
   }
-  if (!isAnchor(state, state.newPath.to.id)) {
+  if (!attractorTo || attractorTo.type !== "ANCHOR") {
     newAnchors = {
       byId: {
         ...newAnchors.byId,
         [toAnchor]: {
           id: toAnchor,
-          x: state.newPath.to.x,
-          y: state.newPath.to.y,
+          x: to.x,
+          y: to.y,
         },
       },
       allIds: [...newAnchors.allIds, toAnchor],
     };
+  }
+
+  // create weak links if necessary
+  const newWeakLinks = [];
+  if (attractorFrom && attractorFrom.type === "NODE") {
+    newWeakLinks.push({
+      anchorId: fromAnchor,
+      nodeId: attractorFrom.id,
+      name: attractorFrom.name,
+    });
+  }
+  if (attractorTo && attractorTo.type === "NODE") {
+    newWeakLinks.push({
+      anchorId: toAnchor,
+      nodeId: attractorTo.id,
+      name: attractorTo.name,
+    });
   }
 
   return {
@@ -92,13 +124,12 @@ export const savePathElement = (state, action) => {
       ...state.newPath,
       isFromValidated: false,
       from: {
-        ...state.newPath.to,
-        id: toAnchor,
+        ...to,
       },
+      attractorFrom: attractorTo && { ...attractorTo },
       to: {
         x: null,
         y: null,
-        id: null,
       },
     },
     pathComponents: {
@@ -108,23 +139,24 @@ export const savePathElement = (state, action) => {
           id: newId_element,
           from: fromAnchor,
           to: toAnchor,
-          type: state.newPath.elementType,
+          type: elementType,
         },
       },
       allIds: [...state.pathComponents.allIds, newId_element],
     },
     anchors: { ...newAnchors },
+    weakLinks: [...state.weakLinks, ...newWeakLinks],
   };
 };
 
 export const updatePosition = (state, action) => {
-  const { x, y, id } = action;
+  const { x, y } = action;
   if (state.newPath.isFromValidated) {
     return {
       ...state,
       newPath: {
         ...state.newPath,
-        to: { x: x, y: y, id: id },
+        to: { x: x, y: y },
         movedAfterFromCreation: true,
       },
     };
@@ -133,7 +165,7 @@ export const updatePosition = (state, action) => {
       ...state,
       newPath: {
         ...state.newPath,
-        from: { x: x, y: y, id: id },
+        from: { x: x, y: y },
       },
     };
   }
