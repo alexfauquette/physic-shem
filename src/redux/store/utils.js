@@ -9,29 +9,25 @@ export const getAdhesivePoints = (elementType) => {
       dx: 0,
       dy: 0,
     });
-  } else {
-    adhesivePoints.push({
-      type: "ANCHOR",
-      id: null,
-      dx: 0,
-      dy: 0,
-    });
-    const anchors = getElementAnchors({
-      type: elementType,
-      fromCoords: { x: 0, y: 0 },
-      toCoords: { x: 0, y: 0 },
-      positionCoords: { x: 0, y: 0 },
-    });
-    anchors.forEach(({ x, y, name }) => {
-      adhesivePoints.push({
-        type: isPath[elementType] ? "PATH" : "NODE", // TODO use constant file
-        name: name,
-        id: null,
-        dx: -x,
-        dy: -y,
-      });
-    });
   }
+
+  const elementAnchors = getElementAnchors({
+    type: elementType,
+    fromCoords: { x: 0, y: 0 },
+    toCoords: { x: 0, y: 0 },
+    positionCoords: { x: 0, y: 0 },
+  });
+
+  elementAnchors.forEach(({ x, y, name }) => {
+    adhesivePoints.push({
+      type: isPath[elementType] ? "PATH" : "NODE", // TODO use constant file
+      name: name,
+      id: null,
+      dx: -x,
+      dy: -y,
+    });
+  });
+
   return adhesivePoints;
 };
 

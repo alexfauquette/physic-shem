@@ -35,24 +35,23 @@ export const saveNodeCreation = (state, action) => {
     state.newNode.position.y !== null
   ) {
     const newId_element = uuid();
+    const positionId = uuid();
 
-    const newAnchors = { ...state.anchors };
+    const newWeakLink = [];
 
-    const positionId = isAnchor(state, state.newNode.position.id)
-      ? state.newNode.position.id
-      : uuid();
+    if (state.currentMagnet.attractor && state.currentMagnet.attracted) {
+      // node created relatively to an anchor
+      // We will link this anchor to the new node
+      const anchorId =
+        state.currentMagnet.attracted.type === "ANCHOR"
+          ? state.currentMagnet.attracted.id
+          : state.currentMagnet.attractor.id;
+      const anchorName =
+        state.currentMagnet.attracted.type === "ANCHOR"
+          ? state.currentMagnet.attractor.name
+          : state.currentMagnet.attracted.name;
 
-    if (!isAnchor(state, state.newNode.position.id)) {
-      // add the new anchor if necessary
-      newAnchors.byId = {
-        ...state.anchors.byId,
-        [positionId]: {
-          id: positionId,
-          x: state.newNode.position.x,
-          y: state.newNode.position.y,
-        },
-      };
-      newAnchors.allIds = [...state.anchors.allIds, positionId];
+      newWeakLink.push({ anchorId, nodeId: newId_element, name: anchorName });
     }
 
     return {
@@ -72,7 +71,19 @@ export const saveNodeCreation = (state, action) => {
         },
         allIds: [...state.pathComponents.allIds, newId_element],
       },
-      anchors: { ...newAnchors },
+      anchors: {
+        ...state.anchors,
+        byId: {
+          ...state.anchors.byId,
+          [positionId]: {
+            id: positionId,
+            x: state.newNode.position.x,
+            y: state.newNode.position.y,
+            isNodePosition: true,
+          },
+        },
+      },
+      weakLinks: [...state.weakLinks, ...newWeakLink],
     };
   }
   return state;

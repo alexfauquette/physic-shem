@@ -31,24 +31,17 @@ export const startDragging = (state, action) => {
           state.pathComponents.byId[selectedId].position &&
           state.anchors.byId[state.pathComponents.byId[selectedId].position],
       });
+
       anchors.forEach(({ x, y, name }) => {
-        if (
-          !(
-            state.pathComponents.byId[selectedId].positionAnchor &&
-            name === state.pathComponents.byId[selectedId].positionAnchor
-          )
-        ) {
-          // if the anchor is not the one giving the position
-          adhesivePoints.push({
-            type: state.pathComponents.byId[selectedId].position
-              ? "NODE"
-              : "PATH", // TODO use constant file
-            name: name,
-            id: selectedId,
-            dx: action.x - x,
-            dy: action.y - y,
-          });
-        }
+        adhesivePoints.push({
+          type: state.pathComponents.byId[selectedId].position
+            ? "NODE"
+            : "PATH", // TODO use constant file
+          name: name,
+          id: selectedId,
+          dx: action.x - x,
+          dy: action.y - y,
+        });
       });
       if (
         state.pathComponents.byId[selectedId].from &&
@@ -78,21 +71,6 @@ export const startDragging = (state, action) => {
           id: toId,
           dx: action.x - state.anchors.byId[toId].x,
           dy: action.y - state.anchors.byId[toId].y,
-        });
-      }
-      if (
-        state.pathComponents.byId[selectedId].position &&
-        adhesivePoints.findIndex(
-          (elem) => elem.id === state.pathComponents.byId[selectedId].position
-        ) === -1
-      ) {
-        //the position anchor is new
-        const positionId = state.pathComponents.byId[selectedId].position;
-        adhesivePoints.push({
-          type: "ANCHOR",
-          id: positionId,
-          dx: action.x - state.anchors.byId[positionId].x,
-          dy: action.y - state.anchors.byId[positionId].y,
         });
       }
     }
