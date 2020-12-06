@@ -6,6 +6,7 @@ export const stackAnchors = (state, action) => {
   const anchorsSelected = state.selection.filter(
     (id) => id in state.anchors.byId
   );
+  const movedAnchors = [];
   if (
     anchorsSelected.length <= 1 ||
     !["U", "D", "L", "R"].includes(action.direction)
@@ -37,6 +38,12 @@ export const stackAnchors = (state, action) => {
         default:
           break;
       }
+      if (
+        (newPosition.x && newPosition.x !== anchor.x) ||
+        (newPosition.y && newPosition.y !== anchor.y)
+      ) {
+        movedAnchors.push(id);
+      }
     });
 
     anchorsSelected.forEach((id) => {
@@ -51,6 +58,11 @@ export const stackAnchors = (state, action) => {
         byId: { ...state.anchors.byId },
         allIds: state.anchors.allIds,
       },
+      weakLinks: [
+        ...state.weakLinks.filter(
+          ({ anchorId }) => !movedAnchors.includes(anchorId)
+        ),
+      ],
     };
   }
 };
@@ -74,6 +86,10 @@ export const splitAnchor = (state, action) => {
 
     const newAnchors = state.anchors;
     const newComponents = state.pathComponents.byId;
+    const newWeakLinks = [];
+    const weakLinksToCopy = state.weakLinks.filter(
+      ({ anchorId: linkedAnchorId }) => anchorId === linkedAnchorId
+    );
 
     componentsToChange.slice(1).forEach((componentId) => {
       const newAnchorId = uuid();
@@ -89,6 +105,10 @@ export const splitAnchor = (state, action) => {
         ...newAnchors.byId,
         [newAnchorId]: { ...newAnchors.byId[anchorId] },
       };
+
+      weakLinksToCopy.forEach((linkToCopy) => {
+        newWeakLinks.push({ ...linkToCopy, anchorId: newAnchorId });
+      });
     });
 
     return {
@@ -101,6 +121,7 @@ export const splitAnchor = (state, action) => {
         allIds: [...newAnchors.allIds],
         byId: { ...newAnchors.byId },
       },
+      weakLinks: [...state.weakLinks, ...newWeakLinks],
     };
   }
   return state;
