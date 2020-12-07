@@ -42,16 +42,21 @@ export const saveNodeCreation = (state, action) => {
     if (state.currentMagnet.attractor && state.currentMagnet.attracted) {
       // node created relatively to an anchor
       // We will link this anchor to the new node
-      const anchorId =
-        state.currentMagnet.attracted.type === "ANCHOR"
-          ? state.currentMagnet.attracted.id
-          : state.currentMagnet.attractor.id;
-      const anchorName =
-        state.currentMagnet.attracted.type === "ANCHOR"
-          ? state.currentMagnet.attractor.name
-          : state.currentMagnet.attracted.name;
-
-      newWeakLink.push({ anchorId, nodeId: newId_element, name: anchorName });
+      if (state.currentMagnet.attractor.type === "ANCHOR") {
+        newWeakLink.push({
+          anchorId: state.currentMagnet.attractor.id,
+          nodeId: newId_element,
+          name: state.currentMagnet.attractor.name,
+        });
+      }
+      if (state.currentMagnet.attractor.type === "NODE") {
+        newWeakLink.push({
+          anchorId: positionId,
+          nodeId: state.currentMagnet.attractor.id,
+          name: state.currentMagnet.attractor.name,
+          nameAnchor: state.currentMagnet.attracted.name,
+        });
+      }
     }
 
     return {
@@ -80,6 +85,7 @@ export const saveNodeCreation = (state, action) => {
             x: state.newNode.position.x,
             y: state.newNode.position.y,
             isNodePosition: true,
+            nodeId: newId_element,
           },
         },
       },

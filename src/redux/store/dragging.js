@@ -80,12 +80,7 @@ export const startDragging = (state, action) => {
   const nodeSeen = [];
   while (pile.length > 0) {
     const selectedId = pile.pop();
-
-    if (state.anchors.allIds.includes(selectedId)) {
-      if (!anchorsToMove.includes(selectedId)) {
-        anchorsToMove.push(selectedId);
-      }
-    } else if (state.pathComponents.allIds.includes(selectedId)) {
+    if (state.pathComponents.allIds.includes(selectedId)) {
       if (
         state.pathComponents.byId[selectedId].from &&
         !anchorsToMove.includes(state.pathComponents.byId[selectedId].from)
@@ -104,15 +99,23 @@ export const startDragging = (state, action) => {
             state.pathComponents.byId[selectedId].position
           )
         ) {
-          anchorsToMove.push(state.pathComponents.byId[selectedId].position);
+          pile.push(state.pathComponents.byId[selectedId].position);
         }
         if (!nodeSeen.includes(selectedId)) {
           nodeSeen.push(selectedId);
           state.weakLinks.forEach(({ anchorId, nodeId }) => {
             if (nodeId === selectedId && !anchorsToMove.includes(anchorId)) {
-              anchorsToMove.push(anchorId);
+              pile.push(anchorId);
             }
           });
+        }
+      }
+    } else {
+      if (!anchorsToMove.includes(selectedId)) {
+        anchorsToMove.push(selectedId);
+
+        if (state.anchors.byId[selectedId].isNodePosition) {
+          pile.push(state.anchors.byId[selectedId].nodeId);
         }
       }
     }
@@ -197,24 +200,42 @@ export const stopDragging = (state, action) => {
   if (
     state.currentMagnet.attractor &&
     state.currentMagnet.attracted &&
-    ((state.currentMagnet.attracted.type === "NODE" &&
-      state.currentMagnet.attractor.type === "ANCHOR") ||
-      (state.currentMagnet.attracted.type === "ANCHOR" &&
-        state.currentMagnet.attractor.type === "NODE"))
+    state.currentMagnet.attracted.type !== "PATH" &&
+    state.currentMagnet.attractor.type !== "PATH"
   ) {
-    const nodeId =
-      state.currentMagnet.attracted.type === "NODE"
-        ? state.currentMagnet.attracted.id
-        : state.currentMagnet.attractor.id;
-    const anchorId =
-      state.currentMagnet.attracted.type === "ANCHOR"
-        ? state.currentMagnet.attracted.id
-        : state.currentMagnet.attractor.id;
-    const name =
-      state.currentMagnet.attracted.type === "NODE"
-        ? state.currentMagnet.attracted.name
-        : state.currentMagnet.attractor.name;
+    const newWeakLink = [];
 
+    if (
+      state.currentMagnet.attracted.type === "NODE" &&
+      state.currentMagnet.attractor.type === "NODE"
+    ) {
+      newWeakLink.push({
+        anchorId:
+          state.pathComponents.byId[state.currentMagnet.attracted.id].position,
+        nodeId: state.currentMagnet.attractor.id,
+        name: state.currentMagnet.attractor.name,
+        nameAnchor: state.currentMagnet.attracted.name,
+      });
+    } else {
+      const nodeId =
+        state.currentMagnet.attracted.type === "NODE"
+          ? state.currentMagnet.attracted.id
+          : state.currentMagnet.attractor.id;
+      const anchorId =
+        state.currentMagnet.attracted.type === "ANCHOR"
+          ? state.currentMagnet.attracted.id
+          : state.currentMagnet.attractor.id;
+      const name =
+        state.currentMagnet.attracted.type === "NODE"
+          ? state.currentMagnet.attracted.name
+          : state.currentMagnet.attractor.name;
+
+      newWeakLink.push({
+        anchorId: anchorId,
+        nodeId: nodeId,
+        name: name,
+      });
+    }
     return {
       ...state,
       mode: MODE_SELECT,
@@ -227,7 +248,7 @@ export const stopDragging = (state, action) => {
           ({ anchorId, nodeId }) =>
             !state.weakLinksToRemove.includes(anchorId + "-" + nodeId)
         ),
-        { anchorId, nodeId, name },
+        ...newWeakLink,
       ],
     };
   }
