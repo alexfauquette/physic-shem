@@ -16,6 +16,7 @@ import {
   STOP_RECTANGLE_SELECTION,
   STACK_SELECTED_ANCHORS,
   DELETE_ELEMENT,
+  UPDATE_COMPONENT,
 } from "../actions";
 
 import {
@@ -59,6 +60,22 @@ import { stackAnchors, splitAnchor } from "./anchorHelper";
 
 function update(state = initial_state, action) {
   switch (action.type) {
+    case UPDATE_COMPONENT:
+      const { id, name, value } = action;
+
+      return {
+        ...state,
+        pathComponents: {
+          ...state.pathComponents,
+          byId: {
+            ...state.pathComponents.byId,
+            [id]: {
+              ...state.pathComponents.byId[id],
+              [name]: value,
+            },
+          },
+        },
+      };
     case TOGGLE_SELECTION:
       if (action.reset) {
         return {

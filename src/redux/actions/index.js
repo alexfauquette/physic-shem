@@ -128,3 +128,13 @@ export function deleteElement(selection) {
     selection,
   };
 }
+
+export const UPDATE_COMPONENT = "UPDATE_COMPONENT";
+export function updateComponent(id, name, value) {
+  return {
+    type: UPDATE_COMPONENT,
+    id,
+    name,
+    value,
+  };
+}

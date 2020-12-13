@@ -32,6 +32,7 @@ import {
 } from "./redux/actions";
 
 const drawerWidth = 180;
+const optionDrawerWidth = 280;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,6 +54,8 @@ const useStyles = makeStyles((theme) => ({
   drawerContainer: {
     overflow: "auto",
   },
+  optionDrawer: {},
+  optionDrawerPaper: { width: optionDrawerWidth },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
@@ -185,6 +188,12 @@ function App({
         open={
           (mode === MODE_SELECT || mode === MODE_DRAG) && selection.length === 1
         }
+        className={classes.optionDrawer}
+        classes={{
+          paper: classes.optionDrawerPaper,
+        }}
+        // catch mousedown in element options
+        onMouseDown={(event) => event.stopPropagation()}
       >
         <Toolbar />
         <ElementOptions />
