@@ -90,7 +90,7 @@ const NMOS = ({
   selected,
   showHandles,
   id,
-  ...props
+  onMouseDown,
 }) => {
   if (!positionCoords) {
     return null;
@@ -99,40 +99,41 @@ const NMOS = ({
   const { x: deltaX, y: deltaY } = getElementTranslation(positionAnchor);
 
   return (
-    <g className={`component ${selected ? "red" : "black"}`}>
-      <g {...props}>
+    <g
+      onMouseDown={onMouseDown || null}
+      className={`component ${selected ? "red" : "black"}`}
+    >
+      <g
+        style={{
+          transform: `translate(${xAnchor}px , ${yAnchor}px) rotate(${-angle}deg)`,
+        }}
+      >
         <g
           style={{
-            transform: `translate(${xAnchor}px , ${yAnchor}px) rotate(${-angle}deg)`,
+            transform: `translate(${deltaX}px , ${deltaY}px)`,
           }}
         >
-          <g
-            style={{
-              transform: `translate(${deltaX}px , ${deltaY}px)`,
-            }}
-          >
-            <path
-              d={`M ${0} ${-UNIT_Y} 
+          <path
+            d={`M ${0} ${-UNIT_Y} 
                   L ${0} ${-gate_height * UNIT_Y}
                   L ${-base_width * UNIT_X} ${-gate_height * UNIT_Y}`}
-            />
-            <path
-              d={`M ${-base_width * UNIT_X} ${-base_height * UNIT_Y}
+          />
+          <path
+            d={`M ${-base_width * UNIT_X} ${-base_height * UNIT_Y}
                   L ${-base_width * UNIT_X} ${base_height * UNIT_Y}
                   L ${-base_width * UNIT_X} ${gate_height * UNIT_Y}
                   L ${0} ${gate_height * UNIT_Y}
                   L ${0} ${UNIT_Y}`}
-            />
-            <path
-              d={`M ${-gate_width * UNIT_X} ${-gate_height * UNIT_Y}
+          />
+          <path
+            d={`M ${-gate_width * UNIT_X} ${-gate_height * UNIT_Y}
                   L ${-gate_width * UNIT_X} ${gate_height * UNIT_Y}`}
-              style={{ strokeWidth: 2 }}
-            />
-            <path
-              d={`M ${-gate_width * UNIT_X} 0
+            style={{ strokeWidth: 2 }}
+          />
+          <path
+            d={`M ${-gate_width * UNIT_X} 0
                       L ${-UNIT_X} 0`}
-            />
-          </g>
+          />
         </g>
       </g>
     </g>

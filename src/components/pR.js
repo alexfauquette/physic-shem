@@ -43,7 +43,7 @@ const PR = ({
   showHandles,
   id,
   wiper_pos = 0.5,
-  ...props
+  onMouseDown,
 }) => {
   if (!fromCoords || !toCoords) {
     return null;
@@ -58,45 +58,46 @@ const PR = ({
     (180 * Math.atan2(yTo - yFrom, xTo - xFrom)) / Math.PI
   );
   return (
-    <g className={`component ${selected ? "red" : "black"}`}>
-      <g {...props}>
-        <g
-          style={{
-            transform: `translate(${(xFrom + xTo) / 2}px , ${
-              (yFrom + yTo) / 2
-            }px) rotate(${angle}deg)`,
-          }}
-        >
-          <path
-            d={`M ${(-6 / 6) * UNIT_X} 0 L ${(-5 / 6) * UNIT_X} ${-UNIT_Y2} L ${
-              (-3 / 6) * UNIT_X
-            } ${UNIT_Y2} L ${(-1 / 6) * UNIT_X} ${-UNIT_Y2} L ${
-              (1 / 6) * UNIT_X
-            } ${UNIT_Y2} L ${(3 / 6) * UNIT_X} ${-UNIT_Y2} L ${
-              (5 / 6) * UNIT_X
-            } ${UNIT_Y2} L ${(6 / 6) * UNIT_X} 0`}
-          />
-          <path
-            d={`M ${
-              -(0.5 - wiper_pos) * width * MULTIPLICATIVE_CONST
-            } ${-UNIT_Y} L ${
-              -(0.5 - wiper_pos) * width * MULTIPLICATIVE_CONST
-            } ${-UNIT_Y2}`}
-          />
-        </g>
-
-        {/* here start the connection between dipole and anchors */}
+    <g
+      onMouseDown={onMouseDown || null}
+      className={`component ${selected ? "red" : "black"}`}
+    >
+      <g
+        style={{
+          transform: `translate(${(xFrom + xTo) / 2}px , ${
+            (yFrom + yTo) / 2
+          }px) rotate(${angle}deg)`,
+        }}
+      >
         <path
-          d={`M ${xFrom} ${yFrom} L ${xFrom + ratio * (xTo - xFrom)} ${
-            yFrom + ratio * (yTo - yFrom)
-          }`}
+          d={`M ${(-6 / 6) * UNIT_X} 0 L ${(-5 / 6) * UNIT_X} ${-UNIT_Y2} L ${
+            (-3 / 6) * UNIT_X
+          } ${UNIT_Y2} L ${(-1 / 6) * UNIT_X} ${-UNIT_Y2} L ${
+            (1 / 6) * UNIT_X
+          } ${UNIT_Y2} L ${(3 / 6) * UNIT_X} ${-UNIT_Y2} L ${
+            (5 / 6) * UNIT_X
+          } ${UNIT_Y2} L ${(6 / 6) * UNIT_X} 0`}
         />
         <path
-          d={`M ${xTo} ${yTo} L ${xTo + ratio * (xFrom - xTo)} ${
-            yTo + ratio * (yFrom - yTo)
-          }`}
+          d={`M ${
+            -(0.5 - wiper_pos) * width * MULTIPLICATIVE_CONST
+          } ${-UNIT_Y} L ${
+            -(0.5 - wiper_pos) * width * MULTIPLICATIVE_CONST
+          } ${-UNIT_Y2}`}
         />
       </g>
+
+      {/* here start the connection between dipole and anchors */}
+      <path
+        d={`M ${xFrom} ${yFrom} L ${xFrom + ratio * (xTo - xFrom)} ${
+          yFrom + ratio * (yTo - yFrom)
+        }`}
+      />
+      <path
+        d={`M ${xTo} ${yTo} L ${xTo + ratio * (xFrom - xTo)} ${
+          yTo + ratio * (yFrom - yTo)
+        }`}
+      />
     </g>
   );
 };

@@ -43,7 +43,7 @@ const Vcapacitor = ({
   selected,
   showHandles,
   id,
-  ...props
+  onMouseDown,
 }) => {
   if (!fromCoords || !toCoords) {
     return null;
@@ -58,34 +58,35 @@ const Vcapacitor = ({
     (180 * Math.atan2(yTo - yFrom, xTo - xFrom)) / Math.PI
   );
   return (
-    <g className={`component ${selected ? "red" : "black"}`}>
-      <g {...props}>
-        <g
-          style={{
-            transform: `translate(${(xFrom + xTo) / 2}px , ${
-              (yFrom + yTo) / 2
-            }px) rotate(${angle}deg)`,
-          }}
-        >
-          <path d={`M  ${-STEP} ${-UNIT_Y} L ${-STEP} ${UNIT_Y}`} />
+    <g
+      onMouseDown={onMouseDown || null}
+      className={`component ${selected ? "red" : "black"}`}
+    >
+      <g
+        style={{
+          transform: `translate(${(xFrom + xTo) / 2}px , ${
+            (yFrom + yTo) / 2
+          }px) rotate(${angle}deg)`,
+        }}
+      >
+        <path d={`M  ${-STEP} ${-UNIT_Y} L ${-STEP} ${UNIT_Y}`} />
 
-          <path d={`M  ${STEP} ${-UNIT_Y} L ${STEP} ${UNIT_Y}`} />
+        <path d={`M  ${STEP} ${-UNIT_Y} L ${STEP} ${UNIT_Y}`} />
 
-          <path d={`M ${-UNIT_X} ${-UNIT_Y} L ${UNIT_X} ${UNIT_Y}`} />
-        </g>
-
-        {/* here start the connection between dipole and anchors */}
-        <path
-          d={`M ${xFrom} ${yFrom} L ${xFrom + ratio * (xTo - xFrom)} ${
-            yFrom + ratio * (yTo - yFrom)
-          }`}
-        />
-        <path
-          d={`M ${xTo} ${yTo} L ${xTo + ratio * (xFrom - xTo)} ${
-            yTo + ratio * (yFrom - yTo)
-          }`}
-        />
+        <path d={`M ${-UNIT_X} ${-UNIT_Y} L ${UNIT_X} ${UNIT_Y}`} />
       </g>
+
+      {/* here start the connection between dipole and anchors */}
+      <path
+        d={`M ${xFrom} ${yFrom} L ${xFrom + ratio * (xTo - xFrom)} ${
+          yFrom + ratio * (yTo - yFrom)
+        }`}
+      />
+      <path
+        d={`M ${xTo} ${yTo} L ${xTo + ratio * (xFrom - xTo)} ${
+          yTo + ratio * (yFrom - yTo)
+        }`}
+      />
     </g>
   );
 };

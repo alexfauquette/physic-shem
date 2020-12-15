@@ -31,7 +31,7 @@ const Lampe = ({
   selected,
   showHandles,
   id,
-  ...props
+  onMouseDown,
 }) => {
   if (!fromCoords || !toCoords) {
     return null;
@@ -45,29 +45,30 @@ const Lampe = ({
     (180 * Math.atan2(yTo - yFrom, xTo - xFrom)) / Math.PI
   );
   return (
-    <g className={`component ${selected ? "red" : "black"}`}>
-      <g {...props}>
-        <g
-          style={{
-            transform: `translate(${(xFrom + xTo) / 2}px , ${
-              (yFrom + yTo) / 2
-            }px) rotate(${angle}deg)`,
-          }}
-        >
-          <circle cx={0} cy={0} r={R} />
-          <path d={`M -${r} -${r} L ${r} ${r} M -${r} ${r} L ${r} -${r}`} />
-        </g>
-        <path
-          d={`M ${xFrom} ${yFrom} L ${xFrom + ratio * (xTo - xFrom)} ${
-            yFrom + ratio * (yTo - yFrom)
-          }`}
-        />
-        <path
-          d={`M ${xTo} ${yTo} L ${xTo + ratio * (xFrom - xTo)} ${
-            yTo + ratio * (yFrom - yTo)
-          }`}
-        />
+    <g
+      onMouseDown={onMouseDown || null}
+      className={`component ${selected ? "red" : "black"}`}
+    >
+      <g
+        style={{
+          transform: `translate(${(xFrom + xTo) / 2}px , ${
+            (yFrom + yTo) / 2
+          }px) rotate(${angle}deg)`,
+        }}
+      >
+        <circle cx={0} cy={0} r={R} />
+        <path d={`M -${r} -${r} L ${r} ${r} M -${r} ${r} L ${r} -${r}`} />
       </g>
+      <path
+        d={`M ${xFrom} ${yFrom} L ${xFrom + ratio * (xTo - xFrom)} ${
+          yFrom + ratio * (yTo - yFrom)
+        }`}
+      />
+      <path
+        d={`M ${xTo} ${yTo} L ${xTo + ratio * (xFrom - xTo)} ${
+          yTo + ratio * (yFrom - yTo)
+        }`}
+      />
     </g>
   );
 };
