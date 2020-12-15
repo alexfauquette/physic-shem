@@ -45,7 +45,8 @@ const ElementOptions = ({ handleInputChange, id, options = null }) => {
               <ListItemSecondaryAction>
                 <Input
                   value={options[name] || 0}
-                  onChange={handleInputChange(id, name)}
+                  onKeyDown={(e) => e.stopPropagation()}
+                  onChangeCapture={handleInputChange(id, name)}
                   inputProps={{
                     step: 5,
                     min: -180,
