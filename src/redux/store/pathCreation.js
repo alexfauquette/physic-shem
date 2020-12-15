@@ -150,8 +150,31 @@ export const savePathElement = (state, action) => {
 };
 
 export const updatePosition = (state, action) => {
-  const { x, y } = action;
+  const { x, y, shiftPress } = action;
+
   if (state.newPath.isFromValidated) {
+    if (shiftPress) {
+      const { x: xFrom, y: yFrom } = state.newPath.from;
+      if (Math.abs(x - xFrom) > Math.abs(y - yFrom)) {
+        return {
+          ...state,
+          newPath: {
+            ...state.newPath,
+            to: { x: x, y: yFrom },
+            movedAfterFromCreation: true,
+          },
+        };
+      } else {
+        return {
+          ...state,
+          newPath: {
+            ...state.newPath,
+            to: { x: xFrom, y: y },
+            movedAfterFromCreation: true,
+          },
+        };
+      }
+    }
     return {
       ...state,
       newPath: {
