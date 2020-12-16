@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import "./style.scss";
 import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
+import CurrantArrow from "../atoms/currant";
 
 const R = 0.6 * 0.5 * MULTIPLICATIVE_CONST;
 const r = (0.7071 * R).toFixed(3);
@@ -68,6 +69,16 @@ const Lampe = ({
         d={`M ${xTo} ${yTo} L ${xTo + ratio * (xFrom - xTo)} ${
           yTo + ratio * (yFrom - yTo)
         }`}
+      />
+      <CurrantArrow
+        fromCoords={fromCoords}
+        toCoords={toCoords}
+        currantText="A"
+        ratio={ratio}
+        angle={angle}
+        currantIsForward={false}
+        currantIsAbove={false}
+        currantIsAfter={false}
       />
     </g>
   );
