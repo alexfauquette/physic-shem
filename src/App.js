@@ -95,7 +95,7 @@ function App({
   deleteElement,
 }) {
   const classes = useStyles();
-  const [showColde, setShowCode] = useState(false);
+  const [showCode, setShowCode] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -204,7 +204,7 @@ function App({
       </main>
 
       <Dialog
-        open={showColde}
+        open={showCode}
         onClose={() => {
           setShowCode(false);
         }}
