@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import "./style.scss";
 import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
+import CurrantArrow, { getCurrantAttribute } from "../atoms/currant";
 
 const height = 0.8;
 const height_2 = 0.3;
@@ -44,6 +45,7 @@ const PR = ({
   id,
   wiper_pos = 0.5,
   onMouseDown,
+  currant,
 }) => {
   if (!fromCoords || !toCoords) {
     return null;
@@ -98,16 +100,30 @@ const PR = ({
           yTo + ratio * (yFrom - yTo)
         }`}
       />
+
+      {currant && currant.show && (
+        <CurrantArrow
+          fromCoords={fromCoords}
+          toCoords={toCoords}
+          ratio={ratio}
+          angle={angle}
+          {...currant}
+        />
+      )}
     </g>
   );
 };
 
-export const drawer = (element, from, to) =>
-  `\\draw (${((from.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
+export const drawer = (element, from, to) => {
+  const currantAttribute = getCurrantAttribute(element.currant);
+
+  return `\\draw (${((from.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
     (-from.y / MULTIPLICATIVE_CONST) *
     R_LEN
-  ).toFixed(2)}) to[pR] (${((to.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(
-    2
-  )}, ${((-to.y / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)});`;
+  ).toFixed(2)}) to[pR${currantAttribute ? `, ${currantAttribute}` : ""}] (${(
+    (to.x / MULTIPLICATIVE_CONST) *
+    R_LEN
+  ).toFixed(2)}, ${((-to.y / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)});`;
+};
 
 export default connect(mapStateToProps)(PR);
