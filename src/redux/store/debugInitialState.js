@@ -1,5 +1,13 @@
 import { MODE_SELECT } from "./interactionModes";
 
+const defaultCurrant = {
+  show: true,
+  currantText: "a",
+  currantIsForward: true,
+  currantIsAbove: true,
+  currantIsAfter: true,
+};
+
 export const initial_state = {
   mode: MODE_SELECT,
   selection: [],
@@ -16,24 +24,28 @@ export const initial_state = {
         from: "anchor1",
         to: "anchor3",
         type: "pR",
+        currant: { ...defaultCurrant },
       },
       id2: {
         id: "id2",
         from: "anchor2",
         to: "anchor3",
         type: "empty led",
+        currant: { ...defaultCurrant },
       },
       id3: {
         id: "id3",
         from: "anchor4",
         to: "anchor3",
         type: "lampe",
+        currant: { ...defaultCurrant },
       },
       id4: {
         id: "id4",
         from: "anchor5",
         to: "anchor3",
         type: "lampe",
+        currant: { ...defaultCurrant },
       },
       id5: {
         id: "id5",

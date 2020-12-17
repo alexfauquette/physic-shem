@@ -9,11 +9,17 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 
 import Input from "@material-ui/core/Input";
+import Checkbox from "@material-ui/core/Checkbox";
+import Switch from "@material-ui/core/Switch";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import TextField from "@material-ui/core/TextField";
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    handleInputChange: (id, name) => (event) =>
-      dispatch(updateComponent(id, name, event.target.value)),
+    handleInputChange: (id, name) => (value) => (event) =>
+      dispatch(
+        updateComponent(id, name, value === null ? event.target.value : value)
+      ),
   };
 };
 
@@ -31,36 +37,113 @@ const mapStateToProps = (state) => {
   };
 };
 
+const inputElement = {
+  angle: (value, update) => (
+    <ListItem button>
+      <ListItemText primary="rotation" />
+      <ListItemSecondaryAction>
+        <Input
+          value={value || 0}
+          onKeyDown={(e) => e.stopPropagation()}
+          onChangeCapture={update(null)}
+          inputProps={{
+            step: 5,
+            min: -180,
+            max: 180,
+            type: "number",
+          }}
+        />
+      </ListItemSecondaryAction>
+    </ListItem>
+  ),
+  currant: (value, update) => (
+    <>
+      <ListItem button>
+        <ListItemText primary="Currant" />
+        <ListItemSecondaryAction>
+          <Checkbox
+            checked={value.show}
+            onChange={update({ ...value, show: !value.show })}
+            inputProps={{ "aria-label": "primary checkbox" }}
+          />
+        </ListItemSecondaryAction>
+      </ListItem>
+      <ListItem>
+        <TextField
+          disabled={!value.show}
+          label="Currant name"
+          value={value.currantText}
+          onKeyDown={(e) => e.stopPropagation()}
+          onChangeCapture={(e) =>
+            update({ ...value, currantText: e.target.value })()
+          }
+        />
+      </ListItem>
+      <ListItem>
+        <FormControlLabel
+          disabled={!value.show}
+          control={
+            <Switch
+              checked={value.currantIsForward}
+              onChange={update({
+                ...value,
+                currantIsForward: !value.currantIsForward,
+              })}
+              name="arrow direction"
+            />
+          }
+          label="direction"
+        />
+      </ListItem>
+      <ListItem>
+        <FormControlLabel
+          disabled={!value.show}
+          control={
+            <Switch
+              checked={value.currantIsAfter}
+              onChange={update({
+                ...value,
+                currantIsAfter: !value.currantIsAfter,
+              })}
+              name="currant position"
+            />
+          }
+          label="arrow position"
+        />
+      </ListItem>
+      <ListItem>
+        <FormControlLabel
+          disabled={!value.show}
+          control={
+            <Switch
+              checked={value.currantIsAbove}
+              onChange={update({
+                ...value,
+                currantIsAbove: !value.currantIsAbove,
+              })}
+              name="text position"
+            />
+          }
+          label="text position"
+        />
+      </ListItem>
+    </>
+  ),
+};
+
 const ElementOptions = ({ handleInputChange, id, options = null }) => {
   if (options === null) {
     return null;
   }
   return (
     <List>
-      {Object.keys(options).map((name) => (
-        <ListItem button key={name}>
-          {name === "angle" ? (
-            <>
-              <ListItemText primary={name} />
-              <ListItemSecondaryAction>
-                <Input
-                  value={options[name] || 0}
-                  onKeyDown={(e) => e.stopPropagation()}
-                  onChangeCapture={handleInputChange(id, name)}
-                  inputProps={{
-                    step: 5,
-                    min: -180,
-                    max: 180,
-                    type: "number",
-                  }}
-                />
-              </ListItemSecondaryAction>
-            </>
-          ) : (
-            <ListItemText primary={name} secondary={options[name]} />
-          )}
-        </ListItem>
-      ))}
+      {Object.keys(options).map((name) =>
+        inputElement[name] ? (
+          <div key={name}>
+            {inputElement[name](options[name], handleInputChange(id, name))}
+          </div>
+        ) : null
+      )}
     </List>
   );
 };

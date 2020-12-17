@@ -33,6 +33,7 @@ const Lampe = ({
   showHandles,
   id,
   onMouseDown,
+  currant,
 }) => {
   if (!fromCoords || !toCoords) {
     return null;
@@ -70,16 +71,15 @@ const Lampe = ({
           yTo + ratio * (yFrom - yTo)
         }`}
       />
-      <CurrantArrow
-        fromCoords={fromCoords}
-        toCoords={toCoords}
-        currantText="A"
-        ratio={ratio}
-        angle={angle}
-        currantIsForward={false}
-        currantIsAbove={false}
-        currantIsAfter={false}
-      />
+      {currant && currant.show && (
+        <CurrantArrow
+          fromCoords={fromCoords}
+          toCoords={toCoords}
+          ratio={ratio}
+          angle={angle}
+          {...currant}
+        />
+      )}
     </g>
   );
 };
