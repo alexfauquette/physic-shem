@@ -1,5 +1,5 @@
 import { getAdhesivePoints, isAnchor } from "./utils";
-
+import { defaultCurrant } from "./debugInitialState";
 import { MODE_CREATE_PATH_ELEMENT } from "./interactionModes";
 
 import { v4 as uuid } from "uuid";
@@ -140,6 +140,7 @@ export const savePathElement = (state, action) => {
           from: fromAnchor,
           to: toAnchor,
           type: elementType,
+          currant: defaultCurrant,
         },
       },
       allIds: [...state.pathComponents.allIds, newId_element],

@@ -1,8 +1,8 @@
 import { MODE_SELECT } from "./interactionModes";
 
-const defaultCurrant = {
-  show: true,
-  currantText: "a",
+export const defaultCurrant = {
+  show: false,
+  currantText: "",
   currantIsForward: true,
   currantIsAbove: true,
   currantIsAfter: true,
