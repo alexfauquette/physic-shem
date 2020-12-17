@@ -50,6 +50,28 @@ const getTextAnchor = (angle, currantIsAbove) => {
   };
 };
 
+export const getCurrantAttribute = ({
+  show,
+  currantText,
+  currantIsForward,
+  currantIsAbove,
+  currantIsAfter,
+}) => {
+  if (!show) {
+    return "";
+  }
+  const text = currantText || "$$$$";
+  if (!currantIsAfter) {
+    const position = currantIsAbove ? "^" : "_";
+    const direction = currantIsForward ? ">" : "<";
+    return `i${direction}${position}=${text}`;
+  } else {
+    const position = currantIsAbove ? "^" : "_";
+    const direction = currantIsForward ? ">" : "<";
+    return `i${position}${direction}=${text}`;
+  }
+};
+
 const CurrantArrow = ({
   fromCoords,
   toCoords,

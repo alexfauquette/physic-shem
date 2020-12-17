@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import "./style.scss";
 import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
-import CurrantArrow from "../atoms/currant";
+import CurrantArrow, { getCurrantAttribute } from "../atoms/currant";
 
 const R = 0.6 * 0.5 * MULTIPLICATIVE_CONST;
 const r = (0.7071 * R).toFixed(3);
@@ -84,12 +84,16 @@ const Lampe = ({
   );
 };
 
-export const drawer = (element, from, to) =>
-  `\\draw (${((from.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
+export const drawer = (element, from, to) => {
+  const currantAttribute = getCurrantAttribute(element.currant);
+
+  return `\\draw (${((from.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
     (-from.y / MULTIPLICATIVE_CONST) *
     R_LEN
-  ).toFixed(2)}) to[lamp] (${((to.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(
-    2
-  )}, ${((-to.y / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)});`;
+  ).toFixed(2)}) to[lamp${currantAttribute ? `, ${currantAttribute}` : ""}] (${(
+    (to.x / MULTIPLICATIVE_CONST) *
+    R_LEN
+  ).toFixed(2)}, ${((-to.y / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)});`;
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Lampe);
