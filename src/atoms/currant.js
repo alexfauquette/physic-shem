@@ -119,6 +119,7 @@ const CurrantArrow = ({
         }}
       />
       <text
+        key={Math.random()}
         x={
           xI -
           (currantIsAbove ? -0.5 * rI : 0.5 * rI) *
