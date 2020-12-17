@@ -96,20 +96,6 @@ const CurrantArrow = ({
           transformOrigin: `${xI}px ${yI}px`,
         }}
       />
-      <circle
-        cx={
-          xI -
-          (currantIsAbove ? -0.5 * rI : 0.5 * rI) *
-            Math.sin((angle / 180) * Math.PI)
-        }
-        cy={
-          yI +
-          (currantIsAbove ? -0.5 * rI : 0.5 * rI) *
-            Math.cos((angle / 180) * Math.PI)
-        }
-        r={1}
-        style={{ fill: "red" }}
-      />
       <text
         x={
           xI -
