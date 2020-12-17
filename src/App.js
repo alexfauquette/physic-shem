@@ -66,6 +66,7 @@ const mapStateToProps = (state) => {
   return {
     mode: state.mode,
     selection: state.selection,
+    pathIds: state.pathComponents.allIds,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -87,6 +88,7 @@ const mapDispatchToProps = (dispatch) => {
 function App({
   mode,
   selection,
+  pathIds,
   startSelect,
   startCreatePathElement,
   startCreateNodeElement,
@@ -186,7 +188,9 @@ function App({
         anchor="right"
         variant="persistent"
         open={
-          (mode === MODE_SELECT || mode === MODE_DRAG) && selection.length === 1
+          (mode === MODE_SELECT || mode === MODE_DRAG) &&
+          selection.length === 1 &&
+          pathIds.includes(selection[0])
         }
         className={classes.optionDrawer}
         classes={{
