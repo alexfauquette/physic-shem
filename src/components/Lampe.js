@@ -3,6 +3,10 @@ import { connect } from "react-redux";
 import "./style.scss";
 import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
 import CurrantArrow, { getCurrantAttribute } from "../atoms/currant";
+import Label, {
+  getLabelAttribute,
+  getAnnotationAttribute,
+} from "../atoms/label";
 
 const R = 0.6 * 0.5 * MULTIPLICATIVE_CONST;
 const r = (0.7071 * R).toFixed(3);
@@ -34,6 +38,8 @@ const Lampe = ({
   id,
   onMouseDown,
   currant,
+  label,
+  annotation,
 }) => {
   if (!fromCoords || !toCoords) {
     return null;
@@ -80,17 +86,39 @@ const Lampe = ({
           {...currant}
         />
       )}
+      {label && (
+        <Label
+          fromCoords={fromCoords}
+          toCoords={toCoords}
+          height={R}
+          angle={angle}
+          text={label}
+        />
+      )}
+      {annotation && (
+        <Label
+          fromCoords={fromCoords}
+          toCoords={toCoords}
+          height={R}
+          angle={angle}
+          text={annotation}
+          isAbove={false}
+        />
+      )}
     </g>
   );
 };
 
 export const drawer = (element, from, to) => {
   const currantAttribute = getCurrantAttribute(element.currant);
-
+  const label = getLabelAttribute(element.label);
+  const annotation = getAnnotationAttribute(element.annotation);
   return `\\draw (${((from.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
     (-from.y / MULTIPLICATIVE_CONST) *
     R_LEN
-  ).toFixed(2)}) to[lamp${currantAttribute ? `, ${currantAttribute}` : ""}] (${(
+  ).toFixed(2)}) to[lamp${label ? `, ${label}` : ""}${
+    annotation ? `, ${annotation}` : ""
+  }${currantAttribute ? `, ${currantAttribute}` : ""}] (${(
     (to.x / MULTIPLICATIVE_CONST) *
     R_LEN
   ).toFixed(2)}, ${((-to.y / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)});`;

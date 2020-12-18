@@ -3,6 +3,10 @@ import { connect } from "react-redux";
 import "./style.scss";
 import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
 import CurrantArrow, { getCurrantAttribute } from "../atoms/currant";
+import Label, {
+  getLabelAttribute,
+  getAnnotationAttribute,
+} from "../atoms/label";
 
 const height = 0.5;
 const width = 0.4;
@@ -33,6 +37,8 @@ const EmptyDiode = ({
   id,
   onMouseDown,
   currant,
+  label,
+  annotation,
 }) => {
   if (!fromCoords || !toCoords) {
     return null;
@@ -84,22 +90,44 @@ const EmptyDiode = ({
           {...currant}
         />
       )}
+
+      {label && (
+        <Label
+          fromCoords={fromCoords}
+          toCoords={toCoords}
+          height={UNIT_Y}
+          angle={angle}
+          text={label}
+        />
+      )}
+      {annotation && (
+        <Label
+          fromCoords={fromCoords}
+          toCoords={toCoords}
+          height={UNIT_Y}
+          angle={angle}
+          text={annotation}
+          isAbove={false}
+        />
+      )}
     </g>
   );
 };
 
 export const drawer = (element, from, to) => {
   const currantAttribute = getCurrantAttribute(element.currant);
+  const label = getLabelAttribute(element.label);
+  const annotation = getAnnotationAttribute(element.annotation);
 
   return `\\draw (${((from.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
     (-from.y / MULTIPLICATIVE_CONST) *
     R_LEN
-  ).toFixed(2)}) to[empty diode${
-    currantAttribute ? `, ${currantAttribute}` : ""
-  }] (${((to.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
-    (-to.y / MULTIPLICATIVE_CONST) *
+  ).toFixed(2)}) to[empty diode${label ? `, ${label}` : ""}${
+    annotation ? `, ${annotation}` : ""
+  }${currantAttribute ? `, ${currantAttribute}` : ""}] (${(
+    (to.x / MULTIPLICATIVE_CONST) *
     R_LEN
-  ).toFixed(2)});`;
+  ).toFixed(2)}, ${((-to.y / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)});`;
 };
 
 export default connect(mapStateToProps)(EmptyDiode);

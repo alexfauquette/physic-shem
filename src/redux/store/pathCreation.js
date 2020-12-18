@@ -141,6 +141,8 @@ export const savePathElement = (state, action) => {
           to: toAnchor,
           type: elementType,
           currant: defaultCurrant,
+          label: "",
+          annotation: "",
         },
       },
       allIds: [...state.pathComponents.allIds, newId_element],

@@ -56,6 +56,26 @@ const inputElement = {
       </ListItemSecondaryAction>
     </ListItem>
   ),
+  label: (value, update) => (
+    <ListItem>
+      <TextField
+        label="Label"
+        value={value}
+        onKeyDown={(e) => e.stopPropagation()}
+        onChangeCapture={update(null)}
+      />
+    </ListItem>
+  ),
+  annotation: (value, update) => (
+    <ListItem>
+      <TextField
+        label="Annotation"
+        value={value}
+        onKeyDown={(e) => e.stopPropagation()}
+        onChangeCapture={update(null)}
+      />
+    </ListItem>
+  ),
   currant: (value, update) => (
     <>
       <ListItem button>
