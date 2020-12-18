@@ -38,24 +38,6 @@ const mapStateToProps = (state) => {
 };
 
 const inputElement = {
-  angle: (value, update) => (
-    <ListItem button>
-      <ListItemText primary="rotation" />
-      <ListItemSecondaryAction>
-        <Input
-          value={value || 0}
-          onKeyDown={(e) => e.stopPropagation()}
-          onChangeCapture={update(null)}
-          inputProps={{
-            step: 5,
-            min: -180,
-            max: 180,
-            type: "number",
-          }}
-        />
-      </ListItemSecondaryAction>
-    </ListItem>
-  ),
   label: (value, update) => (
     <ListItem>
       <TextField
@@ -74,6 +56,24 @@ const inputElement = {
         onKeyDown={(e) => e.stopPropagation()}
         onChangeCapture={update(null)}
       />
+    </ListItem>
+  ),
+  angle: (value, update) => (
+    <ListItem button>
+      <ListItemText primary="rotation" />
+      <ListItemSecondaryAction>
+        <Input
+          value={value || 0}
+          onKeyDown={(e) => e.stopPropagation()}
+          onChangeCapture={update(null)}
+          inputProps={{
+            step: 5,
+            min: -180,
+            max: 180,
+            type: "number",
+          }}
+        />
+      </ListItemSecondaryAction>
     </ListItem>
   ),
   currant: (value, update) => (
@@ -157,13 +157,18 @@ const ElementOptions = ({ handleInputChange, id, options = null }) => {
   }
   return (
     <List>
-      {Object.keys(options).map((name) =>
-        inputElement[name] ? (
+      {Object.keys(options)
+        .map((name) => [
+          name,
+          Object.keys(inputElement).findIndex((n) => n == name),
+        ])
+        .filter(([, index]) => index >= 0)
+        .sort(([, i1], [, i2]) => i1 - i2)
+        .map(([name]) => (
           <div key={name}>
             {inputElement[name](options[name], handleInputChange(id, name))}
           </div>
-        ) : null
-      )}
+        ))}
     </List>
   );
 };
