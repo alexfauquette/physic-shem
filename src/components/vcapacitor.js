@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import "./style.scss";
 import { R_LEN, MULTIPLICATIVE_CONST } from "./constantes";
-import CurrantArrow, { getCurrantAttribute } from "../atoms/currant";
+import { withPathAttributes, getPathAttributes } from "./hoc/pathComponents";
 
 const height = 0.6;
 const width = 0.5;
@@ -37,84 +37,28 @@ const mapStateToProps = (state, props) => {
     : {};
 };
 
-const Vcapacitor = ({
-  fromCoords,
-  toCoords,
-  mode,
-  selected,
-  showHandles,
-  id,
-  onMouseDown,
-  currant,
-}) => {
-  if (!fromCoords || !toCoords) {
-    return null;
-  }
-  const { x: xFrom, y: yFrom } = fromCoords;
-  const { x: xTo, y: yTo } = toCoords;
-
-  const d = Math.sqrt((xFrom - xTo) ** 2 + (yFrom - yTo) ** 2);
-
-  const ratio = (d - 2 * STEP) / (2 * d); // ratio of the line use by connection
-  const angle = parseInt(
-    (180 * Math.atan2(yTo - yFrom, xTo - xFrom)) / Math.PI
-  );
+const Vcapacitor = ({}) => {
   return (
-    <g
-      onMouseDown={onMouseDown || null}
-      className={`component ${selected ? "red" : "black"}`}
-    >
-      <g
-        style={{
-          transform: `translate(${(xFrom + xTo) / 2}px , ${
-            (yFrom + yTo) / 2
-          }px) rotate(${angle}deg)`,
-        }}
-      >
-        <path d={`M  ${-STEP} ${-UNIT_Y} L ${-STEP} ${UNIT_Y}`} />
+    <>
+      <path d={`M  ${-STEP} ${-UNIT_Y} L ${-STEP} ${UNIT_Y}`} />
 
-        <path d={`M  ${STEP} ${-UNIT_Y} L ${STEP} ${UNIT_Y}`} />
+      <path d={`M  ${STEP} ${-UNIT_Y} L ${STEP} ${UNIT_Y}`} />
 
-        <path d={`M ${-UNIT_X} ${-UNIT_Y} L ${UNIT_X} ${UNIT_Y}`} />
-      </g>
-
-      {/* here start the connection between dipole and anchors */}
-      <path
-        d={`M ${xFrom} ${yFrom} L ${xFrom + ratio * (xTo - xFrom)} ${
-          yFrom + ratio * (yTo - yFrom)
-        }`}
-      />
-      <path
-        d={`M ${xTo} ${yTo} L ${xTo + ratio * (xFrom - xTo)} ${
-          yTo + ratio * (yFrom - yTo)
-        }`}
-      />
-
-      {currant && currant.show && (
-        <CurrantArrow
-          fromCoords={fromCoords}
-          toCoords={toCoords}
-          ratio={ratio}
-          angle={angle}
-          {...currant}
-        />
-      )}
-    </g>
+      <path d={`M ${-UNIT_X} ${-UNIT_Y} L ${UNIT_X} ${UNIT_Y}`} />
+    </>
   );
 };
 
 export const drawer = (element, from, to) => {
-  const currantAttribute = getCurrantAttribute(element.currant);
-
   return `\\draw (${((from.x / MULTIPLICATIVE_CONST) * 1.4).toFixed(2)}, ${(
     (-from.y / MULTIPLICATIVE_CONST) *
     R_LEN
-  ).toFixed(2)}) to[variable capacitor${
-    currantAttribute ? `, ${currantAttribute}` : ""
-  }] (${((to.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
-    (-to.y / MULTIPLICATIVE_CONST) *
-    1.4
-  ).toFixed(2)});`;
+  ).toFixed(2)}) to[variable capacitor${getPathAttributes(element)}] (${(
+    (to.x / MULTIPLICATIVE_CONST) *
+    R_LEN
+  ).toFixed(2)}, ${((-to.y / MULTIPLICATIVE_CONST) * 1.4).toFixed(2)});`;
 };
 
-export default connect(mapStateToProps)(Vcapacitor);
+export default connect(mapStateToProps)(
+  withPathAttributes({ width, height })(Vcapacitor)
+);

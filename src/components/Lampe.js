@@ -2,12 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import "./style.scss";
 import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
-import CurrantArrow, { getCurrantAttribute } from "../atoms/currant";
-import Label, {
-  getLabelAttribute,
-  getAnnotationAttribute,
-} from "../atoms/label";
+import { withPathAttributes, getPathAttributes } from "./hoc/pathComponents";
 
+const width = 0.6;
+const height = 0.6;
 const R = 0.6 * 0.5 * MULTIPLICATIVE_CONST;
 const r = (0.7071 * R).toFixed(3);
 
@@ -28,100 +26,26 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 };
 
-const Lampe = ({
-  fromCoords,
-  toCoords,
-  anchors,
-  mode,
-  selected,
-  showHandles,
-  id,
-  onMouseDown,
-  currant,
-  label,
-  annotation,
-}) => {
-  if (!fromCoords || !toCoords) {
-    return null;
-  }
-  const { x: xFrom, y: yFrom } = fromCoords;
-  const { x: xTo, y: yTo } = toCoords;
-
-  const d = Math.sqrt((xFrom - xTo) ** 2 + (yFrom - yTo) ** 2);
-  const ratio = 1 / 2 - R / d;
-  const angle = parseInt(
-    (180 * Math.atan2(yTo - yFrom, xTo - xFrom)) / Math.PI
-  );
+const Lampe = ({}) => {
   return (
-    <g
-      onMouseDown={onMouseDown || null}
-      className={`component ${selected ? "red" : "black"}`}
-    >
-      <g
-        style={{
-          transform: `translate(${(xFrom + xTo) / 2}px , ${
-            (yFrom + yTo) / 2
-          }px) rotate(${angle}deg)`,
-        }}
-      >
-        <circle cx={0} cy={0} r={R} />
-        <path d={`M -${r} -${r} L ${r} ${r} M -${r} ${r} L ${r} -${r}`} />
-      </g>
-      <path
-        d={`M ${xFrom} ${yFrom} L ${xFrom + ratio * (xTo - xFrom)} ${
-          yFrom + ratio * (yTo - yFrom)
-        }`}
-      />
-      <path
-        d={`M ${xTo} ${yTo} L ${xTo + ratio * (xFrom - xTo)} ${
-          yTo + ratio * (yFrom - yTo)
-        }`}
-      />
-      {currant && currant.show && (
-        <CurrantArrow
-          fromCoords={fromCoords}
-          toCoords={toCoords}
-          ratio={ratio}
-          angle={angle}
-          {...currant}
-        />
-      )}
-      {label && (
-        <Label
-          fromCoords={fromCoords}
-          toCoords={toCoords}
-          height={R}
-          angle={angle}
-          text={label}
-        />
-      )}
-      {annotation && (
-        <Label
-          fromCoords={fromCoords}
-          toCoords={toCoords}
-          height={R}
-          angle={angle}
-          text={annotation}
-          isAbove={false}
-        />
-      )}
-    </g>
+    <>
+      <circle cx={0} cy={0} r={R} />
+      <path d={`M -${r} -${r} L ${r} ${r} M -${r} ${r} L ${r} -${r}`} />
+    </>
   );
 };
 
 export const drawer = (element, from, to) => {
-  const currantAttribute = getCurrantAttribute(element.currant);
-  const label = getLabelAttribute(element.label);
-  const annotation = getAnnotationAttribute(element.annotation);
   return `\\draw (${((from.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
     (-from.y / MULTIPLICATIVE_CONST) *
     R_LEN
-  ).toFixed(2)}) to[lamp${label ? `, ${label}` : ""}${
-    annotation ? `, ${annotation}` : ""
-  }${currantAttribute ? `, ${currantAttribute}` : ""}] (${(
+  ).toFixed(2)}) to[lamp${getPathAttributes(element)}] (${(
     (to.x / MULTIPLICATIVE_CONST) *
     R_LEN
   ).toFixed(2)}, ${((-to.y / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)});`;
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Lampe);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withPathAttributes({ width, height })(Lampe));

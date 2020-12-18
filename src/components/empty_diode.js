@@ -2,11 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import "./style.scss";
 import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
-import CurrantArrow, { getCurrantAttribute } from "../atoms/currant";
-import Label, {
-  getLabelAttribute,
-  getAnnotationAttribute,
-} from "../atoms/label";
+import { withPathAttributes, getPathAttributes } from "./hoc/pathComponents";
 
 const height = 0.5;
 const width = 0.4;
@@ -27,107 +23,27 @@ const mapStateToProps = (state, props) => {
     : {};
 };
 
-const EmptyDiode = ({
-  fromCoords,
-  toCoords,
-  anchors,
-  mode,
-  selected,
-  showHandles,
-  id,
-  onMouseDown,
-  currant,
-  label,
-  annotation,
-}) => {
-  if (!fromCoords || !toCoords) {
-    return null;
-  }
-  const { x: xFrom, y: yFrom } = fromCoords;
-  const { x: xTo, y: yTo } = toCoords;
-
-  const d = Math.sqrt((xFrom - xTo) ** 2 + (yFrom - yTo) ** 2);
-  const ratio = (d - width * MULTIPLICATIVE_CONST) / (2 * d); // ratio of the line use by connection
-  const angle = parseInt(
-    (180 * Math.atan2(yTo - yFrom, xTo - xFrom)) / Math.PI
-  );
+const EmptyDiode = ({}) => {
   return (
-    <g
-      onMouseDown={onMouseDown || null}
-      className={`component ${selected ? "red" : "black"}`}
-    >
-      <g
-        style={{
-          transform: `translate(${(xFrom + xTo) / 2}px , ${
-            (yFrom + yTo) / 2
-          }px) rotate(${angle}deg)`,
-        }}
-      >
-        <path
-          d={`M ${UNIT_X} 0 L ${-UNIT_X} ${-UNIT_Y} L ${-UNIT_X} ${UNIT_Y} Z`}
-        />
-        <path d={`M ${UNIT_X} ${UNIT_Y} L ${UNIT_X} ${-UNIT_Y}`} />
-      </g>
-
-      {/* here start the connection between dipole and anchors */}
+    <>
       <path
-        d={`M ${xFrom} ${yFrom} L ${xFrom + ratio * (xTo - xFrom)} ${
-          yFrom + ratio * (yTo - yFrom)
-        }`}
+        d={`M ${UNIT_X} 0 L ${-UNIT_X} ${-UNIT_Y} L ${-UNIT_X} ${UNIT_Y} Z`}
       />
-      <path
-        d={`M ${xTo} ${yTo} L ${xTo + ratio * (xFrom - xTo)} ${
-          yTo + ratio * (yFrom - yTo)
-        }`}
-      />
-
-      {currant && currant.show && (
-        <CurrantArrow
-          fromCoords={fromCoords}
-          toCoords={toCoords}
-          ratio={ratio}
-          angle={angle}
-          {...currant}
-        />
-      )}
-
-      {label && (
-        <Label
-          fromCoords={fromCoords}
-          toCoords={toCoords}
-          height={UNIT_Y}
-          angle={angle}
-          text={label}
-        />
-      )}
-      {annotation && (
-        <Label
-          fromCoords={fromCoords}
-          toCoords={toCoords}
-          height={UNIT_Y}
-          angle={angle}
-          text={annotation}
-          isAbove={false}
-        />
-      )}
-    </g>
+      <path d={`M ${UNIT_X} ${UNIT_Y} L ${UNIT_X} ${-UNIT_Y}`} />
+    </>
   );
 };
 
 export const drawer = (element, from, to) => {
-  const currantAttribute = getCurrantAttribute(element.currant);
-  const label = getLabelAttribute(element.label);
-  const annotation = getAnnotationAttribute(element.annotation);
-
   return `\\draw (${((from.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
     (-from.y / MULTIPLICATIVE_CONST) *
     R_LEN
-  ).toFixed(2)}) to[empty diode${label ? `, ${label}` : ""}${
-    annotation ? `, ${annotation}` : ""
-  }${currantAttribute ? `, ${currantAttribute}` : ""}] (${(
+  ).toFixed(2)}) to[empty diode${getPathAttributes(element)}] (${(
     (to.x / MULTIPLICATIVE_CONST) *
     R_LEN
   ).toFixed(2)}, ${((-to.y / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)});`;
 };
 
-export default connect(mapStateToProps)(EmptyDiode);
+export default connect(mapStateToProps)(
+  withPathAttributes({ width, height })(EmptyDiode)
+);
