@@ -41,9 +41,7 @@ const Vcapacitor = ({}) => {
   return (
     <>
       <path d={`M  ${-STEP} ${-UNIT_Y} L ${-STEP} ${UNIT_Y}`} />
-
       <path d={`M  ${STEP} ${-UNIT_Y} L ${STEP} ${UNIT_Y}`} />
-
       <path d={`M ${-UNIT_X} ${-UNIT_Y} L ${UNIT_X} ${UNIT_Y}`} />
     </>
   );
@@ -60,5 +58,5 @@ export const drawer = (element, from, to) => {
 };
 
 export default connect(mapStateToProps)(
-  withPathAttributes({ width, height })(Vcapacitor)
+  withPathAttributes({ width: capacitor_width / 2, height })(Vcapacitor)
 );
