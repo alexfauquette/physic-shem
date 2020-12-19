@@ -19,6 +19,8 @@ export const withPathAttributes = ({ height = 1, width = 1 }) => (
     currant,
     label,
     annotation,
+    mirror,
+    invert,
   } = props;
 
   if (!fromCoords || !toCoords) {
@@ -43,7 +45,9 @@ export const withPathAttributes = ({ height = 1, width = 1 }) => (
         style={{
           transform: `translate(${(xFrom + xTo) / 2}px , ${
             (yFrom + yTo) / 2
-          }px) rotate(${angle}deg)`,
+          }px) rotate(${angle}deg)${mirror ? "scaleY(-1)" : ""}${
+            invert ? "scaleX(-1)" : ""
+          }`,
         }}
       >
         {component({
@@ -105,5 +109,5 @@ export const getPathAttributes = (element) => {
 
   return `${label ? `, ${label}` : ""}${annotation ? `, ${annotation}` : ""}${
     currantAttribute ? `, ${currantAttribute}` : ""
-  }`;
+  }${element.mirror ? ", mirror" : ""}${element.invert ? ", invert" : ""}`;
 };

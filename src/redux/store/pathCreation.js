@@ -143,6 +143,8 @@ export const savePathElement = (state, action) => {
           currant: defaultCurrant,
           label: "",
           annotation: "",
+          mirror: false,
+          invert: false,
         },
       },
       allIds: [...state.pathComponents.allIds, newId_element],

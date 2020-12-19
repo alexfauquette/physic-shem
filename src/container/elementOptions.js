@@ -76,6 +76,26 @@ const inputElement = {
       </ListItemSecondaryAction>
     </ListItem>
   ),
+  mirror: (value, update) => (
+    <ListItem>
+      <FormControlLabel
+        control={
+          <Switch checked={value} onChange={update(!value)} name="mirror" />
+        }
+        label="mirror"
+      />
+    </ListItem>
+  ),
+  invert: (value, update) => (
+    <ListItem>
+      <FormControlLabel
+        control={
+          <Switch checked={value} onChange={update(!value)} name="invert" />
+        }
+        label="Invert"
+      />
+    </ListItem>
+  ),
   currant: (value, update) => (
     <>
       <ListItem button>
