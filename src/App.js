@@ -172,13 +172,6 @@ function App({
                 }}
               >
                 <ListItemText primary={name} />
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 100 50"
-                  style={{ width: 100, height: 50 }}
-                >
-                  {components[name]({ x: 50, y: 25 })}
-                </svg>
               </ListItem>
             ))}
           </List>
