@@ -10,12 +10,16 @@ import NMOS, {
   getAnchor as nmos_getAnchor,
   drawer as nmosDrawer,
 } from "./nmos";
+import VEE, { getAnchor as vee_getAnchor, drawer as veeDrawer } from "./vee";
+import VCC, { getAnchor as vcc_getAnchor, drawer as vccDrawer } from "./vcc";
 
 const getAnchors = {
   lampe: () => [],
   "empty led": () => [],
   pR: (props) => pR_getAnchor(props),
   nmos: (props) => nmos_getAnchor(props),
+  vee: (props) => vee_getAnchor(props),
+  vcc: (props) => vcc_getAnchor(props),
   vcapacitor: (props) => vcapacitor_getAnchor(props),
 };
 
@@ -24,6 +28,8 @@ const getDrawer = {
   "empty led": emptyDiodeDrawer,
   pR: pRDrawer,
   nmos: nmosDrawer,
+  vee: veeDrawer,
+  vcc: vccDrawer,
   vcapacitor: vcapacitorDrawer,
 };
 
@@ -40,7 +46,19 @@ export const isPath = {
   "empty led": true,
   pR: true,
   nmos: false,
+  vee: false,
+  vcc: false,
   vcapacitor: true,
+};
+
+export const isMultyPole = {
+  lampe: false,
+  "empty led": false,
+  pR: false,
+  nmos: true,
+  vee: false,
+  vcc: false,
+  vcapacitor: false,
 };
 
 const components = {
@@ -48,6 +66,8 @@ const components = {
   "empty led": (props) => <EmptyDiode key={props.id} {...props} />,
   pR: (props) => <PR key={props.id} {...props} />,
   nmos: (props) => <NMOS key={props.id} {...props} />,
+  vee: (props) => <VEE key={props.id} {...props} />,
+  vcc: (props) => <VCC key={props.id} {...props} />,
   vcapacitor: (props) => <Vcapacitor key={props.id} {...props} />,
 };
 
