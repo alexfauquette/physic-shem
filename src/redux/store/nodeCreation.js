@@ -46,7 +46,7 @@ export const saveNodeCreation = (state, action) => {
         newWeakLink.push({
           anchorId: state.currentMagnet.attractor.id,
           nodeId: newId_element,
-          name: state.currentMagnet.attractor.name,
+          name: state.currentMagnet.attracted.name,
         });
       }
       if (state.currentMagnet.attractor.type === "NODE") {
