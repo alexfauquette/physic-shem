@@ -34,14 +34,8 @@ const EmptyDiode = ({}) => {
   );
 };
 
-export const drawer = (element, from, to) => {
-  return `\\draw (${((from.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
-    (-from.y / MULTIPLICATIVE_CONST) *
-    R_LEN
-  ).toFixed(2)}) to[empty diode${getPathAttributes(element)}] (${(
-    (to.x / MULTIPLICATIVE_CONST) *
-    R_LEN
-  ).toFixed(2)}, ${((-to.y / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)});`;
+export const drawer = (element) => {
+  return `to[empty diode${getPathAttributes(element)}] `;
 };
 
 export default connect(mapStateToProps)(

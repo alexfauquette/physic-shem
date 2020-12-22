@@ -59,14 +59,8 @@ const PR = ({ wiper_pos = 0.5 }) => {
   );
 };
 
-export const drawer = (element, from, to) => {
-  return `\\draw (${((from.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
-    (-from.y / MULTIPLICATIVE_CONST) *
-    R_LEN
-  ).toFixed(2)}) to[pR${getPathAttributes(element)}] (${(
-    (to.x / MULTIPLICATIVE_CONST) *
-    R_LEN
-  ).toFixed(2)}, ${((-to.y / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)});`;
+export const drawer = (element) => {
+  return `to[pR${getPathAttributes(element)}] `;
 };
 
 export default connect(mapStateToProps)(

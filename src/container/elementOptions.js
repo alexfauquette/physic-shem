@@ -180,7 +180,7 @@ const ElementOptions = ({ handleInputChange, id, options = null }) => {
       {Object.keys(options)
         .map((name) => [
           name,
-          Object.keys(inputElement).findIndex((n) => n == name),
+          Object.keys(inputElement).findIndex((n) => n === name),
         ])
         .filter(([, index]) => index >= 0)
         .sort(([, i1], [, i2]) => i1 - i2)

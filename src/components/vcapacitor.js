@@ -47,14 +47,8 @@ const Vcapacitor = ({}) => {
   );
 };
 
-export const drawer = (element, from, to) => {
-  return `\\draw (${((from.x / MULTIPLICATIVE_CONST) * 1.4).toFixed(2)}, ${(
-    (-from.y / MULTIPLICATIVE_CONST) *
-    R_LEN
-  ).toFixed(2)}) to[variable capacitor${getPathAttributes(element)}] (${(
-    (to.x / MULTIPLICATIVE_CONST) *
-    R_LEN
-  ).toFixed(2)}, ${((-to.y / MULTIPLICATIVE_CONST) * 1.4).toFixed(2)});`;
+export const drawer = (element) => {
+  return `to[variable capacitor${getPathAttributes(element)}] `;
 };
 
 export default connect(mapStateToProps)(
