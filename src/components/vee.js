@@ -61,7 +61,9 @@ const VEE = ({ positionCoords, angle = 0, selected, onMouseDown }) => {
 };
 
 export const drawer = (element) => {
-  return `node[vee]{}`;
+  return `node[vee${
+    element.angle && element.angle !== 0 ? " ,rotate=" + element.angle : ""
+  }]{}`;
 };
 
 export default connect(mapStateToProps)(VEE);

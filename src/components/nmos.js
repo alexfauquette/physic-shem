@@ -140,14 +140,19 @@ const NMOS = ({
   );
 };
 
-export const drawer = (element, position) => {
-  return `\\draw (${((position.x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(
-    2
-  )}, ${((-position.y / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}) node[nmos${
-    element.positionAnchor ? " ,anchor=" + element.positionAnchor : ""
-  }${
+export const drawer = (element, positionInformations, name = null) => {
+  const { x, y, position, anchor } = positionInformations;
+
+  const coord = position
+    ? `(${position})`
+    : `(${((x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
+        (-y / MULTIPLICATIVE_CONST) *
+        R_LEN
+      ).toFixed(2)})`;
+
+  return `\\draw ${coord} node[nmos${anchor ? " ,anchor=" + anchor : ""}${
     element.angle && element.angle !== 0 ? " ,rotate=" + element.angle : ""
-  }]{};`;
+  }]${name ? `(${name})` : ""}{};`;
 };
 
 export default connect(mapStateToProps)(NMOS);

@@ -62,7 +62,9 @@ const VCC = ({ positionCoords, angle = 0, selected, onMouseDown }) => {
 };
 
 export const drawer = (element) => {
-  return `node[vcc]{}`;
+  return `node[vcc${
+    element.angle && element.angle !== 0 ? " ,rotate=" + element.angle : ""
+  }]{}`;
 };
 
 export default connect(mapStateToProps)(VCC);

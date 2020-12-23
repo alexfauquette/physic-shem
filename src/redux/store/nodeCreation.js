@@ -72,6 +72,7 @@ export const saveNodeCreation = (state, action) => {
             id: newId_element,
             position: positionId,
             type: state.newNode.elementType,
+            angle: 0,
           },
         },
         allIds: [...state.pathComponents.allIds, newId_element],
