@@ -20,4 +20,11 @@ code {
 text {
   font-family: "Computer Modern", monospace;
   font-size: 0.7cm;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
 }
