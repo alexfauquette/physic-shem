@@ -57,6 +57,7 @@ import {
   startNodeCreation,
   saveNodeCreation,
   updatePosition as nodeCreationUpdatePosition,
+  rotateNode,
 } from "./nodeCreation";
 
 import { stackAnchors, splitAnchor } from "./anchorHelper";
@@ -68,6 +69,9 @@ function update(state = initial_state, action) {
     case UPDATE_COMPONENT:
       const { id, name, value } = action;
 
+      if (name === "angle") {
+        return rotateNode(state, action);
+      }
       return {
         ...state,
         pathComponents: {

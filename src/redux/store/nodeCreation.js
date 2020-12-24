@@ -1,6 +1,7 @@
 import { MODE_CREATE_NODE_ELEMENT } from "./interactionModes";
 
-import { getAdhesivePoints, isAnchor } from "./utils";
+import { getAdhesivePoints } from "./utils";
+import { getElementAnchors, isMultyPole } from "../../components";
 
 import { v4 as uuid } from "uuid";
 
@@ -94,4 +95,135 @@ export const saveNodeCreation = (state, action) => {
     };
   }
   return state;
+};
+
+const newPositions = (anchors, toUpdate, deltaToAdd) => {
+  const newAnchors = { ...anchors };
+
+  toUpdate.forEach(({ anchorId, anchorName }) => {
+    newAnchors[anchorId] = {
+      ...newAnchors[anchorId],
+      x: newAnchors[anchorId].x + deltaToAdd[anchorName].dx,
+      y: newAnchors[anchorId].y + deltaToAdd[anchorName].dy,
+    };
+  });
+
+  return { ...newAnchors };
+};
+
+export const rotateNode = (state, { id, value }) => {
+  // we prepare data for the update
+  // first we get coordinate of anchors before and after rotation
+  const element = state.pathComponents.byId[id];
+
+  const positionCoords = state.anchors.byId[element.position];
+  const prevAngle = element.angle;
+  const newAngle = value;
+
+  const prevAnchors = getElementAnchors({
+    ...element,
+    positionCoords: positionCoords,
+    angle: prevAngle,
+  });
+  const newAnchors = getElementAnchors({
+    ...element,
+    positionCoords: positionCoords,
+    angle: newAngle,
+  });
+
+  // Now we create a dictionary that for an anchor name return dx and dy the delta modification of the anchor
+  const deltaToAdd = {};
+  newAnchors.forEach(({ name, x, y }) => {
+    deltaToAdd[name] = { dx: x, dy: y };
+  });
+  prevAnchors.forEach(({ name, x, y }) => {
+    deltaToAdd[name].dx -= x;
+    deltaToAdd[name].dy -= y;
+  });
+
+  if (
+    state.rotationHelper &&
+    state.rotationHelper.id &&
+    state.rotationHelper.id === id
+  ) {
+    // the id is the same as before So we just need to do the update of coordinates
+
+    return {
+      ...state,
+      anchors: {
+        ...state.anchors,
+        byId: {
+          ...newPositions(
+            state.anchors.byId,
+            state.rotationHelper.IdToUpdate,
+            deltaToAdd
+          ),
+        },
+      },
+      pathComponents: {
+        ...state.pathComponents,
+        byId: {
+          ...state.pathComponents.byId,
+          [id]: {
+            ...state.pathComponents.byId[id],
+            angle: newAngle,
+          },
+        },
+      },
+    };
+  } else {
+    const IdToUpdate = [];
+    const toRemove = [];
+
+    // we will parse weakLinks to know what to update and what to remove
+    state.weakLinks.forEach(({ anchorId, nodeId, name, nameAnchor }, index) => {
+      if (
+        anchorId === element.position &&
+        !(deltaToAdd[nameAnchor].x === 0 && deltaToAdd[nameAnchor].y === 0)
+      ) {
+        // the element has a parent and it's anchor need to move
+        // TODO : here is a lazy soution : breking the link
+        toRemove.push(index);
+      }
+      if (nodeId === id) {
+        if (
+          !state.anchors.byId[anchorId].isNodePosition ||
+          !isMultyPole[
+            state.pathComponents.byId[state.anchors.byId[anchorId].nodeId].type
+          ]
+        ) {
+          // if child is path of mono pole
+          IdToUpdate.push({ anchorId, anchorName: name });
+        } else {
+          toRemove.push(index);
+        }
+      }
+    });
+
+    console.log(toRemove.length);
+    return {
+      ...state,
+      anchors: {
+        ...state.anchors,
+        byId: { ...newPositions(state.anchors.byId, IdToUpdate, deltaToAdd) },
+      },
+      pathComponents: {
+        ...state.pathComponents,
+        byId: {
+          ...state.pathComponents.byId,
+          [id]: {
+            ...state.pathComponents.byId[id],
+            angle: newAngle,
+          },
+        },
+      },
+      rotationHelper: {
+        IdToUpdate: IdToUpdate,
+        id: id,
+      },
+      weakLinks: [
+        ...state.weakLinks.filter((elem, index) => !toRemove.includes(index)),
+      ],
+    };
+  }
 };
