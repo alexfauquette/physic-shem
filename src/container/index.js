@@ -218,7 +218,7 @@ const Container = ({
         }
         ref={svgRef}
       >
-        <Components svgRef={svgRef} />
+        <Components svgRef={svgRef} displayOptions={displayOptions} />
 
         {/* display the path element in during its creation */}
 
