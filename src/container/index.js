@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import components from "../components";
 import {
@@ -10,6 +10,10 @@ import {
   nextStepOfElementCreation,
   startRectangleSelection,
   stopRectangleSelection,
+  setZoom,
+  startMovePaper,
+  setModeMovePaper,
+  startSelect,
 } from "../redux/actions";
 import {
   MODE_DRAG,
@@ -17,11 +21,17 @@ import {
   MODE_CREATE_NODE_ELEMENT,
   MODE_SELECT,
   MODE_RECTANGLE_SELECTION,
+  MODE_MOVE_PAPER,
 } from "../redux/store/interactionModes";
 
 import Components from "./components";
 import Anchors from "./anchors";
 import Magnets from "./magnets";
+
+import IconButton from "@material-ui/core/IconButton";
+import ControlCameraIcon from "@material-ui/icons/ControlCamera";
+import ZoomInIcon from "@material-ui/icons/ZoomIn";
+import ZoomOutIcon from "@material-ui/icons/ZoomOut";
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -36,6 +46,10 @@ const mapDispatchToProps = (dispatch) => {
     nextStepOfElementCreation: () => dispatch(nextStepOfElementCreation()),
     startRectangleSelection: (x, y) => dispatch(startRectangleSelection(x, y)),
     stopRectangleSelection: () => dispatch(stopRectangleSelection()),
+    setZoom: (zoom) => dispatch(setZoom(zoom)),
+    startMovePaper: (x, y) => dispatch(startMovePaper(x, y)),
+    setModeMovePaper: () => dispatch(setModeMovePaper()),
+    startSelect: () => dispatch(startSelect()),
   };
 };
 const mapStateToProps = (state) => {
@@ -44,14 +58,17 @@ const mapStateToProps = (state) => {
     newPath: state.newPath,
     newNode: state.newNode,
     rectangleSelection: state.rectangleSelection,
+    displayOptions: state.displayOptions,
   };
 };
 
 const Container = ({
+  svgRef,
   mode,
   newPath,
   newNode,
   rectangleSelection,
+  displayOptions,
   stopDragging,
   updatePosition,
   validateFirstStepPathElementCreation,
@@ -60,11 +77,26 @@ const Container = ({
   nextStepOfElementCreation,
   startRectangleSelection,
   stopRectangleSelection,
+  setZoom,
+  startMovePaper,
+  setModeMovePaper,
+  startSelect,
 }) => {
-  const svgRef = useRef();
+  const {
+    x: SVG_X,
+    y: SVG_Y,
+    width: SVG_WIDTH,
+    height: SVG_HEIGHT,
+    zoom,
+  } = displayOptions;
 
   const followMouse = (event) => {
-    const { x: xOffset, y: yOffset } = svgRef.current.getBoundingClientRect();
+    const {
+      x: xOffset,
+      y: yOffset,
+      width: svgWidth,
+      height: svgHeight,
+    } = svgRef.current.getBoundingClientRect();
 
     switch (mode) {
       case MODE_DRAG:
@@ -72,8 +104,10 @@ const Container = ({
       case MODE_CREATE_NODE_ELEMENT:
       case MODE_RECTANGLE_SELECTION:
         updatePosition(
-          event.nativeEvent.clientX - xOffset,
-          event.nativeEvent.clientY - yOffset,
+          SVG_X +
+            (event.nativeEvent.clientX - xOffset) * (SVG_WIDTH / svgWidth),
+          SVG_Y +
+            (event.nativeEvent.clientY - yOffset) * (SVG_HEIGHT / svgHeight),
           event.shiftKey
         );
         break;
@@ -83,22 +117,31 @@ const Container = ({
   };
 
   const click = (event) => {
-    const { x: xOffset, y: yOffset } = svgRef.current.getBoundingClientRect();
+    const {
+      x: xOffset,
+      y: yOffset,
+      width: svgWidth,
+      height: svgHeight,
+    } = svgRef.current.getBoundingClientRect();
 
     switch (mode) {
       case MODE_SELECT:
         event.stopPropagation();
         startRectangleSelection(
-          event.nativeEvent.clientX - xOffset,
-          event.nativeEvent.clientY - yOffset
+          SVG_X +
+            (event.nativeEvent.clientX - xOffset) * (SVG_WIDTH / svgWidth),
+          SVG_Y +
+            (event.nativeEvent.clientY - yOffset) * (SVG_HEIGHT / svgHeight)
         );
         break;
       case MODE_CREATE_PATH_ELEMENT:
         event.stopPropagation();
         if (newPath.isFromValidated) {
           savePathElementCreation(
-            event.nativeEvent.clientX - xOffset,
-            event.nativeEvent.clientY - yOffset
+            SVG_X +
+              (event.nativeEvent.clientX - xOffset) * (SVG_WIDTH / svgWidth),
+            SVG_Y +
+              (event.nativeEvent.clientY - yOffset) * (SVG_HEIGHT / svgHeight)
           );
         } else {
           validateFirstStepPathElementCreation();
@@ -108,6 +151,10 @@ const Container = ({
         event.stopPropagation();
         nextStepOfElementCreation();
         break;
+      case MODE_MOVE_PAPER:
+        event.stopPropagation();
+        startMovePaper(event.nativeEvent.clientX, event.nativeEvent.clientY);
+        break;
       default:
         break;
     }
@@ -115,10 +162,41 @@ const Container = ({
 
   return (
     <>
+      {/* TODO create a clean toolbar */}
+      <IconButton
+        color={mode === MODE_MOVE_PAPER ? "secondary" : ""}
+        onMouseDown={(event) => {
+          event.stopPropagation();
+          if (mode === MODE_MOVE_PAPER) {
+            startSelect();
+          } else {
+            setModeMovePaper();
+          }
+        }}
+      >
+        <ControlCameraIcon />
+      </IconButton>
+      <IconButton
+        onMouseDown={(event) => {
+          event.stopPropagation();
+          setZoom(zoom / 2);
+        }}
+      >
+        <ZoomOutIcon />
+      </IconButton>
+      {zoom}
+      <IconButton
+        onMouseDown={(event) => {
+          event.stopPropagation();
+          setZoom(zoom * 2);
+        }}
+      >
+        <ZoomInIcon />
+      </IconButton>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 1000 600"
-        style={{ width: 1000, height: 600, background: "lightgray" }}
+        viewBox={`${SVG_X} ${SVG_Y} ${SVG_WIDTH} ${SVG_HEIGHT}`}
+        style={{ width: "100%", background: "lightgray" }}
         onMouseMove={
           mode === MODE_DRAG ||
           mode === MODE_CREATE_PATH_ELEMENT ||
@@ -195,8 +273,8 @@ const Container = ({
             <circle cx={newNode.position.x} cy={newNode.position.y} r={5} />
           )}
 
-        <Anchors svgRef={svgRef} />
-        <Magnets svgRef={svgRef} />
+        <Anchors svgRef={svgRef} displayOptions={displayOptions} />
+        <Magnets svgRef={svgRef} displayOptions={displayOptions} />
 
         {mode === MODE_RECTANGLE_SELECTION && (
           <path
@@ -205,6 +283,20 @@ const Container = ({
           />
         )}
       </svg>
+      {/* <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox={`0 0 210 297`}
+        style={{
+          width: "210px",
+          height: "297px",
+          background: "gray",
+          position: "absolute",
+          bottom: "10px",
+          left: "200px",
+        }}
+      >
+        <rect x="10" y="20" width="20" height="30" style={{ fill: "white" }} />
+      </svg> */}
     </>
   );
 };

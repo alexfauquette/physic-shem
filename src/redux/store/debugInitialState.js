@@ -1,4 +1,5 @@
 import { MODE_SELECT } from "./interactionModes";
+import { default_displayOptions } from "./displayOptions";
 
 export const defaultCurrant = {
   show: false,
@@ -9,6 +10,7 @@ export const defaultCurrant = {
 };
 
 export const initial_state = {
+  displayOptions: default_displayOptions,
   mode: MODE_SELECT,
   selection: [],
   adhesivePoints: [],

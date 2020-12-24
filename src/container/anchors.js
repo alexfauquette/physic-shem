@@ -9,10 +9,15 @@ const mapStateToProps = (state) => {
   };
 };
 
-const Anchors = ({ anchorIds, svgRef }) => (
+const Anchors = ({ anchorIds, svgRef, displayOptions }) => (
   <>
     {anchorIds.map((id) => (
-      <Anchor key={id} id={id} svgRef={svgRef} />
+      <Anchor
+        key={id}
+        id={id}
+        svgRef={svgRef}
+        displayOptions={displayOptions}
+      />
     ))}
   </>
 );

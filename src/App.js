@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
-import { MODE_DRAG, MODE_SELECT } from "./redux/store/interactionModes";
+import {
+  MODE_DRAG,
+  MODE_SELECT,
+  MODE_MOVE_PAPER,
+} from "./redux/store/interactionModes";
 
 import Container from "./container/index.js";
 import LatexDisplay from "./container/latexDisplay";
@@ -29,6 +33,8 @@ import {
   splitAnchor,
   stackSelectedAnchors,
   deleteElement,
+  movePaper,
+  endMovePaper,
 } from "./redux/actions";
 
 const drawerWidth = 180;
@@ -67,6 +73,7 @@ const mapStateToProps = (state) => {
     mode: state.mode,
     selection: state.selection,
     pathIds: state.pathComponents.allIds,
+    isPaperDragged: state.displayOptions.dragging.isDragging,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -82,6 +89,8 @@ const mapDispatchToProps = (dispatch) => {
     deleteElement: (selection) => {
       dispatch(deleteElement(selection));
     },
+    movePaper: (x, y) => dispatch(movePaper(x, y)),
+    endMovePaper: () => dispatch(endMovePaper()),
   };
 };
 
@@ -89,15 +98,20 @@ function App({
   mode,
   selection,
   pathIds,
+  isPaperDragged,
   startSelect,
   startCreatePathElement,
   startCreateNodeElement,
   splitAnchor,
   stackSelectedAnchors,
   deleteElement,
+  movePaper,
+  endMovePaper,
 }) {
   const classes = useStyles();
   const [showCode, setShowCode] = useState(false);
+
+  const svgRef = useRef();
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -132,9 +146,22 @@ function App({
     };
   }, [splitAnchor, stackSelectedAnchors, deleteElement, selection]);
 
+  const mouseMove = (event) => {
+    movePaper(event.nativeEvent.clientX, event.nativeEvent.clientY);
+  };
   return (
     // TODO : Proper listen key event
-    <div className={classes.root} tabIndex="0" onMouseDown={startSelect}>
+    <div
+      className={classes.root}
+      tabIndex="0"
+      onMouseDown={startSelect}
+      onMouseMove={
+        mode === MODE_MOVE_PAPER && isPaperDragged ? mouseMove : null
+      }
+      onMouseUp={
+        mode === MODE_MOVE_PAPER && isPaperDragged ? endMovePaper : null
+      }
+    >
       <CssBaseline />
 
       <AppBar position="fixed" className={classes.appBar}>
@@ -197,7 +224,7 @@ function App({
       </Drawer>
       <main className={classes.content}>
         <Toolbar />
-        <Container />
+        <Container svgRef={svgRef} />
       </main>
 
       <Dialog

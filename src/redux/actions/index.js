@@ -138,3 +138,43 @@ export function updateComponent(id, name, value) {
     value,
   };
 }
+
+export const ZOOM = "ZOOM";
+export function setZoom(zoom) {
+  return {
+    type: ZOOM,
+    zoom,
+  };
+}
+
+export const START_MOVE_PAPER = "START_MOVE_PAPER";
+export function startMovePaper(x, y) {
+  return {
+    type: START_MOVE_PAPER,
+    x,
+    y,
+  };
+}
+
+export const MOVE_PAPER = "MOVE_PAPER";
+export function movePaper(x, y) {
+  return {
+    type: MOVE_PAPER,
+    x,
+    y,
+  };
+}
+
+export const END_MOVE_PAPER = "END_MOVE_PAPER";
+export function endMovePaper() {
+  return {
+    type: END_MOVE_PAPER,
+  };
+}
+
+export const SET_MODE_MOVE_PAPER = "SET_MODE_MOVE_PAPER";
+export function setModeMovePaper() {
+  return {
+    type: SET_MODE_MOVE_PAPER,
+  };
+}

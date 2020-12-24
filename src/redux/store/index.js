@@ -1,4 +1,7 @@
 import { createStore } from "redux";
+
+import reducer_displayOptions from "./displayOptions";
+
 import {
   START_DRAGGING,
   START_SELECT,
@@ -59,6 +62,8 @@ import {
 import { stackAnchors, splitAnchor } from "./anchorHelper";
 
 function update(state = initial_state, action) {
+  state = { ...reducer_displayOptions(state, action) };
+
   switch (action.type) {
     case UPDATE_COMPONENT:
       const { id, name, value } = action;

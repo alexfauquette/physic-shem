@@ -5,13 +5,31 @@ import { connect } from "react-redux";
 import { MODE_SELECT } from "../redux/store/interactionModes";
 import { toggleSelection, startDragging } from "../redux/actions";
 
-const mapDispatchToProps = (dispatch, { svgRef }) => {
+const mapDispatchToProps = (dispatch, { svgRef, displayOptions }) => {
   return {
     toggleSelection: (objectId, reset) =>
       dispatch(toggleSelection(objectId, reset)),
     startDragging: (x, y) => {
-      const { x: xOffset, y: yOffset } = svgRef.current.getBoundingClientRect();
-      dispatch(startDragging(x - xOffset, y - yOffset));
+      const {
+        x: xOffset,
+        y: yOffset,
+        width: svgWidth,
+        height: svgHeight,
+      } = svgRef.current.getBoundingClientRect();
+      const {
+        x: SVG_X,
+        y: SVG_Y,
+        width: SVG_WIDTH,
+        height: SVG_HEIGHT,
+        zoom,
+      } = displayOptions;
+
+      dispatch(
+        startDragging(
+          SVG_X + (x - xOffset) * (SVG_WIDTH / svgWidth),
+          SVG_Y + (y - yOffset) * (SVG_HEIGHT / svgHeight)
+        )
+      );
     },
   };
 };
