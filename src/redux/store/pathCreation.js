@@ -11,12 +11,9 @@ export const startCreatePathElement = (state, action) => {
     adhesivePoints: [...getAdhesivePoints(action.elementType)],
     mode: MODE_CREATE_PATH_ELEMENT,
     newPath: {
+      ...state.newPath,
       elementType: action.elementType,
       isFromValidated: false,
-      from: { x: null, y: null },
-      to: { x: null, y: null },
-      attractorTo: null,
-      attractorFrom: null,
     },
   };
 };
@@ -120,13 +117,19 @@ export const savePathElement = (state, action) => {
 
   return {
     ...state,
+    currentMagnet: {
+      ...state.currentMagnet,
+      attractor: {
+        type: "ANCHOR",
+        id: toAnchor,
+      },
+    },
     newPath: {
       ...state.newPath,
       isFromValidated: false,
       from: {
         ...to,
       },
-      attractorFrom: attractorTo && { ...attractorTo },
       to: {
         x: null,
         y: null,
