@@ -71,4 +71,11 @@ const components = {
   vcapacitor: (props) => <Vcapacitor key={props.id} {...props} />,
 };
 
+export const structure = {
+  bipoles: ["lampe", "pR", "vcapacitor", "empty led"],
+  sources: [],
+  references: ["vee", "vcc"],
+  transistors: ["nmos"],
+};
+
 export default components;

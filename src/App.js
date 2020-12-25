@@ -9,8 +9,7 @@ import {
 import Container from "./container/index.js";
 import LatexDisplay from "./container/latexDisplay";
 import ElementOptions from "./container/elementOptions";
-
-import components, { isPath } from "./components";
+import LeftMenu from "./container/leftMenu";
 
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
@@ -19,17 +18,12 @@ import Typography from "@material-ui/core/Typography";
 
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
 
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 
 import {
   startSelect,
-  startCreatePathElement,
-  startCreateNodeElement,
   splitAnchor,
   stackSelectedAnchors,
   deleteElement,
@@ -79,10 +73,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     startSelect: () => dispatch(startSelect()),
-    startCreatePathElement: (elementType) =>
-      dispatch(startCreatePathElement(elementType)),
-    startCreateNodeElement: (elementType) =>
-      dispatch(startCreateNodeElement(elementType)),
     splitAnchor: () => dispatch(splitAnchor()),
     stackSelectedAnchors: (direction) =>
       dispatch(stackSelectedAnchors(direction)),
@@ -100,8 +90,6 @@ function App({
   pathIds,
   isPaperDragged,
   startSelect,
-  startCreatePathElement,
-  startCreateNodeElement,
   splitAnchor,
   stackSelectedAnchors,
   deleteElement,
@@ -184,24 +172,7 @@ function App({
       >
         <Toolbar />
         <div className={classes.drawerContainer}>
-          <List>
-            {Object.keys(components).map((name) => (
-              <ListItem
-                button
-                key={name}
-                onMouseDown={(event) => {
-                  event.stopPropagation();
-                  if (isPath[name]) {
-                    startCreatePathElement(name);
-                  } else {
-                    startCreateNodeElement(name);
-                  }
-                }}
-              >
-                <ListItemText primary={name} />
-              </ListItem>
-            ))}
-          </List>
+          <LeftMenu />
         </div>
       </Drawer>
       <Drawer
