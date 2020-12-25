@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import "./style.scss";
 import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
 import { withPathAttributes, getPathAttributes } from "./hoc/pathComponents";
@@ -24,33 +23,18 @@ export const getAnchor = ({ fromCoords, toCoords }) => {
   return [{ name: "wiper", x, y }];
 };
 
-// If id => it's from scene
-// If no id => it's from adding
-const mapStateToProps = (state, props) => {
-  return props.id
-    ? {
-        mode: state.mode,
-        // allows to create components directly without using the store
-        fromCoords: state.anchors.byId[props.from],
-        toCoords: state.anchors.byId[props.to],
-      }
-    : {};
-};
-
-const Vcapacitor = ({}) => {
-  return (
-    <>
-      <path d={`M  ${-STEP} ${-UNIT_Y} L ${-STEP} ${UNIT_Y}`} />
-      <path d={`M  ${STEP} ${-UNIT_Y} L ${STEP} ${UNIT_Y}`} />
-      <path d={`M ${-UNIT_X} ${-UNIT_Y} L ${UNIT_X} ${UNIT_Y}`} />
-    </>
-  );
-};
+const Vcapacitor = () => (
+  <>
+    <path d={`M  ${-STEP} ${-UNIT_Y} L ${-STEP} ${UNIT_Y}`} />
+    <path d={`M  ${STEP} ${-UNIT_Y} L ${STEP} ${UNIT_Y}`} />
+    <path d={`M ${-UNIT_X} ${-UNIT_Y} L ${UNIT_X} ${UNIT_Y}`} />
+  </>
+);
 
 export const drawer = (element) => {
   return `to[variable capacitor${getPathAttributes(element)}] `;
 };
 
-export default connect(mapStateToProps)(
-  withPathAttributes({ width: capacitor_width / 2, height })(Vcapacitor)
+export default withPathAttributes({ width: capacitor_width / 2, height })(
+  Vcapacitor
 );

@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import "./style.scss";
 import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
 import { withPathAttributes, getPathAttributes } from "./hoc/pathComponents";
@@ -23,44 +22,27 @@ export const getAnchor = ({ fromCoords, toCoords }) => {
   return [{ name: "wiper", x, y }];
 };
 
-// If id => it's from scene
-// If no id => it's from adding
-const mapStateToProps = (state, props) => {
-  return props.id
-    ? {
-        mode: state.mode,
-        // allows to create components directly without using the store
-        fromCoords: state.anchors.byId[props.from],
-        toCoords: state.anchors.byId[props.to],
-      }
-    : {};
-};
-
-const PR = ({ wiper_pos = 0.5 }) => {
-  return (
-    <>
-      <path
-        d={`M ${(-6 / 6) * UNIT_X} 0 L ${(-5 / 6) * UNIT_X} ${-UNIT_Y2} L ${
-          (-3 / 6) * UNIT_X
-        } ${UNIT_Y2} L ${(-1 / 6) * UNIT_X} ${-UNIT_Y2} L ${
-          (1 / 6) * UNIT_X
-        } ${UNIT_Y2} L ${(3 / 6) * UNIT_X} ${-UNIT_Y2} L ${
-          (5 / 6) * UNIT_X
-        } ${UNIT_Y2} L ${(6 / 6) * UNIT_X} 0`}
-      />
-      <path
-        d={`M ${-(0.5 - wiper_pos) * 2 * UNIT_X} ${-UNIT_Y} L ${
-          -(0.5 - wiper_pos) * 2 * UNIT_X
-        } ${-UNIT_Y2}`}
-      />
-    </>
-  );
-};
+const PR = ({ wiper_pos = 0.5 }) => (
+  <>
+    <path
+      d={`M ${(-6 / 6) * UNIT_X} 0 L ${(-5 / 6) * UNIT_X} ${-UNIT_Y2} L ${
+        (-3 / 6) * UNIT_X
+      } ${UNIT_Y2} L ${(-1 / 6) * UNIT_X} ${-UNIT_Y2} L ${
+        (1 / 6) * UNIT_X
+      } ${UNIT_Y2} L ${(3 / 6) * UNIT_X} ${-UNIT_Y2} L ${
+        (5 / 6) * UNIT_X
+      } ${UNIT_Y2} L ${(6 / 6) * UNIT_X} 0`}
+    />
+    <path
+      d={`M ${-(0.5 - wiper_pos) * 2 * UNIT_X} ${-UNIT_Y} L ${
+        -(0.5 - wiper_pos) * 2 * UNIT_X
+      } ${-UNIT_Y2}`}
+    />
+  </>
+);
 
 export const drawer = (element) => {
   return `to[pR${getPathAttributes(element)}] `;
 };
 
-export default connect(mapStateToProps)(
-  withPathAttributes({ width, height })(PR)
-);
+export default withPathAttributes({ width, height })(PR);
