@@ -14,6 +14,7 @@ import {
   startMovePaper,
   setModeMovePaper,
   startSelect,
+  stackSelectedAnchors,
 } from "../redux/actions";
 import {
   MODE_DRAG,
@@ -33,6 +34,8 @@ import ControlCameraIcon from "@material-ui/icons/ControlCamera";
 import ZoomInIcon from "@material-ui/icons/ZoomIn";
 import ZoomOutIcon from "@material-ui/icons/ZoomOut";
 
+import VerticalAlignBottomIcon from "@material-ui/icons/VerticalAlignBottom";
+import VerticalAlignTopIcon from "@material-ui/icons/VerticalAlignTop";
 const mapDispatchToProps = (dispatch) => {
   return {
     updatePosition: (x, y, shiftPress) =>
@@ -50,6 +53,8 @@ const mapDispatchToProps = (dispatch) => {
     startMovePaper: (x, y) => dispatch(startMovePaper(x, y)),
     setModeMovePaper: () => dispatch(setModeMovePaper()),
     startSelect: () => dispatch(startSelect()),
+    stackSelectedAnchors: (direction) =>
+      dispatch(stackSelectedAnchors(direction)),
   };
 };
 const mapStateToProps = (state) => {
@@ -81,6 +86,7 @@ const Container = ({
   startMovePaper,
   setModeMovePaper,
   startSelect,
+  stackSelectedAnchors,
 }) => {
   const {
     x: SVG_X,
@@ -192,6 +198,25 @@ const Container = ({
         }}
       >
         <ZoomInIcon />
+      </IconButton>
+      {/* stackSelectedAnchors("R"); -> right
+      stackSelectedAnchors("L"); -> left */}
+      |
+      <IconButton
+        onMouseDown={(event) => {
+          event.stopPropagation();
+          stackSelectedAnchors("D");
+        }}
+      >
+        <VerticalAlignBottomIcon />
+      </IconButton>
+      <IconButton
+        onMouseDown={(event) => {
+          event.stopPropagation();
+          stackSelectedAnchors("U");
+        }}
+      >
+        <VerticalAlignTopIcon />
       </IconButton>
       <svg
         xmlns="http://www.w3.org/2000/svg"
