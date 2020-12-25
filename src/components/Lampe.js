@@ -6,7 +6,7 @@ import { withPathAttributes, getPathAttributes } from "./hoc/pathComponents";
 
 const width = 0.6;
 const height = 0.6;
-const R = 0.6 * 0.5 * MULTIPLICATIVE_CONST;
+const R = 0.6 * 0.5 * MULTIPLICATIVE_CONST * R_LEN;
 const r = (0.7071 * R).toFixed(3);
 
 // If id => it's from scene
@@ -22,10 +22,6 @@ const mapStateToProps = (state, props) => {
     : {};
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {};
-};
-
 const Lampe = ({}) => {
   return (
     <>
@@ -39,7 +35,6 @@ export const drawer = (element) => {
   return `to[lamp${getPathAttributes(element)}] `;
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withPathAttributes({ width, height })(Lampe));
+export default connect(mapStateToProps)(
+  withPathAttributes({ width, height })(Lampe)
+);

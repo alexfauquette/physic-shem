@@ -1,5 +1,5 @@
 import React from "react";
-import { MULTIPLICATIVE_CONST } from "../constantes";
+import { MULTIPLICATIVE_CONST, R_LEN } from "../constantes";
 import CurrantArrow, { getCurrantAttribute } from "../../atoms/currant";
 import Label, {
   getLabelAttribute,
@@ -31,7 +31,7 @@ export const withPathAttributes = ({ height = 1, width = 1 }) => (
   const { x: xTo, y: yTo } = toCoords;
 
   const d = Math.sqrt((xFrom - xTo) ** 2 + (yFrom - yTo) ** 2);
-  const ratio = (d - width * MULTIPLICATIVE_CONST) / (2 * d); // ratio of the line use by connection
+  const ratio = (d - width * MULTIPLICATIVE_CONST * R_LEN) / (2 * d); // ratio of the line use by connection
   const angle = parseInt(
     (180 * Math.atan2(yTo - yFrom, xTo - xFrom)) / Math.PI
   );

@@ -7,8 +7,8 @@ import { withPathAttributes, getPathAttributes } from "./hoc/pathComponents";
 const height = 0.5;
 const width = 0.4;
 
-const UNIT_X = 0.5 * width * MULTIPLICATIVE_CONST;
-const UNIT_Y = 0.5 * height * MULTIPLICATIVE_CONST;
+const UNIT_X = 0.5 * width * MULTIPLICATIVE_CONST * R_LEN;
+const UNIT_Y = 0.5 * height * MULTIPLICATIVE_CONST * R_LEN;
 
 // If id => it's from scene
 // If no id => it's from adding

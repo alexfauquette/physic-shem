@@ -1,5 +1,5 @@
 import { drawElement, isMultyPole, isPath } from "../../components";
-import { MULTIPLICATIVE_CONST, R_LEN } from "../../components/constantes";
+import { MULTIPLICATIVE_CONST } from "../../components/constantes";
 
 const isNode = (element) => !!element.position;
 
@@ -15,9 +15,8 @@ const getCoord = (x, y, coords) => {
   if (coords[coordId].name) {
     return `(${coords[coordId].name})`;
   } else {
-    return `(${((x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
-      (-y / MULTIPLICATIVE_CONST) *
-      R_LEN
+    return `(${(x / MULTIPLICATIVE_CONST).toFixed(2)}, ${(
+      -y / MULTIPLICATIVE_CONST
     ).toFixed(2)})`;
   }
 };

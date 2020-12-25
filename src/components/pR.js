@@ -8,9 +8,9 @@ const height = 0.8;
 const height_2 = 0.3;
 const width = 0.8;
 
-const UNIT_X = 0.5 * width * MULTIPLICATIVE_CONST;
-const UNIT_Y2 = 0.5 * height_2 * MULTIPLICATIVE_CONST;
-const UNIT_Y = 0.5 * height * MULTIPLICATIVE_CONST;
+const UNIT_X = 0.5 * width * MULTIPLICATIVE_CONST * R_LEN;
+const UNIT_Y2 = 0.5 * height_2 * MULTIPLICATIVE_CONST * R_LEN;
+const UNIT_Y = 0.5 * height * MULTIPLICATIVE_CONST * R_LEN;
 
 export const getAnchor = ({ fromCoords, toCoords }) => {
   const { x: xFrom, y: yFrom } = fromCoords;
@@ -49,10 +49,8 @@ const PR = ({ wiper_pos = 0.5 }) => {
         } ${UNIT_Y2} L ${(6 / 6) * UNIT_X} 0`}
       />
       <path
-        d={`M ${
-          -(0.5 - wiper_pos) * width * MULTIPLICATIVE_CONST
-        } ${-UNIT_Y} L ${
-          -(0.5 - wiper_pos) * width * MULTIPLICATIVE_CONST
+        d={`M ${-(0.5 - wiper_pos) * 2 * UNIT_X} ${-UNIT_Y} L ${
+          -(0.5 - wiper_pos) * 2 * UNIT_X
         } ${-UNIT_Y2}`}
       />
     </>

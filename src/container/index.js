@@ -170,7 +170,7 @@ const Container = ({
     <>
       {/* TODO create a clean toolbar */}
       <IconButton
-        color={mode === MODE_MOVE_PAPER ? "secondary" : ""}
+        color={mode === MODE_MOVE_PAPER ? "secondary" : "default"}
         onMouseDown={(event) => {
           event.stopPropagation();
           if (mode === MODE_MOVE_PAPER) {

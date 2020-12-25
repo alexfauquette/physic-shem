@@ -17,8 +17,8 @@ const gate_width = 0.62;
 // const bodydiode_conn = 0.6;
 // const curr_direction = 1;
 
-const UNIT_X = width * MULTIPLICATIVE_CONST;
-const UNIT_Y = 0.5 * height * MULTIPLICATIVE_CONST;
+const UNIT_X = width * MULTIPLICATIVE_CONST * R_LEN;
+const UNIT_Y = 0.5 * height * MULTIPLICATIVE_CONST * R_LEN;
 
 const getElementTranslation = (positionAnchor) => {
   switch (positionAnchor) {
@@ -145,9 +145,8 @@ export const drawer = (element, positionInformations, name = null) => {
 
   const coord = position
     ? `(${position})`
-    : `(${((x / MULTIPLICATIVE_CONST) * R_LEN).toFixed(2)}, ${(
-        (-y / MULTIPLICATIVE_CONST) *
-        R_LEN
+    : `(${(x / MULTIPLICATIVE_CONST).toFixed(2)}, ${(
+        -y / MULTIPLICATIVE_CONST
       ).toFixed(2)})`;
 
   return `\\draw ${coord} node[nmos${anchor ? `, anchor=${anchor}` : ""}${

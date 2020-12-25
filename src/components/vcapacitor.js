@@ -1,15 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
 import "./style.scss";
-import { R_LEN, MULTIPLICATIVE_CONST } from "./constantes";
+import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
 import { withPathAttributes, getPathAttributes } from "./hoc/pathComponents";
 
 const height = 0.6;
 const width = 0.5;
 const capacitor_width = 0.4;
 
-const UNIT_X = 0.5 * width * MULTIPLICATIVE_CONST;
-const UNIT_Y = 0.5 * height * MULTIPLICATIVE_CONST;
+const UNIT_X = 0.5 * width * MULTIPLICATIVE_CONST * R_LEN;
+const UNIT_Y = 0.5 * height * MULTIPLICATIVE_CONST * R_LEN;
 
 const STEP = capacitor_width * UNIT_X;
 
