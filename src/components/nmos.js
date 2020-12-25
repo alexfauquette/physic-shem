@@ -150,8 +150,10 @@ export const drawer = (element, positionInformations, name = null) => {
         R_LEN
       ).toFixed(2)})`;
 
-  return `\\draw ${coord} node[nmos${anchor ? " ,anchor=" + anchor : ""}${
-    element.angle && element.angle !== 0 ? " ,rotate=" + element.angle : ""
+  return `\\draw ${coord} node[nmos${anchor ? `, anchor=${anchor}` : ""}${
+    element.angle && parseFloat(element.angle) !== 0
+      ? `, rotate=${element.angle}`
+      : ""
   }]${name ? `(${name})` : ""}{};`;
 };
 
