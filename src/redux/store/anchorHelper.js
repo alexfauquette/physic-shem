@@ -15,6 +15,7 @@ export const stackAnchors = (state, action) => {
   } else {
     const newPosition = {};
 
+    // We start by looping on selected element to find the min/max along x/y depending on the letter
     anchorsSelected.forEach((id, index) => {
       const anchor = state.anchors.byId[id];
 
@@ -38,25 +39,31 @@ export const stackAnchors = (state, action) => {
         default:
           break;
       }
+    });
+
+    // now we now the new x/y we change those positions
+    anchorsSelected.forEach((id) => {
+      const anchor = state.anchors.byId[id];
+
+      //  if the position is modified we just break all the weak lins associated
       if (
-        (newPosition.x && newPosition.x !== anchor.x) ||
-        (newPosition.y && newPosition.y !== anchor.y)
+        (newPosition.x !== undefined && newPosition.x !== anchor.x) ||
+        (newPosition.y !== undefined && newPosition.y !== anchor.y)
       ) {
         movedAnchors.push(id);
       }
-    });
 
-    anchorsSelected.forEach((id) => {
       state.anchors.byId[id] = {
-        ...state.anchors.byId[id],
+        ...anchor,
         ...newPosition,
       };
     });
+
     return {
       ...state,
       anchors: {
+        ...state.anchors,
         byId: { ...state.anchors.byId },
-        allIds: state.anchors.allIds,
       },
       weakLinks: [
         ...state.weakLinks.filter(
