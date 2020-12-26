@@ -1,6 +1,16 @@
 import { drawElement, isMultyPole, isPath } from "../../components";
 import { MULTIPLICATIVE_CONST } from "../../components/constantes";
 
+const simplifyNumber = (x) => {
+  const rep = x.toFixed(2);
+  if (rep.slice(-3) === ".00") {
+    return rep.slice(0, -3);
+  }
+  if (rep.slice(-1) === "0") {
+    return rep.slice(0, -1);
+  }
+  return rep;
+};
 const isNode = (element) => !!element.position;
 
 const getCoordId = ({ x, y }) =>
@@ -15,9 +25,9 @@ const getCoord = (x, y, coords) => {
   if (coords[coordId].name) {
     return `(${coords[coordId].name})`;
   } else {
-    return `(${(x / MULTIPLICATIVE_CONST).toFixed(2)}, ${(
+    return `(${simplifyNumber(x / MULTIPLICATIVE_CONST)}, ${simplifyNumber(
       -y / MULTIPLICATIVE_CONST
-    ).toFixed(2)})`;
+    )})`;
   }
 };
 
