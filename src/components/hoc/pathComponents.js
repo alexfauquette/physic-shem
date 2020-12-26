@@ -92,7 +92,7 @@ export const withPathAttributes = ({ height = 1, width = 1 }) => (component) =>
           <Label
             fromCoords={fromCoords}
             toCoords={toCoords}
-            height={0.5 * height * MULTIPLICATIVE_CONST}
+            height={0.5 * height * MULTIPLICATIVE_CONST * R_LEN}
             angle={angle}
             text={label}
           />
@@ -101,7 +101,7 @@ export const withPathAttributes = ({ height = 1, width = 1 }) => (component) =>
           <Label
             fromCoords={fromCoords}
             toCoords={toCoords}
-            height={0.5 * height * MULTIPLICATIVE_CONST}
+            height={0.5 * height * MULTIPLICATIVE_CONST * R_LEN}
             angle={angle}
             text={annotation}
             isAbove={false}
