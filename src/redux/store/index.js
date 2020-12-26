@@ -62,6 +62,7 @@ import {
 } from "./nodeCreation";
 
 import { stackAnchors, splitAnchor } from "./anchorHelper";
+import { MULTIPLICATIVE_CONST } from "../../components/constantes";
 
 function update(state = initial_state, action) {
   state = { ...reducer_displayOptions(state, action) };
@@ -126,6 +127,32 @@ function update(state = initial_state, action) {
 
     case UPDATE_POSITION:
       const { attractor, attracted } = action;
+
+      if (
+        attractor === null &&
+        (state.mode === MODE_CREATE_PATH_ELEMENT ||
+          state.mode === MODE_CREATE_NODE_ELEMENT) &&
+        state.magnetsOptions.isGridAttracting
+      ) {
+        //not already attracted by someone
+
+        // TODO adapt here for dragging :
+        // 1. all the moving magnets should be saved with there dx, dy (like in magnets.js)
+        // 2. check if x-dx, y-dy correspond to a point
+        const { x, y } = action;
+
+        const refSpace = MULTIPLICATIVE_CONST * state.magnetsOptions.gridSpace;
+        const modX = x % refSpace;
+        const modY = y % refSpace;
+        const R = 10;
+        if (
+          (modX <= R || modX >= refSpace - R) &&
+          (modY <= R || modY >= refSpace - R)
+        ) {
+          action.x = refSpace * Math.round(x / refSpace);
+          action.y = refSpace * Math.round(y / refSpace);
+        }
+      }
       switch (state.mode) {
         case MODE_DRAG:
           return {
