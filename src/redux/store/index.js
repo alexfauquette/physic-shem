@@ -142,8 +142,9 @@ function update(state = initial_state, action) {
         const { x, y } = action;
 
         const refSpace = MULTIPLICATIVE_CONST * state.magnetsOptions.gridSpace;
-        const modX = x % refSpace;
-        const modY = y % refSpace;
+        const modX = Math.abs(x) % refSpace;
+        const modY = Math.abs(y) % refSpace;
+
         const R = 10;
         if (
           (modX <= R || modX >= refSpace - R) &&
