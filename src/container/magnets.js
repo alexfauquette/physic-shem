@@ -9,7 +9,6 @@ import {
 
 import Magnet from "../atoms/magnet";
 import { getElementAnchors } from "../components";
-import { MULTIPLICATIVE_CONST } from "../components/constantes";
 
 const mapStateToProps = (state) => {
   return {
@@ -49,8 +48,6 @@ const Magnets = ({
   pathComponents,
   anchorsToMove,
   adhesivePoints,
-  isGridAttracting,
-  gridSpace,
   isPathCoordinatesAttracting,
   isNodeAnchorsAttracting,
 }) => {
@@ -60,55 +57,11 @@ const Magnets = ({
     mode !== MODE_CREATE_NODE_ELEMENT &&
     mode !== MODE_CREATE_PATH_ELEMENT
   ) {
-    return isGridAttracting ? (
-      <>
-        {[0, 1, 2, 3, 4, 5].flatMap((x) =>
-          [1, 2, 3, 4, 5].map((y) => {
-            return (
-              <circle
-                key={`${x}-${y}`}
-                cx={x * gridSpace * MULTIPLICATIVE_CONST}
-                cy={y * gridSpace * MULTIPLICATIVE_CONST}
-                r={2}
-                color="gray"
-              />
-            );
-          })
-        )}
-      </>
-    ) : null;
+    return null;
   }
 
   return (
     <>
-      {isGridAttracting &&
-        [0, 1, 2, 3, 4, 5].flatMap((x) =>
-          [1, 2, 3, 4, 5].map((y) => {
-            return (
-              <>
-                <circle
-                  key={`${x}-${y}`}
-                  cx={x * gridSpace * MULTIPLICATIVE_CONST}
-                  cy={y * gridSpace * MULTIPLICATIVE_CONST}
-                  r={2}
-                  color="gray"
-                />
-                <Magnet
-                  key={`${x}-${y}`}
-                  x={x * gridSpace * MULTIPLICATIVE_CONST}
-                  dx={0}
-                  y={y * gridSpace * MULTIPLICATIVE_CONST}
-                  dy={0}
-                  mode={mode}
-                  attractor={null}
-                  // TODO : fill correctly attracted and adapt reducer
-                  // think about not using this part of code but directly implement it in the update position reducer
-                  attracted={null}
-                />
-              </>
-            );
-          })
-        )}
       {isNodeAnchorsAttracting &&
         pathComponents.allIds
           .filter((id) => !isMoving(pathComponents.byId[id], anchorsToMove))

@@ -26,6 +26,8 @@ import {
   MODE_MOVE_PAPER,
 } from "../redux/store/interactionModes";
 
+import { MULTIPLICATIVE_CONST } from "../components/constantes";
+
 import Components from "./components";
 import Anchors from "./anchors";
 import Magnets from "./magnets";
@@ -70,6 +72,8 @@ const mapStateToProps = (state) => {
     rectangleSelection: state.rectangleSelection,
     displayOptions: state.displayOptions,
     magnetsOptions: state.magnetsOptions,
+    isGridAttracting: state.magnetsOptions.isGridAttracting,
+    gridSpace: state.magnetsOptions.gridSpace,
   };
 };
 
@@ -80,6 +84,8 @@ const Container = ({
   newNode,
   rectangleSelection,
   displayOptions,
+  isGridAttracting,
+  gridSpace,
   stopDragging,
   updatePosition,
   validateFirstStepPathElementCreation,
@@ -327,6 +333,27 @@ const Container = ({
         }
         ref={svgRef}
       >
+        <defs>
+          <pattern
+            id="grid-magnets"
+            x="-10"
+            y="-10"
+            width={gridSpace * MULTIPLICATIVE_CONST}
+            height={gridSpace * MULTIPLICATIVE_CONST}
+            patternUnits="userSpaceOnUse"
+          >
+            <circle fill="gray" cx="10" cy="10" r="3"></circle>
+          </pattern>
+        </defs>
+        {isGridAttracting && (
+          <rect
+            x={SVG_X - 10}
+            y={SVG_Y - 10}
+            width="100%"
+            height="100%"
+            fill="url(#grid-magnets)"
+          />
+        )}
         <Components svgRef={svgRef} displayOptions={displayOptions} />
 
         {/* display the path element in during its creation */}
