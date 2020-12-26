@@ -29,13 +29,12 @@ import Components from "./components";
 import Anchors from "./anchors";
 import Magnets from "./magnets";
 
+import SvgIcon from "@material-ui/core/SvgIcon";
 import IconButton from "@material-ui/core/IconButton";
 import ControlCameraIcon from "@material-ui/icons/ControlCamera";
 import ZoomInIcon from "@material-ui/icons/ZoomIn";
 import ZoomOutIcon from "@material-ui/icons/ZoomOut";
 
-import VerticalAlignBottomIcon from "@material-ui/icons/VerticalAlignBottom";
-import VerticalAlignTopIcon from "@material-ui/icons/VerticalAlignTop";
 const mapDispatchToProps = (dispatch) => {
   return {
     updatePosition: (x, y, shiftPress) =>
@@ -199,16 +198,36 @@ const Container = ({
       >
         <ZoomInIcon />
       </IconButton>
-      {/* stackSelectedAnchors("R"); -> right
-      stackSelectedAnchors("L"); -> left */}
       |
+      <IconButton
+        onMouseDown={(event) => {
+          event.stopPropagation();
+          stackSelectedAnchors("L");
+        }}
+      >
+        <SvgIcon>
+          <path d="M22 13V19H6V13H22M6 5V11H16V5H6M2 2V22H4V2H2" />
+        </SvgIcon>
+      </IconButton>
+      <IconButton
+        onMouseDown={(event) => {
+          event.stopPropagation();
+          stackSelectedAnchors("R");
+        }}
+      >
+        <SvgIcon>
+          <path d="M18 13V19H2V13H18M8 5V11H18V5H8M20 2V22H22V2H20Z" />
+        </SvgIcon>
+      </IconButton>
       <IconButton
         onMouseDown={(event) => {
           event.stopPropagation();
           stackSelectedAnchors("D");
         }}
       >
-        <VerticalAlignBottomIcon />
+        <SvgIcon>
+          <path d="M11 22H5V6H11V22M19 6H13V16H19V6M22 2H2V4H22V2Z" />
+        </SvgIcon>
       </IconButton>
       <IconButton
         onMouseDown={(event) => {
@@ -216,7 +235,10 @@ const Container = ({
           stackSelectedAnchors("U");
         }}
       >
-        <VerticalAlignTopIcon />
+        <SvgIcon>
+          <path d="M11 18H5V2H11V18M19 8H13V18H19V8M22 20H2V22H22V20Z" />
+        </SvgIcon>
+      </IconButton>
       </IconButton>
       <svg
         xmlns="http://www.w3.org/2000/svg"
