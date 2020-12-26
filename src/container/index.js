@@ -197,6 +197,7 @@ const Container = ({
         <ControlCameraIcon />
       </IconButton>
       <IconButton
+        disabled={zoom < 0.2}
         onMouseDown={(event) => {
           event.stopPropagation();
           setZoom(zoom / 2);
@@ -206,6 +207,7 @@ const Container = ({
       </IconButton>
       {zoom}
       <IconButton
+        disabled={zoom > 2}
         onMouseDown={(event) => {
           event.stopPropagation();
           setZoom(zoom * 2);

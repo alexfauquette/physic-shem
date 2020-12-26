@@ -34,15 +34,15 @@ const zoom = (state, action) => {
   const { x, y, width, height } = state.displayOptions;
 
   // this do the center on the middle (no useful until SVG heigh is fixed to fit the screen size)
-  // const newX = x + width / 2 - newWidth / 2;
-  // const newY = y + height / 2 - newHeight / 2;
+  const newX = x + width / 2 - newWidth / 2;
+  const newY = y + height / 2 - newHeight / 2;
 
   return {
     ...state,
     displayOptions: {
       ...state.displayOptions,
-      x: x,
-      y: y,
+      x: newX,
+      y: newY,
       zoom: newZoom,
       width: newWidth,
       height: newHeight,
@@ -72,8 +72,8 @@ const movePaper = (state, action) => {
     ...state,
     displayOptions: {
       ...state.displayOptions,
-      x: state.displayOptions.x + (x0 - x),
-      y: state.displayOptions.y + (y0 - y),
+      x: state.displayOptions.x + (x0 - x) / state.displayOptions.zoom,
+      y: state.displayOptions.y + (y0 - y) / state.displayOptions.zoom,
       dragging: {
         ...state.displayOptions.dragging,
         x0: x,
