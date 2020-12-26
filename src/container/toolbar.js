@@ -7,6 +7,7 @@ import {
   startSelect,
   stackSelectedAnchors,
   updateMagnetOption,
+  startCreatePathElement,
 } from "../redux/actions";
 import { MODE_MOVE_PAPER } from "../redux/store/interactionModes";
 
@@ -21,6 +22,7 @@ import ZoomOutIcon from "@material-ui/icons/ZoomOut";
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    startCreatePathElement: (name) => dispatch(startCreatePathElement(name)),
     setZoom: (zoom) => dispatch(setZoom(zoom)),
     setModeMovePaper: () => dispatch(setModeMovePaper()),
     startSelect: () => dispatch(startSelect()),
@@ -42,6 +44,7 @@ const ToolBar = ({
   mode,
   zoom,
   magnetsOptions,
+  startCreatePathElement,
   setZoom,
   setModeMovePaper,
   stackSelectedAnchors,
@@ -50,6 +53,43 @@ const ToolBar = ({
   return (
     <>
       {/* TODO create a clean toolbar */}
+      <IconButton
+        onMouseDown={(event) => {
+          startCreatePathElement("short");
+          event.stopPropagation();
+        }}
+      >
+        <SvgIcon>
+          <circle cx="4" cy="20" r="2" />
+          <circle cx="20" cy="4" r="2" />
+          <path d="M 19.5,3.5 3.5,19.5 l 1,1 L 20.5,4.5 Z" />
+        </SvgIcon>
+      </IconButton>
+      <IconButton
+        onMouseDown={(event) => {
+          startCreatePathElement("upRight");
+          event.stopPropagation();
+        }}
+      >
+        <SvgIcon>
+          <circle cx="4" cy="20" r="2" />
+          <circle cx="20" cy="4" r="2" />
+          <path d="M 20,3.5 H 3.5 V 20 h 1 V 4.5 H 20 Z" />
+        </SvgIcon>
+      </IconButton>
+      <IconButton
+        onMouseDown={(event) => {
+          startCreatePathElement("rightUp");
+          event.stopPropagation();
+        }}
+      >
+        <SvgIcon>
+          <circle cx="4" cy="20" r="2" />
+          <circle cx="20" cy="4" r="2" />
+          <path d="M 5,20.5 20.5,20.5 l 0,-16.5 h -1 L 19.5,19.5 l -15.5,0 z" />
+        </SvgIcon>
+      </IconButton>
+      |
       <IconButton
         color={mode === MODE_MOVE_PAPER ? "secondary" : "default"}
         onMouseDown={(event) => {

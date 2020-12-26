@@ -12,10 +12,11 @@ import NMOS, {
 } from "./nmos";
 import VEE, { getAnchor as vee_getAnchor, drawer as veeDrawer } from "./vee";
 import VCC, { getAnchor as vcc_getAnchor, drawer as vccDrawer } from "./vcc";
+import Short, { drawer as shortDrawer } from "./short";
+import RightUp, { drawer as rightUpDrawer } from "./rightUp";
+import UpRight, { drawer as upRightDrawer } from "./upRight";
 
 const getAnchors = {
-  lampe: () => [],
-  "empty led": () => [],
   pR: (props) => pR_getAnchor(props),
   nmos: (props) => nmos_getAnchor(props),
   vee: (props) => vee_getAnchor(props),
@@ -24,6 +25,9 @@ const getAnchors = {
 };
 
 const getDrawer = {
+  short: shortDrawer,
+  rightUp: rightUpDrawer,
+  upRight: upRightDrawer,
   lampe: lampeDrawer,
   "empty led": emptyDiodeDrawer,
   pR: pRDrawer,
@@ -34,7 +38,7 @@ const getDrawer = {
 };
 
 export const getElementAnchors = (element) => {
-  return getAnchors[element.type](element);
+  return getAnchors[element.type] ? getAnchors[element.type](element) : [];
 };
 
 export const drawElement = (element, position1, position2) => {
@@ -42,6 +46,9 @@ export const drawElement = (element, position1, position2) => {
 };
 
 export const isPath = {
+  short: true,
+  rightUp: true,
+  upRight: true,
   lampe: true,
   "empty led": true,
   pR: true,
@@ -52,6 +59,9 @@ export const isPath = {
 };
 
 export const isMultyPole = {
+  short: false,
+  rightUp: false,
+  upRight: false,
   lampe: false,
   "empty led": false,
   pR: false,
@@ -62,6 +72,9 @@ export const isMultyPole = {
 };
 
 const components = {
+  short: (props) => <Short key={props.id} {...props} />,
+  rightUp: (props) => <RightUp key={props.id} {...props} />,
+  upRight: (props) => <UpRight key={props.id} {...props} />,
   lampe: (props) => <Lampe key={props.id} {...props} />,
   "empty led": (props) => <EmptyDiode key={props.id} {...props} />,
   pR: (props) => <PR key={props.id} {...props} />,
