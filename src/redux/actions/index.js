@@ -178,3 +178,12 @@ export function setModeMovePaper() {
     type: SET_MODE_MOVE_PAPER,
   };
 }
+
+export const UPDATE_MAGNET_OPTION = "UPDATE_MAGNET_OPTION";
+export function updateMagnetOption(optionName, optionValue) {
+  return {
+    type: UPDATE_MAGNET_OPTION,
+    optionName,
+    optionValue,
+  };
+}

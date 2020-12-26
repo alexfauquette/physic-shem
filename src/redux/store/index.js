@@ -1,6 +1,7 @@
 import { createStore } from "redux";
 
 import reducer_displayOptions from "./displayOptions";
+import reducer_magnetsOptions from "./magnetsOptions";
 
 import {
   START_DRAGGING,
@@ -64,6 +65,7 @@ import { stackAnchors, splitAnchor } from "./anchorHelper";
 
 function update(state = initial_state, action) {
   state = { ...reducer_displayOptions(state, action) };
+  state = { ...reducer_magnetsOptions(state, action) };
 
   switch (action.type) {
     case UPDATE_COMPONENT:

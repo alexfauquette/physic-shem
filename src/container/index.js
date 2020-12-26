@@ -15,6 +15,7 @@ import {
   setModeMovePaper,
   startSelect,
   stackSelectedAnchors,
+  updateMagnetOption,
 } from "../redux/actions";
 import {
   MODE_DRAG,
@@ -31,6 +32,9 @@ import Magnets from "./magnets";
 
 import SvgIcon from "@material-ui/core/SvgIcon";
 import IconButton from "@material-ui/core/IconButton";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+
 import ControlCameraIcon from "@material-ui/icons/ControlCamera";
 import ZoomInIcon from "@material-ui/icons/ZoomIn";
 import ZoomOutIcon from "@material-ui/icons/ZoomOut";
@@ -54,6 +58,8 @@ const mapDispatchToProps = (dispatch) => {
     startSelect: () => dispatch(startSelect()),
     stackSelectedAnchors: (direction) =>
       dispatch(stackSelectedAnchors(direction)),
+    updateMagnetOption: (optionName, optionValue = null) =>
+      dispatch(updateMagnetOption(optionName, optionValue)),
   };
 };
 const mapStateToProps = (state) => {
@@ -63,6 +69,7 @@ const mapStateToProps = (state) => {
     newNode: state.newNode,
     rectangleSelection: state.rectangleSelection,
     displayOptions: state.displayOptions,
+    magnetsOptions: state.magnetsOptions,
   };
 };
 
@@ -86,6 +93,8 @@ const Container = ({
   setModeMovePaper,
   startSelect,
   stackSelectedAnchors,
+  updateMagnetOption,
+  magnetsOptions,
 }) => {
   const {
     x: SVG_X,
@@ -239,6 +248,59 @@ const Container = ({
           <path d="M11 18H5V2H11V18M19 8H13V18H19V8M22 20H2V22H22V20Z" />
         </SvgIcon>
       </IconButton>
+      |
+      <IconButton
+        color={magnetsOptions.isGridAttracting ? "secondary" : "default"}
+        onMouseDown={(event) => {
+          event.stopPropagation();
+          updateMagnetOption("isGridAttracting");
+        }}
+      >
+        <SvgIcon>
+          <path d="M0 6v1h24v-1ZM0 12v1h24v-1ZM0 18v1h24v-1Z" />
+          <path d="M4 0h1v24h-1ZM11 0h1v24h-1ZM18 0h1v24h-1Z" />
+          <circle cx={18.5} cy={18.5} r={3} />
+        </SvgIcon>
+      </IconButton>
+      <Select
+        value={magnetsOptions.gridSpace}
+        onChange={(event) =>
+          updateMagnetOption("gridSpace", event.target.value)
+        }
+      >
+        <MenuItem value={0.5}>0.5</MenuItem>
+        <MenuItem value={1}>1</MenuItem>
+        <MenuItem value={2}>2</MenuItem>
+      </Select>
+      <IconButton
+        color={
+          magnetsOptions.isPathCoordinatesAttracting ? "secondary" : "default"
+        }
+        onMouseDown={(event) => {
+          event.stopPropagation();
+          updateMagnetOption("isPathCoordinatesAttracting");
+        }}
+      >
+        <SvgIcon>
+          <path d="M4 11.5h20v1h-20Z" />
+
+          <circle cx={2} cy={12} r={2} />
+          <circle cx={22} cy={12} r={2} />
+        </SvgIcon>
+      </IconButton>
+      <IconButton
+        color={magnetsOptions.isNodeAnchorsAttracting ? "secondary" : "default"}
+        onMouseDown={(event) => {
+          event.stopPropagation();
+          updateMagnetOption("isNodeAnchorsAttracting");
+        }}
+      >
+        <SvgIcon>
+          <path d="M4 11.5h20v10h-20v-10M8 13h10v5h-10Z" />
+
+          <circle cx={2} cy={12} r={2} />
+          <circle cx={22} cy={12} r={2} />
+        </SvgIcon>
       </IconButton>
       <svg
         xmlns="http://www.w3.org/2000/svg"
