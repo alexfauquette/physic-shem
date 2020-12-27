@@ -9,6 +9,11 @@ import NMOS, {
 } from "./nmos";
 import VEE, { getAnchor as vee_getAnchor, drawer as veeDrawer } from "./vee";
 import VCC, { getAnchor as vcc_getAnchor, drawer as vccDrawer } from "./vcc";
+import C, { drawer as cDrawer } from "./C";
+import R, { drawer as rDrawer } from "./R";
+import Battery1, { drawer as battery1Drawer } from "./battery1";
+import Switch, { drawer as switchDrawer } from "./switch";
+
 import Short, { drawer as shortDrawer } from "./short";
 import RightUp, { drawer as rightUpDrawer } from "./rightUp";
 import UpRight, { drawer as upRightDrawer } from "./upRight";
@@ -18,7 +23,6 @@ const getAnchors = {
   nmos: (props) => nmos_getAnchor(props),
   vee: (props) => vee_getAnchor(props),
   vcc: (props) => vcc_getAnchor(props),
-  vcapacitor: (props) => vcapacitor_getAnchor(props),
 };
 
 const getDrawer = {
@@ -32,6 +36,10 @@ const getDrawer = {
   vee: veeDrawer,
   vcc: vccDrawer,
   vcapacitor: vcapacitorDrawer,
+  C: cDrawer,
+  R: rDrawer,
+  battery1: battery1Drawer,
+  switch: switchDrawer,
 };
 
 export const getElementAnchors = (element) => {
@@ -53,6 +61,10 @@ export const isPath = {
   vee: false,
   vcc: false,
   vcapacitor: true,
+  C: true,
+  R: true,
+  battery1: true,
+  switch: true,
 };
 
 export const isMultyPole = {
@@ -66,6 +78,10 @@ export const isMultyPole = {
   vee: false,
   vcc: false,
   vcapacitor: false,
+  C: false,
+  R: false,
+  battery1: false,
+  switch: false,
 };
 
 const components = {
@@ -79,10 +95,23 @@ const components = {
   vee: (props) => <VEE key={props.id} {...props} />,
   vcc: (props) => <VCC key={props.id} {...props} />,
   vcapacitor: (props) => <Vcapacitor key={props.id} {...props} />,
+  C: (props) => <C key={props.id} {...props} />,
+  R: (props) => <R key={props.id} {...props} />,
+  battery1: (props) => <Battery1 key={props.id} {...props} />,
+  switch: (props) => <Switch key={props.id} {...props} />,
 };
 
 export const structure = {
-  bipoles: ["lampe", "pR", "vcapacitor", "empty led"],
+  bipoles: [
+    "lampe",
+    "R",
+    "C",
+    "switch",
+    "battery1",
+    "empty led",
+    "vcapacitor",
+    "pR",
+  ],
   sources: [],
   references: ["vee", "vcc"],
   transistors: ["nmos"],
