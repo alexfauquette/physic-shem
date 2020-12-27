@@ -2,10 +2,7 @@ import React from "react";
 import Lampe, { drawer as lampeDrawer } from "./Lampe";
 import EmptyDiode, { drawer as emptyDiodeDrawer } from "./empty_diode";
 import PR, { getAnchor as pR_getAnchor, drawer as pRDrawer } from "./pR";
-import Vcapacitor, {
-  getAnchor as vcapacitor_getAnchor,
-  drawer as vcapacitorDrawer,
-} from "./vcapacitor";
+import Vcapacitor, { drawer as vcapacitorDrawer } from "./vcapacitor";
 import NMOS, {
   getAnchor as nmos_getAnchor,
   drawer as nmosDrawer,

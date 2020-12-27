@@ -12,17 +12,6 @@ const UNIT_Y = 0.5 * height * MULTIPLICATIVE_CONST * R_LEN;
 
 const STEP = capacitor_width * UNIT_X;
 
-export const getAnchor = ({ fromCoords, toCoords }) => {
-  const { x: xFrom, y: yFrom } = fromCoords;
-  const { x: xTo, y: yTo } = toCoords;
-
-  const angle = Math.atan2(yTo - yFrom, xTo - xFrom);
-
-  const x = (xFrom + xTo) / 2 + 55 * Math.sin(angle);
-  const y = (yFrom + yTo) / 2 - 55 * Math.cos(angle);
-  return [{ name: "wiper", x, y }];
-};
-
 const Vcapacitor = () => (
   <>
     <path d={`M  ${-STEP} ${-UNIT_Y} L ${-STEP} ${UNIT_Y}`} />
