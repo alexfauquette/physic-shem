@@ -1,11 +1,15 @@
 import React from "react";
 import Lampe, { drawer as lampeDrawer } from "./Lampe";
-import EmptyDiode, { drawer as emptyDiodeDrawer } from "./empty_diode";
+import EmptyDiode, {
+  drawer as emptyDiodeDrawer,
+  roughComponent as emptyDiodeRoughComponent,
+} from "./empty_diode";
 import PR, { getAnchor as pR_getAnchor, drawer as pRDrawer } from "./pR";
 import Vcapacitor, { drawer as vcapacitorDrawer } from "./vcapacitor";
 import NMOS, {
   getAnchor as nmos_getAnchor,
   drawer as nmosDrawer,
+  roughComponent as nmosRoughComponent,
 } from "./nmos";
 import VEE, { getAnchor as vee_getAnchor, drawer as veeDrawer } from "./vee";
 import VCC, { getAnchor as vcc_getAnchor, drawer as vccDrawer } from "./vcc";
@@ -41,6 +45,14 @@ const getDrawer = {
   battery1: battery1Drawer,
   switch: switchDrawer,
 };
+
+const getRoughComponents = {
+  nmos: nmosRoughComponent,
+  "empty led": emptyDiodeRoughComponent,
+};
+
+export const roughComponents = (rc, x0, y0, element) =>
+  getRoughComponents[element.type](rc, x0, y0, element);
 
 export const getElementAnchors = (element) => {
   return getAnchors[element.type] ? getAnchors[element.type](element) : [];

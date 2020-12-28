@@ -6,6 +6,7 @@ import {
   MODE_MOVE_PAPER,
 } from "./redux/store/interactionModes";
 
+import RoughDrawing from "./container/RoughDrawing";
 import Container from "./container/index.js";
 import LatexDisplay from "./container/latexDisplay";
 import ElementOptions from "./container/elementOptions";
@@ -98,6 +99,7 @@ function App({
 }) {
   const classes = useStyles();
   const [showCode, setShowCode] = useState(false);
+  const [showRough, setShowRough] = useState(false);
 
   const svgRef = useRef();
 
@@ -158,6 +160,9 @@ function App({
             Clipped drawer
           </Typography>
 
+          <Button color="inherit" onClick={() => setShowRough(true)}>
+            Rough
+          </Button>
           <Button color="inherit" onClick={() => setShowCode(true)}>
             LaTEX
           </Button>
@@ -205,6 +210,14 @@ function App({
         }}
       >
         <LatexDisplay />
+      </Dialog>
+      <Dialog
+        open={showRough}
+        onClose={() => {
+          setShowRough(false);
+        }}
+      >
+        <RoughDrawing />
       </Dialog>
     </div>
   );

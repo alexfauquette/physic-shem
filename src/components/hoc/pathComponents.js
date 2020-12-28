@@ -111,6 +111,31 @@ export const withPathAttributes = ({ height = 1, width = 1 }) => (component) =>
     );
   });
 
+export const drawLinks = (rc, x0, y0, width, height, element) => {
+  const { x: xFrom, y: yFrom } = element.fromCoords;
+  const { x: xTo, y: yTo } = element.toCoords;
+
+  const x = (xFrom + xTo) / 2 - x0;
+  const y = (yFrom + yTo) / 2 - y0;
+
+  const d = Math.sqrt((xFrom - xTo) ** 2 + (yFrom - yTo) ** 2);
+  const ratio = (d - width * MULTIPLICATIVE_CONST * R_LEN) / (2 * d); // ratio of the line use by connection
+  const angle = parseInt(
+    (180 * Math.atan2(yTo - yFrom, xTo - xFrom)) / Math.PI
+  );
+
+  rc.path(
+    `M ${xFrom - x0} ${yFrom - y0}
+    L ${xFrom + ratio * (xTo - xFrom) - x0} ${
+      yFrom + ratio * (yTo - yFrom) - y0
+    }
+    M ${xTo - x0} ${yTo - y0}
+    L ${xTo + ratio * (xFrom - xTo) - x0} ${yTo + ratio * (yFrom - yTo) - y0}`
+  );
+
+  return { x, y, angle };
+};
+
 export const getPathAttributes = (element) => {
   const currantAttribute = getCurrantAttribute(element.currant);
   const label = getLabelAttribute(element.label);

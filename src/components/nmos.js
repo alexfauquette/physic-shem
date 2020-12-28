@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import "./style.scss";
 
-import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
+import { MULTIPLICATIVE_CONST, R_LEN, rotation } from "./constantes";
 
 const width = 0.7;
 const gate_height = 0.35;
@@ -137,6 +137,28 @@ const NMOS = ({
         </g>
       </g>
     </g>
+  );
+};
+
+export const roughComponent = (rc, x0, y0, element) => {
+  const x = element.positionCoords.x - x0;
+  const y = element.positionCoords.y - y0;
+
+  const { angle } = element;
+
+  rc.path(
+    `M ${rotation(angle, x, y, 0, -UNIT_Y)} 
+      L ${rotation(angle, x, y, 0, -gate_height * UNIT_Y)}
+      L ${rotation(angle, x, y, -base_width * UNIT_X, -gate_height * UNIT_Y)}
+      M ${rotation(angle, x, y, -base_width * UNIT_X, -base_height * UNIT_Y)}
+      L ${rotation(angle, x, y, -base_width * UNIT_X, +base_height * UNIT_Y)}
+      L ${rotation(angle, x, y, -base_width * UNIT_X, +gate_height * UNIT_Y)}
+      L ${rotation(angle, x, y, 0, gate_height * UNIT_Y)}
+      L ${rotation(angle, x, y, 0, UNIT_Y)}
+      M ${rotation(angle, x, y, -gate_width * UNIT_X, -gate_height * UNIT_Y)}
+      L ${rotation(angle, x, y, -gate_width * UNIT_X, +gate_height * UNIT_Y)}
+      M ${rotation(angle, x, y, -gate_width * UNIT_X, 0)}
+      L ${rotation(angle, x, y, -UNIT_X, 0)}`
   );
 };
 

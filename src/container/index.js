@@ -202,70 +202,73 @@ const Container = ({
             fill="url(#grid-magnets)"
           />
         )}
-        <Components svgRef={svgRef} displayOptions={displayOptions} />
 
-        {/* display the path element in during its creation */}
+        <g id="drawingArea">
+          <Components svgRef={svgRef} displayOptions={displayOptions} />
 
-        {mode === MODE_CREATE_PATH_ELEMENT && // the element
-          newPath &&
-          newPath.isFromValidated &&
-          newPath.to &&
-          newPath.to.x !== null &&
-          newPath.to.y !== null &&
-          newPath.from &&
-          newPath.from.x !== null &&
-          newPath.from.y !== null &&
-          components[newPath.elementType]({
-            fromCoords: newPath.from,
-            toCoords: newPath.to,
-          })}
-        {mode === MODE_CREATE_PATH_ELEMENT && //the anchor TO
-          newPath &&
-          newPath.isFromValidated &&
-          newPath.to.x !== null &&
-          newPath.to.y !== null && (
-            <circle cx={newPath.to.x} cy={newPath.to.y} r={5} />
-          )}
-        {mode === MODE_CREATE_PATH_ELEMENT && // the anchor FROM
-          newPath &&
-          newPath.from &&
-          newPath.from.x !== null &&
-          newPath.from.y !== null && (
-            <circle
-              cx={newPath.from.x}
-              cy={newPath.from.y}
-              r={5}
-              onMouseEnter={invalidateFirstStepPathElementCreation}
+          {/* display the path element in during its creation */}
+
+          {mode === MODE_CREATE_PATH_ELEMENT && // the element
+            newPath &&
+            newPath.isFromValidated &&
+            newPath.to &&
+            newPath.to.x !== null &&
+            newPath.to.y !== null &&
+            newPath.from &&
+            newPath.from.x !== null &&
+            newPath.from.y !== null &&
+            components[newPath.elementType]({
+              fromCoords: newPath.from,
+              toCoords: newPath.to,
+            })}
+          {mode === MODE_CREATE_PATH_ELEMENT && //the anchor TO
+            newPath &&
+            newPath.isFromValidated &&
+            newPath.to.x !== null &&
+            newPath.to.y !== null && (
+              <circle cx={newPath.to.x} cy={newPath.to.y} r={5} />
+            )}
+          {mode === MODE_CREATE_PATH_ELEMENT && // the anchor FROM
+            newPath &&
+            newPath.from &&
+            newPath.from.x !== null &&
+            newPath.from.y !== null && (
+              <circle
+                cx={newPath.from.x}
+                cy={newPath.from.y}
+                r={5}
+                onMouseEnter={invalidateFirstStepPathElementCreation}
+              />
+            )}
+
+          {/* display the path element in during its creation */}
+
+          {mode === MODE_CREATE_NODE_ELEMENT && // the element
+            newNode &&
+            newNode.position &&
+            newNode.position.x !== null &&
+            newNode.position.y !== null &&
+            components[newNode.elementType]({
+              positionCoords: newNode.position,
+            })}
+          {mode === MODE_CREATE_NODE_ELEMENT && // the anchor POSITION
+            newNode &&
+            newNode.position &&
+            newNode.position.x !== null &&
+            newNode.position.y !== null && (
+              <circle cx={newNode.position.x} cy={newNode.position.y} r={5} />
+            )}
+
+          <Anchors svgRef={svgRef} displayOptions={displayOptions} />
+          <Magnets svgRef={svgRef} displayOptions={displayOptions} />
+
+          {mode === MODE_RECTANGLE_SELECTION && (
+            <path
+              d={`M ${rectangleSelection.x0} ${rectangleSelection.y0} L  ${rectangleSelection.x0} ${rectangleSelection.y1} L ${rectangleSelection.x1} ${rectangleSelection.y1} L  ${rectangleSelection.x1} ${rectangleSelection.y0} Z`}
+              style={{ fill: "transparent", stroke: "red", strokeWidth: 1 }}
             />
           )}
-
-        {/* display the path element in during its creation */}
-
-        {mode === MODE_CREATE_NODE_ELEMENT && // the element
-          newNode &&
-          newNode.position &&
-          newNode.position.x !== null &&
-          newNode.position.y !== null &&
-          components[newNode.elementType]({
-            positionCoords: newNode.position,
-          })}
-        {mode === MODE_CREATE_NODE_ELEMENT && // the anchor POSITION
-          newNode &&
-          newNode.position &&
-          newNode.position.x !== null &&
-          newNode.position.y !== null && (
-            <circle cx={newNode.position.x} cy={newNode.position.y} r={5} />
-          )}
-
-        <Anchors svgRef={svgRef} displayOptions={displayOptions} />
-        <Magnets svgRef={svgRef} displayOptions={displayOptions} />
-
-        {mode === MODE_RECTANGLE_SELECTION && (
-          <path
-            d={`M ${rectangleSelection.x0} ${rectangleSelection.y0} L  ${rectangleSelection.x0} ${rectangleSelection.y1} L ${rectangleSelection.x1} ${rectangleSelection.y1} L  ${rectangleSelection.x1} ${rectangleSelection.y0} Z`}
-            style={{ fill: "transparent", stroke: "red", strokeWidth: 1 }}
-          />
-        )}
+        </g>
       </svg>
     </>
   );
