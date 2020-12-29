@@ -24,6 +24,10 @@ const RoughDrawing = ({ pathComponents, anchors }) => {
 
     // const rc = rough.canvas(canvasRef.current);
     const rc = rough.canvas(document.getElementById("rough-canvas"));
+    const ctx = document.getElementById("rough-canvas").getContext("2d");
+
+    ctx.font = "0.7cm Computer Modern";
+
     pathComponents.allIds.forEach((id) => {
       const element = pathComponents.byId[id];
       element.positionCoords = element.position
@@ -34,7 +38,7 @@ const RoughDrawing = ({ pathComponents, anchors }) => {
         : undefined;
       element.toCoords = element.to ? anchors.byId[element.to] : undefined;
 
-      roughComponents(rc, svgBBox.x - margin, svgBBox.y - margin, element);
+      roughComponents(rc, ctx, svgBBox.x - margin, svgBBox.y - margin, element);
     });
   }, [width, height, pathComponents]);
   return (

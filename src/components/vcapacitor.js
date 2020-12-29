@@ -6,6 +6,7 @@ import {
   getPathAttributes,
   drawLinks,
 } from "./hoc/pathComponents";
+import { drawRoughCurrant } from "../atoms/currant";
 
 const height = 0.6;
 const width = 0.5;
@@ -24,7 +25,7 @@ const Vcapacitor = () => (
   </>
 );
 
-export const roughComponent = (rc, x0, y0, element) => {
+export const roughComponent = (rc, ctx, x0, y0, element) => {
   const { x, y, angle } = drawLinks(
     rc,
     x0,

@@ -14,3 +14,9 @@ export const rotation = (angle, x0, y0, x, y) => {
     Math.cos((-angle / 180) * Math.PI) * y
   }`;
 };
+
+export const translateSVG2Canvas = {
+  baseline: "bottom",
+  hanging: "top",
+  middle: "middle",
+};

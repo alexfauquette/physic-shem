@@ -1,4 +1,5 @@
 import React from "react";
+import { rotation, translateSVG2Canvas } from "../components/constantes";
 
 const getTextAnchor = (angle, currantIsAbove) => {
   if (-5 < angle && angle < 5) {
@@ -82,13 +83,7 @@ const CurrantArrow = ({
   currantIsAbove = true,
   currantIsAfter = true,
 }) => {
-  if (
-    !fromCoords ||
-    !toCoords ||
-    !currantText ||
-    angle === null ||
-    ratio === null
-  ) {
+  if (!fromCoords || !toCoords || angle === null || ratio === null) {
     return null;
   }
   const { x: xFrom, y: yFrom } = fromCoords;
@@ -136,6 +131,101 @@ const CurrantArrow = ({
       </text>
     </g>
   );
+};
+
+export const drawRoughCurrant = (rc, ctx, x0, y0, angle, ratio, element) => {
+  const {
+    fromCoords,
+    toCoords,
+    currant: {
+      show,
+      currantText,
+      currantIsForward = true,
+      currantIsAbove = true,
+      currantIsAfter = true,
+    },
+  } = element;
+
+  if (!show) {
+    return null;
+  }
+
+  const xFrom = fromCoords.x - x0;
+  const xTo = toCoords.x - x0;
+  const yFrom = fromCoords.y - y0;
+  const yTo = toCoords.y - y0;
+
+  const xI = currantIsAfter
+    ? xTo + (ratio * (xFrom - xTo)) / 2
+    : xFrom + (ratio * (xTo - xFrom)) / 2;
+  const yI = currantIsAfter
+    ? yTo + (ratio * (yFrom - yTo)) / 2
+    : yFrom + (ratio * (yTo - yFrom)) / 2;
+  const rI = 15;
+
+  const theta = -angle + (currantIsForward ? 0 : 180);
+  rc.path(
+    `M ${rotation(theta, xI, yI, -0.5 * rI, 0.5 * rI)}
+    L ${rotation(theta, xI, yI, 0.5 * rI, 0)}
+    L ${rotation(theta, xI, yI, -0.5 * rI, -0.5 * rI)}
+    Z
+    `
+  );
+
+  if (!currantText) {
+    return null;
+  }
+  const xText =
+    xI -
+    (currantIsAbove ? -0.5 * rI : 0.5 * rI) * Math.sin((angle / 180) * Math.PI);
+
+  const yText =
+    yI +
+    (currantIsAbove ? -0.5 * rI : 0.5 * rI) * Math.cos((angle / 180) * Math.PI);
+
+  const { textAnchor, alignmentBaseline } = getTextAnchor(
+    angle,
+    currantIsAbove
+  );
+
+  ctx.textAlign = textAnchor;
+  ctx.textBaseline = translateSVG2Canvas[alignmentBaseline];
+  ctx.fillText(currantText, xText, yText);
+
+  // return (
+  //   <g
+  //     style={{
+  //       fill: "black",
+  //       stroke: "none",
+  //     }}
+  //   >
+  //     <path
+  //       d={`M ${xI + 0.5 * rI} ${yI} L  ${xI - 0.5 * rI} ${yI + 0.5 * rI} L  ${
+  //         xI - 0.5 * rI
+  //       } ${yI - 0.5 * rI} Z`}
+  //       style={{
+  //         transform: `rotate(${angle + (currantIsForward ? 0 : 180)}deg)`,
+  //         transformOrigin: `${xI}px ${yI}px`,
+  //       }}
+  //     />
+  //     <text
+  //       key={Math.random()}
+  //       x={
+  //         xI -
+  //         (currantIsAbove ? -0.5 * rI : 0.5 * rI) *
+  //           Math.sin((angle / 180) * Math.PI)
+  //       }
+  //       y={
+  //         yI +
+  //         (currantIsAbove ? -0.5 * rI : 0.5 * rI) *
+  //           Math.cos((angle / 180) * Math.PI)
+  //       }
+  //       style={{ ...getTextAnchor(angle, currantIsAbove) }}
+  //     >
+  //       {currantText}
+  //     </text>
+  //   </g>
+  // );
 };
 
 export default CurrantArrow;

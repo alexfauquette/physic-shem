@@ -133,7 +133,7 @@ export const drawLinks = (rc, x0, y0, width, height, element) => {
     L ${xTo + ratio * (xFrom - xTo) - x0} ${yTo + ratio * (yFrom - yTo) - y0}`
   );
 
-  return { x, y, angle };
+  return { x, y, angle, ratio };
 };
 
 export const getPathAttributes = (element) => {

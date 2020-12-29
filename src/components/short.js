@@ -4,6 +4,7 @@ import "./style.scss";
 import CurrantArrow from "../atoms/currant";
 import Label from "../atoms/label";
 
+import { drawRoughCurrant } from "../atoms/currant";
 import { getPathAttributes } from "./hoc/pathComponents";
 
 const mapStateToProps = (state, props) => {
@@ -76,7 +77,7 @@ const Short = ({
   );
 };
 
-export const roughComponent = (rc, x0, y0, element) => {
+export const roughComponent = (rc, ctx, x0, y0, element) => {
   const xFrom = element.fromCoords.x - x0;
   const yFrom = element.fromCoords.y - y0;
 
@@ -84,6 +85,8 @@ export const roughComponent = (rc, x0, y0, element) => {
   const yTo = element.toCoords.y - y0;
 
   rc.path(`M ${xFrom} ${yFrom} L ${xTo} ${yTo}`);
+
+  drawRoughCurrant(rc, ctx, x0, y0, angle, ratio, element);
 };
 
 export const drawer = (element) => {

@@ -96,8 +96,8 @@ const getRoughComponents = {
   switch: switchRoughComponent,
 };
 
-export const roughComponents = (rc, x0, y0, element) =>
-  getRoughComponents[element.type](rc, x0, y0, element);
+export const roughComponents = (rc, ctx, x0, y0, element) =>
+  getRoughComponents[element.type](rc, ctx, x0, y0, element);
 
 export const getElementAnchors = (element) => {
   return getAnchors[element.type] ? getAnchors[element.type](element) : [];

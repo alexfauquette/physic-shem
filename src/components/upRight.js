@@ -11,7 +11,7 @@ const mapStateToProps = (state, props) => {
     : {};
 };
 
-export const roughComponent = (rc, x0, y0, element) => {
+export const roughComponent = (rc, ctx, x0, y0, element) => {
   const xFrom = element.fromCoords.x - x0;
   const yFrom = element.fromCoords.y - y0;
 

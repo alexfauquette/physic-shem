@@ -140,7 +140,7 @@ const NMOS = ({
   );
 };
 
-export const roughComponent = (rc, x0, y0, element) => {
+export const roughComponent = (rc, ctx, x0, y0, element) => {
   const x = element.positionCoords.x - x0;
   const y = element.positionCoords.y - y0;
 
