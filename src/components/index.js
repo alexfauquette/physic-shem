@@ -1,26 +1,59 @@
 import React from "react";
-import Lampe, { drawer as lampeDrawer } from "./Lampe";
+import Lampe, {
+  drawer as lampeDrawer,
+  roughComponent as lampeRoughComponent,
+} from "./Lampe";
 import EmptyDiode, {
   drawer as emptyDiodeDrawer,
   roughComponent as emptyDiodeRoughComponent,
 } from "./empty_diode";
-import PR, { getAnchor as pR_getAnchor, drawer as pRDrawer } from "./pR";
-import Vcapacitor, { drawer as vcapacitorDrawer } from "./vcapacitor";
+import PR, {
+  getAnchor as pR_getAnchor,
+  drawer as pRDrawer,
+  roughComponent as pRRoughComponent,
+} from "./pR";
+import Vcapacitor, {
+  drawer as vcapacitorDrawer,
+  roughComponent as vcapacitorRoughComponent,
+} from "./vcapacitor";
 import NMOS, {
   getAnchor as nmos_getAnchor,
   drawer as nmosDrawer,
   roughComponent as nmosRoughComponent,
 } from "./nmos";
-import VEE, { getAnchor as vee_getAnchor, drawer as veeDrawer } from "./vee";
-import VCC, { getAnchor as vcc_getAnchor, drawer as vccDrawer } from "./vcc";
-import C, { drawer as cDrawer } from "./C";
-import R, { drawer as rDrawer } from "./R";
-import Battery1, { drawer as battery1Drawer } from "./battery1";
-import Switch, { drawer as switchDrawer } from "./switch";
+import VEE, {
+  getAnchor as vee_getAnchor,
+  drawer as veeDrawer,
+  roughComponent as veeRoughComponent,
+} from "./vee";
+import VCC, {
+  getAnchor as vcc_getAnchor,
+  drawer as vccDrawer,
+  roughComponent as vccRoughComponent,
+} from "./vcc";
+import C, { drawer as cDrawer, roughComponent as cRoughComponent } from "./C";
+import R, { drawer as rDrawer, roughComponent as rRoughComponent } from "./R";
+import Battery1, {
+  drawer as battery1Drawer,
+  roughComponent as battery1RoughComponent,
+} from "./battery1";
+import Switch, {
+  drawer as switchDrawer,
+  roughComponent as switchRoughComponent,
+} from "./switch";
 
-import Short, { drawer as shortDrawer } from "./short";
-import RightUp, { drawer as rightUpDrawer } from "./rightUp";
-import UpRight, { drawer as upRightDrawer } from "./upRight";
+import Short, {
+  drawer as shortDrawer,
+  roughComponent as shortRoughComponent,
+} from "./short";
+import RightUp, {
+  drawer as rightUpDrawer,
+  roughComponent as rightUpRoughComponent,
+} from "./rightUp";
+import UpRight, {
+  drawer as upRightDrawer,
+  roughComponent as upRightRoughComponent,
+} from "./upRight";
 
 const getAnchors = {
   pR: (props) => pR_getAnchor(props),
@@ -47,8 +80,20 @@ const getDrawer = {
 };
 
 const getRoughComponents = {
-  nmos: nmosRoughComponent,
+  short: shortRoughComponent,
+  rightUp: rightUpRoughComponent,
+  upRight: upRightRoughComponent,
+  lampe: lampeRoughComponent,
   "empty led": emptyDiodeRoughComponent,
+  pR: pRRoughComponent,
+  nmos: nmosRoughComponent,
+  vee: veeRoughComponent,
+  vcc: vccRoughComponent,
+  vcapacitor: vcapacitorRoughComponent,
+  C: cRoughComponent,
+  R: rRoughComponent,
+  battery1: battery1RoughComponent,
+  switch: switchRoughComponent,
 };
 
 export const roughComponents = (rc, x0, y0, element) =>

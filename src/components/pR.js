@@ -1,7 +1,11 @@
 import React from "react";
 import "./style.scss";
-import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
-import { withPathAttributes, getPathAttributes } from "./hoc/pathComponents";
+import { MULTIPLICATIVE_CONST, R_LEN, rotation } from "./constantes";
+import {
+  withPathAttributes,
+  getPathAttributes,
+  drawLinks,
+} from "./hoc/pathComponents";
 
 const height = 0.8;
 const height_2 = 0.3;
@@ -40,6 +44,23 @@ const PR = ({ wiper_pos = 0.5 }) => (
     />
   </>
 );
+
+export const roughComponent = (rc, x0, y0, element) => {
+  const { x, y, angle } = drawLinks(rc, x0, y0, width, height, element);
+
+  rc.path(
+    `M ${rotation(-angle, x, y, -UNIT_X, 0)}
+    L ${rotation(-angle, x, y, (-5 / 6) * UNIT_X, -UNIT_Y2)} 
+    L ${rotation(-angle, x, y, (-3 / 6) * UNIT_X, UNIT_Y2)} 
+    L ${rotation(-angle, x, y, (-1 / 6) * UNIT_X, -UNIT_Y2)} 
+    L ${rotation(-angle, x, y, (1 / 6) * UNIT_X, UNIT_Y2)} 
+    L ${rotation(-angle, x, y, (3 / 6) * UNIT_X, -UNIT_Y2)} 
+    L ${rotation(-angle, x, y, (5 / 6) * UNIT_X, UNIT_Y2)} 
+    L ${rotation(-angle, x, y, UNIT_X, 0)}
+    M ${rotation(-angle, x, y, -(0.5 - wiper_pos) * 2 * UNIT_X, -UNIT_Y)}
+    L ${rotation(-angle, x, y, -(0.5 - wiper_pos) * 2 * UNIT_X, -UNIT_Y2)}`
+  );
+};
 
 export const drawer = (element) => {
   return `to[pR${getPathAttributes(element)}] `;

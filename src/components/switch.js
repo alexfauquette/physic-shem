@@ -1,7 +1,11 @@
 import React from "react";
 import "./style.scss";
 import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
-import { withPathAttributes, getPathAttributes } from "./hoc/pathComponents";
+import {
+  withPathAttributes,
+  getPathAttributes,
+  drawLinks,
+} from "./hoc/pathComponents";
 
 const height = 0.35;
 const width = 0.35;
@@ -49,6 +53,20 @@ const Switch = ({ isOpen, withArrow }) => {
       } 0 L ${0.2 * UNIT_X} ${-UNIT_Y}`}
     />
   );
+};
+
+export const roughComponent = (rc, x0, y0, element) => {
+  const { x, y, angle } = drawLinks(rc, x0, y0, width, height, element);
+
+  // rc.path(
+  //   `M ${rotation(-angle, x, y, UNIT_X, 0)}
+  //   L ${rotation(-angle, x, y, -UNIT_X, -UNIT_Y)}
+  //   L ${rotation(-angle, x, y, -UNIT_X, UNIT_Y)}
+  //   Z
+  //   M ${rotation(-angle, x, y, UNIT_X, UNIT_Y)}
+  //   L ${rotation(-angle, x, y, UNIT_X, -UNIT_Y)}
+  //   `
+  // );
 };
 
 export const drawer = (element) => {

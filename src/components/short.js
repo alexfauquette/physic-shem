@@ -76,6 +76,16 @@ const Short = ({
   );
 };
 
+export const roughComponent = (rc, x0, y0, element) => {
+  const xFrom = element.fromCoords.x - x0;
+  const yFrom = element.fromCoords.y - y0;
+
+  const xTo = element.toCoords.x - x0;
+  const yTo = element.toCoords.y - y0;
+
+  rc.path(`M ${xFrom} ${yFrom} L ${xTo} ${yTo}`);
+};
+
 export const drawer = (element) => {
   return `to[short${getPathAttributes(element)}] `;
 };
