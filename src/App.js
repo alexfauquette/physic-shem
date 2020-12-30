@@ -212,6 +212,7 @@ function App({
         <LatexDisplay />
       </Dialog>
       <Dialog
+        maxWidth="lg"
         open={showRough}
         onClose={() => {
           setShowRough(false);
