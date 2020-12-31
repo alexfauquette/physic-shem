@@ -86,7 +86,11 @@ export const roughComponent = (rc, ctx, x0, y0, element) => {
 
   rc.path(`M ${xFrom} ${yFrom} L ${xTo} ${yTo}`);
 
-  drawRoughCurrant(rc, ctx, x0, y0, angle, ratio, element);
+  const angle = parseInt(
+    (180 * Math.atan2(yTo - yFrom, xTo - xFrom)) / Math.PI
+  );
+
+  drawRoughCurrant(rc, ctx, x0, y0, angle, 1, element);
 };
 
 export const drawer = (element) => {

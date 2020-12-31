@@ -51,6 +51,7 @@ export const roughComponent = (rc, ctx, x0, y0, element) => {
 
   drawRoughCurrant(rc, ctx, x0, y0, angle, ratio, element);
 
+  const { wiper_pos } = element;
   rc.path(
     `M ${rotation(-angle, x, y, -UNIT_X, 0)}
     L ${rotation(-angle, x, y, (-5 / 6) * UNIT_X, -UNIT_Y2)} 
