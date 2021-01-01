@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 
 import { connect } from "react-redux";
-import {
-  startCreatePathElement,
-  startCreateNodeElement,
-} from "../redux/actions";
+import { startCreatePathElement, startCreateNodeElement } from "redux/actions";
 
-import { isPath, structure } from "../components";
+import { isPath, structure } from "components";
 
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";

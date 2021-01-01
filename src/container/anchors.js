@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import Anchor from "../atoms/anchor";
+import Anchor from "atoms/anchor";
 
 const mapStateToProps = (state) => {
   return {

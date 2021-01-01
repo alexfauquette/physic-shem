@@ -4,13 +4,13 @@ import {
   MODE_DRAG,
   MODE_SELECT,
   MODE_MOVE_PAPER,
-} from "./redux/store/interactionModes";
+} from "redux/store/interactionModes";
 
-import RoughDrawing from "./container/RoughDrawing";
-import Container from "./container/index.js";
-import LatexDisplay from "./container/latexDisplay";
-import ElementOptions from "./container/elementOptions";
-import LeftMenu from "./container/leftMenu";
+import RoughDrawing from "container/RoughDrawing";
+import Container from "container/index.js";
+import LatexDisplay from "container/latexDisplay";
+import ElementOptions from "container/elementOptions";
+import LeftMenu from "container/leftMenu";
 
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
@@ -30,7 +30,7 @@ import {
   deleteElement,
   movePaper,
   endMovePaper,
-} from "./redux/actions";
+} from "redux/actions";
 
 const drawerWidth = 180;
 const optionDrawerWidth = 280;

@@ -1,10 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import "./style.scss";
-import CurrantArrow from "../atoms/currant";
-import Label from "../atoms/label";
+import CurrantArrow from "atoms/currant";
+import Label from "atoms/label";
 
-import { drawRoughCurrant } from "../atoms/currant";
+import { drawRoughCurrant } from "atoms/currant";
 import { getPathAttributes } from "./hoc/pathComponents";
 
 const mapStateToProps = (state, props) => {

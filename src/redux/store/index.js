@@ -21,7 +21,7 @@ import {
   STACK_SELECTED_ANCHORS,
   DELETE_ELEMENT,
   UPDATE_COMPONENT,
-} from "../actions";
+} from "redux/actions";
 
 import {
   MODE_SELECT,

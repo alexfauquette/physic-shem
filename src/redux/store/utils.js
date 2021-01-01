@@ -1,4 +1,4 @@
-import { getElementAnchors, isPath } from "../../components";
+import { getElementAnchors, isPath } from "components";
 
 export const getAdhesivePoints = (elementType) => {
   const adhesivePoints = [];

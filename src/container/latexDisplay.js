@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import getCircuitikz from "../redux/store/getCircuitikz";
+import getCircuitikz from "redux/store/getCircuitikz";
 
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";

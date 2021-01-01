@@ -1,7 +1,7 @@
 import { MODE_CREATE_NODE_ELEMENT } from "./interactionModes";
 
 import { getAdhesivePoints } from "./utils";
-import { getElementAnchors, isMultyPole } from "../../components";
+import { getElementAnchors, isMultyPole } from "components";
 
 import { v4 as uuid } from "uuid";
 

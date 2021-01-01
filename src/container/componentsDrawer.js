@@ -1,8 +1,8 @@
 import React from "react";
-import svgComponents from "../components";
+import svgComponents from "components";
 import { connect } from "react-redux";
-import { MODE_SELECT } from "../redux/store/interactionModes";
-import { toggleSelection, startDragging } from "../redux/actions";
+import { MODE_SELECT } from "redux/store/interactionModes";
+import { toggleSelection, startDragging } from "redux/actions";
 
 const mapDispatchToProps = (dispatch, { svgRef, displayOptions }) => {
   return {
@@ -41,7 +41,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const Components = ({
+const ComponentsDrawer = ({
   components,
   selection,
   mode,
@@ -72,10 +72,9 @@ const Components = ({
                 }
               : null,
           selected: selection.includes(components.byId[id].id),
-          // showHandles: mode === MODE_LINK,
         })
     )}
   </>
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Components);
+export default connect(mapStateToProps, mapDispatchToProps)(ComponentsDrawer);

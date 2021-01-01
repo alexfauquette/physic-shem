@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import rough from "roughjs/bundled/rough.esm.js";
 
-import { roughComponents } from "../components";
+import { roughComponents } from "components";
 import { connect } from "react-redux";
 
 import Button from "@material-ui/core/Button";

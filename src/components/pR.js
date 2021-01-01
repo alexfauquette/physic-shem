@@ -6,7 +6,7 @@ import {
   getPathAttributes,
   drawLinks,
 } from "./hoc/pathComponents";
-import { drawRoughCurrant } from "../atoms/currant";
+import { drawRoughCurrant } from "atoms/currant";
 
 const height = 0.8;
 const height_2 = 0.3;

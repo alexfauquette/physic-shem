@@ -1,4 +1,4 @@
-import { getElementAnchors } from "../../components";
+import { getElementAnchors } from "components";
 
 import { replaceComponentAnchor } from "./utils";
 

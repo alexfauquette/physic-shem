@@ -5,10 +5,10 @@ import {
   MODE_CREATE_PATH_ELEMENT,
   MODE_CREATE_NODE_ELEMENT,
   MODE_DRAG,
-} from "../redux/store/interactionModes";
+} from "redux/store/interactionModes";
 
-import Magnet from "../atoms/magnet";
-import { getElementAnchors } from "../components";
+import Magnet from "atoms/magnet";
+import { getElementAnchors } from "components";
 
 const mapStateToProps = (state) => {
   return {

@@ -4,7 +4,7 @@ import {
   MOVE_PAPER,
   END_MOVE_PAPER,
   SET_MODE_MOVE_PAPER,
-} from "../actions";
+} from "redux/actions";
 import { MODE_MOVE_PAPER } from "./interactionModes";
 
 // If we want to use A4 format (not sure it's useful)

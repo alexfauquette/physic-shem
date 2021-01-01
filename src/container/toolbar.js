@@ -8,8 +8,8 @@ import {
   stackSelectedAnchors,
   updateMagnetOption,
   startCreatePathElement,
-} from "../redux/actions";
-import { MODE_MOVE_PAPER } from "../redux/store/interactionModes";
+} from "redux/actions";
+import { MODE_MOVE_PAPER } from "redux/store/interactionModes";
 
 import SvgIcon from "@material-ui/core/SvgIcon";
 import IconButton from "@material-ui/core/IconButton";

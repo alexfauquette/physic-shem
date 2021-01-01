@@ -1,4 +1,4 @@
-import { UPDATE_MAGNET_OPTION } from "../actions";
+import { UPDATE_MAGNET_OPTION } from "redux/actions";
 
 export const default_magnetsOptions = {
   isGridAttracting: true,

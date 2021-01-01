@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import components from "../components";
+import components from "components";
 import ToolBar from "./toolbar";
 
 import {
@@ -13,7 +13,7 @@ import {
   startRectangleSelection,
   stopRectangleSelection,
   startMovePaper,
-} from "../redux/actions";
+} from "redux/actions";
 import {
   MODE_DRAG,
   MODE_CREATE_PATH_ELEMENT,
@@ -21,11 +21,11 @@ import {
   MODE_SELECT,
   MODE_RECTANGLE_SELECTION,
   MODE_MOVE_PAPER,
-} from "../redux/store/interactionModes";
+} from "redux/store/interactionModes";
 
 import { MULTIPLICATIVE_CONST } from "utils/constantes";
 
-import Components from "./components";
+import ComponentsDrawer from "container/componentsDrawer";
 import Anchors from "./anchors";
 import Magnets from "./magnets";
 
@@ -204,7 +204,7 @@ const Container = ({
         )}
 
         <g id="drawingArea">
-          <Components svgRef={svgRef} displayOptions={displayOptions} />
+          <ComponentsDrawer svgRef={svgRef} displayOptions={displayOptions} />
 
           {/* display the path element in during its creation */}
 

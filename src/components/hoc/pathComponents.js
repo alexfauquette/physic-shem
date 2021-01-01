@@ -1,12 +1,12 @@
 import React from "react";
 import { connect } from "react-redux";
 import { MULTIPLICATIVE_CONST, R_LEN } from "utils/constantes";
-import CurrantArrow, { getCurrantAttribute } from "../../atoms/currant";
+import CurrantArrow, { getCurrantAttribute } from "atoms/currant";
 import Label, {
   getLabelAttribute,
   getAnnotationAttribute,
   drawRoughLabel,
-} from "../../atoms/label";
+} from "atoms/label";
 
 const mapStateToProps = (state, props) => {
   return props.id

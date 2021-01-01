@@ -1,4 +1,4 @@
-import { drawElement, isMultyPole, isPath } from "../../components";
+import { drawElement, isMultyPole, isPath } from "components";
 import { MULTIPLICATIVE_CONST } from "utils/constantes";
 
 const simplifyNumber = (x) => {
