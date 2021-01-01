@@ -28,9 +28,8 @@ const LeftMenu = ({ startCreatePathElement, startCreateNodeElement }) => {
   return (
     <List>
       {Object.keys(structure).map((sectionName) => (
-        <>
+        <div key={sectionName}>
           <ListItem
-            key={sectionName}
             button
             onClick={() =>
               setOpenSection(openSection === sectionName ? null : sectionName)
@@ -66,7 +65,7 @@ const LeftMenu = ({ startCreatePathElement, startCreateNodeElement }) => {
               ))}
             </List>
           </Collapse>
-        </>
+        </div>
       ))}
     </List>
   );
