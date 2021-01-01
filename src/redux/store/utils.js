@@ -70,4 +70,4 @@ export const isInRectangle = ({ x, y }, { x0, y0, x1, y1 }) => {
 };
 
 export const isAnchor = (state, id) =>
-  id !== null && state.anchors.allIds.includes(id);
+  id !== null && state.coordinates.allIds.includes(id);

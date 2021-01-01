@@ -5,34 +5,34 @@ import { replaceComponentAnchor } from "./utils";
 import { MODE_DRAG, MODE_SELECT } from "./interactionModes";
 
 export const startDragging = (state, action) => {
-  const anchorsToMove = [];
+  const coordinatesToMove = [];
   const adhesivePoints = [];
 
   state.selection.forEach((selectedId) => {
-    if (state.anchors.allIds.includes(selectedId)) {
+    if (state.coordinates.allIds.includes(selectedId)) {
       if (adhesivePoints.findIndex((elem) => elem.id === selectedId) === -1) {
         adhesivePoints.push({
           type: "ANCHOR",
           id: selectedId,
-          dx: action.x - state.anchors.byId[selectedId].x,
-          dy: action.y - state.anchors.byId[selectedId].y,
+          dx: action.x - state.coordinates.byId[selectedId].x,
+          dy: action.y - state.coordinates.byId[selectedId].y,
         });
       }
     } else if (state.components.allIds.includes(selectedId)) {
-      const anchors = getElementAnchors({
+      const coordinates = getElementAnchors({
         ...state.components.byId[selectedId],
         fromCoords:
           state.components.byId[selectedId].from &&
-          state.anchors.byId[state.components.byId[selectedId].from],
+          state.coordinates.byId[state.components.byId[selectedId].from],
         toCoords:
           state.components.byId[selectedId].to &&
-          state.anchors.byId[state.components.byId[selectedId].to],
+          state.coordinates.byId[state.components.byId[selectedId].to],
         positionCoords:
           state.components.byId[selectedId].position &&
-          state.anchors.byId[state.components.byId[selectedId].position],
+          state.coordinates.byId[state.components.byId[selectedId].position],
       });
 
-      anchors.forEach(({ x, y, name }) => {
+      coordinates.forEach(({ x, y, name }) => {
         adhesivePoints.push({
           type: state.components.byId[selectedId].position ? "NODE" : "PATH", // TODO use constant file
           name: name,
@@ -52,8 +52,8 @@ export const startDragging = (state, action) => {
         adhesivePoints.push({
           type: "ANCHOR", // TODO use constant file
           id: fromId,
-          dx: action.x - state.anchors.byId[fromId].x,
-          dy: action.y - state.anchors.byId[fromId].y,
+          dx: action.x - state.coordinates.byId[fromId].x,
+          dy: action.y - state.coordinates.byId[fromId].y,
         });
       }
       if (
@@ -67,8 +67,8 @@ export const startDragging = (state, action) => {
         adhesivePoints.push({
           type: "ANCHOR",
           id: toId,
-          dx: action.x - state.anchors.byId[toId].x,
-          dy: action.y - state.anchors.byId[toId].y,
+          dx: action.x - state.coordinates.byId[toId].x,
+          dy: action.y - state.coordinates.byId[toId].y,
         });
       }
     }
@@ -81,37 +81,42 @@ export const startDragging = (state, action) => {
     if (state.components.allIds.includes(selectedId)) {
       if (
         state.components.byId[selectedId].from &&
-        !anchorsToMove.includes(state.components.byId[selectedId].from)
+        !coordinatesToMove.includes(state.components.byId[selectedId].from)
       ) {
-        anchorsToMove.push(state.components.byId[selectedId].from);
+        coordinatesToMove.push(state.components.byId[selectedId].from);
       }
       if (
         state.components.byId[selectedId].to &&
-        !anchorsToMove.includes(state.components.byId[selectedId].to)
+        !coordinatesToMove.includes(state.components.byId[selectedId].to)
       ) {
-        anchorsToMove.push(state.components.byId[selectedId].to);
+        coordinatesToMove.push(state.components.byId[selectedId].to);
       }
       if (state.components.byId[selectedId].position) {
         if (
-          !anchorsToMove.includes(state.components.byId[selectedId].position)
+          !coordinatesToMove.includes(
+            state.components.byId[selectedId].position
+          )
         ) {
           pile.push(state.components.byId[selectedId].position);
         }
         if (!nodeSeen.includes(selectedId)) {
           nodeSeen.push(selectedId);
           state.weakLinks.forEach(({ anchorId, nodeId }) => {
-            if (nodeId === selectedId && !anchorsToMove.includes(anchorId)) {
+            if (
+              nodeId === selectedId &&
+              !coordinatesToMove.includes(anchorId)
+            ) {
               pile.push(anchorId);
             }
           });
         }
       }
     } else {
-      if (!anchorsToMove.includes(selectedId)) {
-        anchorsToMove.push(selectedId);
+      if (!coordinatesToMove.includes(selectedId)) {
+        coordinatesToMove.push(selectedId);
 
-        if (state.anchors.byId[selectedId].isNodePosition) {
-          pile.push(state.anchors.byId[selectedId].nodeId);
+        if (state.coordinates.byId[selectedId].isNodePosition) {
+          pile.push(state.coordinates.byId[selectedId].nodeId);
         }
       }
     }
@@ -120,7 +125,7 @@ export const startDragging = (state, action) => {
   return {
     ...state,
     mode: MODE_DRAG,
-    anchorsToMove: [...anchorsToMove],
+    coordinatesToMove: [...coordinatesToMove],
     adhesivePoints: [...adhesivePoints],
     originalPosition: { x: action.x, y: action.y },
     alreadyMoved: { x: 0, y: 0 },
@@ -128,8 +133,8 @@ export const startDragging = (state, action) => {
       ...state.weakLinks
         .filter(
           ({ anchorId, nodeId }) =>
-            anchorsToMove.includes(anchorId) &&
-            !anchorsToMove.includes(state.components.byId[nodeId].position)
+            coordinatesToMove.includes(anchorId) &&
+            !coordinatesToMove.includes(state.components.byId[nodeId].position)
         )
         .map(({ anchorId, nodeId }) => anchorId + "-" + nodeId),
     ],
@@ -143,18 +148,18 @@ export const stopDragging = (state, action) => {
     state.currentMagnet.attracted.type === "ANCHOR" &&
     state.currentMagnet.attractor.type === "ANCHOR"
   ) {
-    // we need to fusion those anchors
+    // we need to fusion those coordinates
     const anchorToRemoveID = state.currentMagnet.attracted.id;
     const anchorToUseId = state.currentMagnet.attractor.id;
 
     // remove anchor
-    const anchorToRemoveIDIndex = state.anchors.allIds.findIndex(
+    const anchorToRemoveIDIndex = state.coordinates.allIds.findIndex(
       (id) => id === anchorToRemoveID
     );
     const {
       [anchorToRemoveID]: anchorToRemove,
       ...remainingAnchors
-    } = state.anchors.byId;
+    } = state.coordinates.byId;
 
     //const update elements
     const newByIDElements = {};
@@ -168,11 +173,11 @@ export const stopDragging = (state, action) => {
 
     return {
       ...state,
-      anchors: {
+      coordinates: {
         byId: { ...remainingAnchors },
         allIds: [
-          ...state.anchors.allIds.slice(0, anchorToRemoveIDIndex),
-          ...state.anchors.allIds.slice(anchorToRemoveIDIndex + 1),
+          ...state.coordinates.allIds.slice(0, anchorToRemoveIDIndex),
+          ...state.coordinates.allIds.slice(anchorToRemoveIDIndex + 1),
         ],
       },
       components: {
@@ -180,7 +185,7 @@ export const stopDragging = (state, action) => {
         byId: { ...newByIDElements },
       },
       mode: MODE_SELECT,
-      anchorsToMove: [],
+      coordinatesToMove: [],
       originalPosition: {},
       alreadyMoved: {},
       weakLinksToRemove: [],
@@ -235,7 +240,7 @@ export const stopDragging = (state, action) => {
     return {
       ...state,
       mode: MODE_SELECT,
-      anchorsToMove: [],
+      coordinatesToMove: [],
       originalPosition: {},
       alreadyMoved: {},
       weakLinksToRemove: [],
@@ -252,7 +257,7 @@ export const stopDragging = (state, action) => {
   return {
     ...state,
     mode: MODE_SELECT,
-    anchorsToMove: [],
+    coordinatesToMove: [],
     originalPosition: {},
     alreadyMoved: {},
 
@@ -286,8 +291,8 @@ export const updatePosition = (state, action) => {
     newMoveY = y - originalY;
   }
 
-  const anchorById = state.anchors.byId;
-  state.anchorsToMove.forEach((anchorId) => {
+  const anchorById = state.coordinates.byId;
+  state.coordinatesToMove.forEach((anchorId) => {
     anchorById[anchorId] = {
       ...anchorById[anchorId],
       x: anchorById[anchorId].x + newMoveX - state.alreadyMoved.x,
@@ -297,8 +302,8 @@ export const updatePosition = (state, action) => {
 
   return {
     ...state,
-    anchors: {
-      ...state.anchors,
+    coordinates: {
+      ...state.coordinates,
       byId: { ...anchorById },
     },
     alreadyMoved: {

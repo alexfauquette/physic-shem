@@ -5,7 +5,7 @@ import Anchor from "../atoms/anchor";
 
 const mapStateToProps = (state) => {
   return {
-    anchorIds: state.anchors.allIds,
+    anchorIds: state.coordinates.allIds,
   };
 };
 

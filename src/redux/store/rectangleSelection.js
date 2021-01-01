@@ -13,8 +13,8 @@ export const updatePosition = (state, action) => {
   return {
     ...state,
     selection: [
-      ...state.anchors.allIds.filter((id) =>
-        isInRectangle(state.anchors.byId[id], newRectangle)
+      ...state.coordinates.allIds.filter((id) =>
+        isInRectangle(state.coordinates.byId[id], newRectangle)
       ),
     ],
     rectangleSelection: {

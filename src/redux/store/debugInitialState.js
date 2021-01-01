@@ -79,7 +79,7 @@ export const initial_state = {
       "id6",
     ],
   },
-  anchors: {
+  coordinates: {
     byId: {
       // anchor1: {
       //   id: "anchor1",

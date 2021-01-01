@@ -69,8 +69,8 @@ export const savePathElement = (state, action) => {
   const toAnchor =
     attractorTo && attractorTo.type === "ANCHOR" ? attractorTo.id : uuid();
 
-  // create anchors if necessary
-  let newAnchors = { ...state.anchors };
+  // create coordinates if necessary
+  let newAnchors = { ...state.coordinates };
   if (!attractorFrom || attractorFrom.type !== "ANCHOR") {
     newAnchors = {
       byId: {
@@ -152,7 +152,7 @@ export const savePathElement = (state, action) => {
       },
       allIds: [...state.components.allIds, newId_element],
     },
-    anchors: { ...newAnchors },
+    coordinates: { ...newAnchors },
     weakLinks: [...state.weakLinks, ...newWeakLinks],
   };
 };

@@ -12,31 +12,31 @@ import { getElementAnchors } from "../components";
 
 const mapStateToProps = (state) => {
   return {
-    anchors: state.anchors,
+    coordinates: state.coordinates,
     components: state.components,
     mode: state.mode,
-    anchorsToMove: state.anchorsToMove,
+    coordinatesToMove: state.coordinatesToMove,
     selection: state.selection,
     adhesivePoints: state.adhesivePoints || null,
     ...state.magnetsOptions,
   };
 };
 
-const isMoving = (element, anchorsToMove) => {
+const isMoving = (element, coordinatesToMove) => {
   // help function to filter magnets
-  if (!anchorsToMove) {
+  if (!coordinatesToMove) {
     return false;
   }
-  if (typeof element == "string" && anchorsToMove.includes(element)) {
+  if (typeof element == "string" && coordinatesToMove.includes(element)) {
     return true;
   }
-  if (element.from && anchorsToMove.includes(element.from)) {
+  if (element.from && coordinatesToMove.includes(element.from)) {
     return true;
   }
-  if (element.to && anchorsToMove.includes(element.to)) {
+  if (element.to && coordinatesToMove.includes(element.to)) {
     return true;
   }
-  if (element.position && anchorsToMove.includes(element.position)) {
+  if (element.position && coordinatesToMove.includes(element.position)) {
     return true;
   }
   return false;
@@ -44,9 +44,9 @@ const isMoving = (element, anchorsToMove) => {
 
 const Magnets = ({
   mode,
-  anchors,
+  coordinates,
   components,
-  anchorsToMove,
+  coordinatesToMove,
   adhesivePoints,
   isPathCoordinatesAttracting,
   isNodeAnchorsAttracting,
@@ -64,7 +64,7 @@ const Magnets = ({
     <>
       {isNodeAnchorsAttracting &&
         components.allIds
-          .filter((id) => !isMoving(components.byId[id], anchorsToMove))
+          .filter((id) => !isMoving(components.byId[id], coordinatesToMove))
           .reduce(
             (accumulator, id) => [
               ...accumulator,
@@ -72,13 +72,13 @@ const Magnets = ({
                 ...components.byId[id],
                 fromCoords:
                   components.byId[id].from &&
-                  anchors.byId[components.byId[id].from],
+                  coordinates.byId[components.byId[id].from],
                 toCoords:
                   components.byId[id].to &&
-                  anchors.byId[components.byId[id].to],
+                  coordinates.byId[components.byId[id].to],
                 positionCoords:
                   components.byId[id].position &&
-                  anchors.byId[components.byId[id].position],
+                  coordinates.byId[components.byId[id].position],
               }).map(({ x, y, name }) =>
                 adhesivePoints.reduce(
                   (
@@ -116,8 +116,8 @@ const Magnets = ({
             []
           )}
       {isPathCoordinatesAttracting &&
-        anchors.allIds
-          .filter((id) => !isMoving(id, anchorsToMove))
+        coordinates.allIds
+          .filter((id) => !isMoving(id, coordinatesToMove))
           .map((id) =>
             adhesivePoints.reduce(
               (
@@ -128,9 +128,9 @@ const Magnets = ({
                   ...accu,
                   <Magnet
                     key={`${id}<-${idAdhesive}-${nameAdhesive || ""}`}
-                    x={anchors.byId[id].x}
+                    x={coordinates.byId[id].x}
                     dx={dx}
-                    y={anchors.byId[id].y}
+                    y={coordinates.byId[id].y}
                     dy={dy}
                     mode={mode}
                     attractor={{ type: "ANCHOR", name: "", id: id }}

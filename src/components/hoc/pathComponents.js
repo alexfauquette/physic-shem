@@ -11,8 +11,8 @@ import Label, {
 const mapStateToProps = (state, props) => {
   return props.id
     ? {
-        fromCoords: state.anchors.byId[props.from],
-        toCoords: state.anchors.byId[props.to],
+        fromCoords: state.coordinates.byId[props.from],
+        toCoords: state.coordinates.byId[props.to],
       }
     : {};
 };

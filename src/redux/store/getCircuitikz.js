@@ -142,7 +142,7 @@ const drawPathFromCoord = (
       drawnElements[element.id] = true;
 
       // get information of the next coordinate
-      currantCoordId = getCoordId(state.anchors.byId[element.to]);
+      currantCoordId = getCoordId(state.coordinates.byId[element.to]);
       currantCoord = coords[currantCoordId];
       nextPaths = currantCoord.startingPaths.filter((id) => !drawnElements[id]); //only path elements starting here not already drawn
       arrivingPaths = currantCoord.endingPaths.filter(
@@ -204,8 +204,8 @@ const initializeCoords = (state) => {
   state.components.allIds.forEach((id) => {
     const element = state.components.byId[id];
     if (isPath[element.type]) {
-      const fromCoord = state.anchors.byId[element.from];
-      const toCoord = state.anchors.byId[element.to];
+      const fromCoord = state.coordinates.byId[element.from];
+      const toCoord = state.coordinates.byId[element.to];
 
       const fromCoordId = getCoordId(fromCoord);
       const toCoordId = getCoordId(toCoord);
@@ -244,7 +244,7 @@ const initializeCoords = (state) => {
         associatedIds: [],
       };
       if (!isMultyPole[element.type]) {
-        const positionCoord = state.anchors.byId[element.position];
+        const positionCoord = state.coordinates.byId[element.position];
         const positionCoordId = getCoordId(positionCoord);
 
         if (coords[positionCoordId] === undefined) {
@@ -267,12 +267,12 @@ const initializeCoords = (state) => {
 
   // add node informations
   state.weakLinks.forEach(({ anchorId, nodeId, name, nameAnchor }) => {
-    const coord = state.anchors.byId[anchorId];
+    const coord = state.coordinates.byId[anchorId];
 
     if (
       !coord.isNodePosition ||
       !isMultyPole[
-        state.components.byId[state.anchors.byId[anchorId].nodeId].type
+        state.components.byId[state.coordinates.byId[anchorId].nodeId].type
       ]
     ) {
       const coordId = getCoordId(coord);
@@ -283,7 +283,7 @@ const initializeCoords = (state) => {
         nodeReference[nodeId].associatedIds.push(coordId);
       }
     } else {
-      const childId = state.anchors.byId[anchorId].nodeId;
+      const childId = state.coordinates.byId[anchorId].nodeId;
       nodeReference[childId].parent = nodeId;
       nodeReference[childId].anchor = nameAnchor;
       nodeReference[childId].parentAnchor = name;
@@ -344,8 +344,8 @@ function getCircuitikz(state) {
 
       positionInformations.anchor = nodeReference[elementId].anchor;
     } else {
-      positionInformations.x = state.anchors.byId[element.position].x;
-      positionInformations.y = state.anchors.byId[element.position].y;
+      positionInformations.x = state.coordinates.byId[element.position].x;
+      positionInformations.y = state.coordinates.byId[element.position].y;
     }
 
     // check if need to create name
@@ -370,7 +370,7 @@ function getCircuitikz(state) {
   // =====================================================
   // TODO : an good idea could be not to trust weak links but to compare anchor coordinate with used coordinates
   state.weakLinks.forEach(({ anchorId, nodeId, name, nameAnchor }) => {
-    const coord = state.anchors.byId[anchorId];
+    const coord = state.coordinates.byId[anchorId];
     const coordId = getCoordId(coord);
 
     if (
@@ -384,7 +384,7 @@ function getCircuitikz(state) {
   });
 
   // ====================================
-  // 3. Draw path from multi-pole anchors
+  // 3. Draw path from multi-pole coordinates
   // ====================================
   multiAnchorNodeIds.forEach((nodeId) => {
     nodeReference[nodeId].associatedIds.forEach((childId) => {

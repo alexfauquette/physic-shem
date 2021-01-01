@@ -12,12 +12,12 @@ import DialogActions from "@material-ui/core/DialogActions";
 const mapStateToProps = (state) => {
   return {
     components: state.components,
-    anchors: state.anchors,
+    coordinates: state.coordinates,
   };
 };
 
 const margin = 50;
-const RoughDrawing = ({ components, anchors }) => {
+const RoughDrawing = ({ components, coordinates }) => {
   const canvasRef = useRef();
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
@@ -41,12 +41,12 @@ const RoughDrawing = ({ components, anchors }) => {
     components.allIds.forEach((id) => {
       const element = components.byId[id];
       element.positionCoords = element.position
-        ? anchors.byId[element.position]
+        ? coordinates.byId[element.position]
         : undefined;
       element.fromCoords = element.from
-        ? anchors.byId[element.from]
+        ? coordinates.byId[element.from]
         : undefined;
-      element.toCoords = element.to ? anchors.byId[element.to] : undefined;
+      element.toCoords = element.to ? coordinates.byId[element.to] : undefined;
 
       roughComponents(rc, ctx, svgBBox.x - margin, svgBBox.y - margin, element);
     });

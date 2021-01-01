@@ -3,12 +3,12 @@ import { componentUseThisAnchor, replaceComponentAnchor } from "./utils";
 import { v4 as uuid } from "uuid";
 
 export const stackAnchors = (state, action) => {
-  const anchorsSelected = state.selection.filter(
-    (id) => id in state.anchors.byId
+  const coordinatesSelected = state.selection.filter(
+    (id) => id in state.coordinates.byId
   );
   const movedAnchors = [];
   if (
-    anchorsSelected.length <= 1 ||
+    coordinatesSelected.length <= 1 ||
     !["U", "D", "L", "R"].includes(action.direction)
   ) {
     return state;
@@ -16,8 +16,8 @@ export const stackAnchors = (state, action) => {
     const newPosition = {};
 
     // We start by looping on selected element to find the min/max along x/y depending on the letter
-    anchorsSelected.forEach((id, index) => {
-      const anchor = state.anchors.byId[id];
+    coordinatesSelected.forEach((id, index) => {
+      const anchor = state.coordinates.byId[id];
 
       switch (action.direction) {
         case "U":
@@ -42,8 +42,8 @@ export const stackAnchors = (state, action) => {
     });
 
     // now we now the new x/y we change those positions
-    anchorsSelected.forEach((id) => {
-      const anchor = state.anchors.byId[id];
+    coordinatesSelected.forEach((id) => {
+      const anchor = state.coordinates.byId[id];
 
       //  if the position is modified we just break all the weak lins associated
       if (
@@ -53,7 +53,7 @@ export const stackAnchors = (state, action) => {
         movedAnchors.push(id);
       }
 
-      state.anchors.byId[id] = {
+      state.coordinates.byId[id] = {
         ...anchor,
         ...newPosition,
       };
@@ -61,9 +61,9 @@ export const stackAnchors = (state, action) => {
 
     return {
       ...state,
-      anchors: {
-        ...state.anchors,
-        byId: { ...state.anchors.byId },
+      coordinates: {
+        ...state.coordinates,
+        byId: { ...state.coordinates.byId },
       },
       weakLinks: [
         ...state.weakLinks.filter(
@@ -79,11 +79,11 @@ export const splitAnchor = (state, action) => {
   if (
     !anchorId &&
     state.selection.length === 1 &&
-    state.anchors.allIds.includes(state.selection[0])
+    state.coordinates.allIds.includes(state.selection[0])
   ) {
     anchorId = state.selection[0];
   }
-  if (anchorId && state.anchors.allIds.includes(anchorId)) {
+  if (anchorId && state.coordinates.allIds.includes(anchorId)) {
     const componentsToChange = state.components.allIds.filter((id) =>
       componentUseThisAnchor(state.components.byId[id], anchorId)
     );
@@ -91,7 +91,7 @@ export const splitAnchor = (state, action) => {
       return state;
     }
 
-    const newAnchors = state.anchors;
+    const newAnchors = state.coordinates;
     const newComponents = state.components.byId;
     const newWeakLinks = [];
     const weakLinksToCopy = state.weakLinks.filter(
@@ -124,7 +124,7 @@ export const splitAnchor = (state, action) => {
         ...state.components,
         byId: { ...newComponents },
       },
-      anchors: {
+      coordinates: {
         allIds: [...newAnchors.allIds],
         byId: { ...newAnchors.byId },
       },

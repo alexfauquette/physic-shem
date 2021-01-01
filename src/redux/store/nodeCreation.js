@@ -78,10 +78,10 @@ export const saveNodeCreation = (state, action) => {
         },
         allIds: [...state.components.allIds, newId_element],
       },
-      anchors: {
-        ...state.anchors,
+      coordinates: {
+        ...state.coordinates,
         byId: {
-          ...state.anchors.byId,
+          ...state.coordinates.byId,
           [positionId]: {
             id: positionId,
             x: state.newNode.position.x,
@@ -97,8 +97,8 @@ export const saveNodeCreation = (state, action) => {
   return state;
 };
 
-const newPositions = (anchors, toUpdate, deltaToAdd) => {
-  const newAnchors = { ...anchors };
+const newPositions = (coordinates, toUpdate, deltaToAdd) => {
+  const newAnchors = { ...coordinates };
 
   toUpdate.forEach(({ anchorId, anchorName }) => {
     newAnchors[anchorId] = {
@@ -113,10 +113,10 @@ const newPositions = (anchors, toUpdate, deltaToAdd) => {
 
 export const rotateNode = (state, { id, value }) => {
   // we prepare data for the update
-  // first we get coordinate of anchors before and after rotation
+  // first we get coordinate of coordinates before and after rotation
   const element = state.components.byId[id];
 
-  const positionCoords = state.anchors.byId[element.position];
+  const positionCoords = state.coordinates.byId[element.position];
   const prevAngle = element.angle;
   const newAngle = value;
 
@@ -150,11 +150,11 @@ export const rotateNode = (state, { id, value }) => {
 
     return {
       ...state,
-      anchors: {
-        ...state.anchors,
+      coordinates: {
+        ...state.coordinates,
         byId: {
           ...newPositions(
-            state.anchors.byId,
+            state.coordinates.byId,
             state.rotationHelper.IdToUpdate,
             deltaToAdd
           ),
@@ -187,9 +187,9 @@ export const rotateNode = (state, { id, value }) => {
       }
       if (nodeId === id) {
         if (
-          !state.anchors.byId[anchorId].isNodePosition ||
+          !state.coordinates.byId[anchorId].isNodePosition ||
           !isMultyPole[
-            state.components.byId[state.anchors.byId[anchorId].nodeId].type
+            state.components.byId[state.coordinates.byId[anchorId].nodeId].type
           ]
         ) {
           // if child is path of mono pole
@@ -203,9 +203,11 @@ export const rotateNode = (state, { id, value }) => {
     console.log(toRemove.length);
     return {
       ...state,
-      anchors: {
-        ...state.anchors,
-        byId: { ...newPositions(state.anchors.byId, IdToUpdate, deltaToAdd) },
+      coordinates: {
+        ...state.coordinates,
+        byId: {
+          ...newPositions(state.coordinates.byId, IdToUpdate, deltaToAdd),
+        },
       },
       components: {
         ...state.components,

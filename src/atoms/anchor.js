@@ -35,8 +35,8 @@ const mapDispatchToProps = (dispatch, { svgRef, displayOptions }) => {
 };
 const mapStateToProps = (state, { id }) => {
   return {
-    x: state.anchors.byId[id].x,
-    y: state.anchors.byId[id].y,
+    x: state.coordinates.byId[id].x,
+    y: state.coordinates.byId[id].y,
     mode: state.mode,
     selected: state.selection.includes(id),
   };
