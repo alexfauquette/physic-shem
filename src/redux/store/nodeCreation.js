@@ -200,7 +200,6 @@ export const rotateNode = (state, { id, value }) => {
       }
     });
 
-    console.log(toRemove.length);
     return {
       ...state,
       coordinates: {

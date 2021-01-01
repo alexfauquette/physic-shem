@@ -142,7 +142,6 @@ export const drawRoughLabel = ({
   isAbove,
   height,
 }) => {
-  console.log({ angle });
   const { x: xFrom, y: yFrom } = from;
   const { x: xTo, y: yTo } = to;
 
