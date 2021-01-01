@@ -20,8 +20,14 @@ path {
 
 .black {
   stroke: black;
+  .fill {
+    fill: black;
+  }
 }
 
 .red {
   stroke: red;
+  .fill {
+    fill: red;
+  }
 }
