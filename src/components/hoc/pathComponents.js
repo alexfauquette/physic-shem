@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { MULTIPLICATIVE_CONST, R_LEN } from "../constantes";
+import { MULTIPLICATIVE_CONST, R_LEN } from "utils/constantes";
 import CurrantArrow, { getCurrantAttribute } from "../../atoms/currant";
 import Label, {
   getLabelAttribute,

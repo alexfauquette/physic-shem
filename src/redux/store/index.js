@@ -62,7 +62,7 @@ import {
 } from "./nodeCreation";
 
 import { stackAnchors, splitAnchor } from "./anchorHelper";
-import { MULTIPLICATIVE_CONST } from "../../components/constantes";
+import { MULTIPLICATIVE_CONST } from "utils/constantes";
 
 function update(state = initial_state, action) {
   state = { ...reducer_displayOptions(state, action) };

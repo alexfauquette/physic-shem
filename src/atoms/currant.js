@@ -3,7 +3,7 @@ import {
   rotation,
   translateSVGbaseline2Canvas,
   translateSVGalign2Canvas,
-} from "../components/constantes";
+} from "utils/constantes";
 
 const getTextAnchor = (angle, currantIsAbove) => {
   if (-5 < angle && angle < 5) {

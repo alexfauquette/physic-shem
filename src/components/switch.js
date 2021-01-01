@@ -1,6 +1,6 @@
 import React from "react";
 import "./style.scss";
-import { MULTIPLICATIVE_CONST, R_LEN } from "./constantes";
+import { MULTIPLICATIVE_CONST, R_LEN } from "utils/constantes";
 import {
   withPathAttributes,
   getPathAttributes,

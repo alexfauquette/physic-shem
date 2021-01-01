@@ -1,6 +1,6 @@
 import React from "react";
 import "./style.scss";
-import { MULTIPLICATIVE_CONST, R_LEN, rotation } from "./constantes";
+import { MULTIPLICATIVE_CONST, R_LEN, rotation } from "utils/constantes";
 import {
   withPathAttributes,
   getPathAttributes,

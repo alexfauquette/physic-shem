@@ -23,7 +23,7 @@ import {
   MODE_MOVE_PAPER,
 } from "../redux/store/interactionModes";
 
-import { MULTIPLICATIVE_CONST } from "../components/constantes";
+import { MULTIPLICATIVE_CONST } from "utils/constantes";
 
 import Components from "./components";
 import Anchors from "./anchors";
