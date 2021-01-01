@@ -32,7 +32,7 @@ const RoughDrawing = ({ components, coordinates }) => {
     const rc = rough.canvas(document.getElementById("rough-canvas"));
     const ctx = document.getElementById("rough-canvas").getContext("2d");
 
-    ctx.font = "0.7cm Computer Modern";
+    ctx.font = "0.7cm IndieFlower";
 
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, width + 2 * margin, height + 2 * margin);

@@ -9,6 +9,7 @@ import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <React.StrictMode>
+    <p id="load-font">aaa</p>
     <Provider store={store}>
       <App />
     </Provider>
