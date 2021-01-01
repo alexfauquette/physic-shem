@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.css": "/physic-shem/static/css/main.851f09fb.chunk.css",
-    "main.js": "/physic-shem/static/js/main.2cf51cad.chunk.js",
-    "main.js.map": "/physic-shem/static/js/main.2cf51cad.chunk.js.map",
+    "main.css": "/physic-shem/static/css/main.f3519de6.chunk.css",
+    "main.js": "/physic-shem/static/js/main.b1b2a70f.chunk.js",
+    "main.js.map": "/physic-shem/static/js/main.b1b2a70f.chunk.js.map",
     "runtime-main.js": "/physic-shem/static/js/runtime-main.422b5ae2.js",
     "runtime-main.js.map": "/physic-shem/static/js/runtime-main.422b5ae2.js.map",
-    "static/js/2.512202a4.chunk.js": "/physic-shem/static/js/2.512202a4.chunk.js",
-    "static/js/2.512202a4.chunk.js.map": "/physic-shem/static/js/2.512202a4.chunk.js.map",
+    "static/js/2.e15a1821.chunk.js": "/physic-shem/static/js/2.e15a1821.chunk.js",
+    "static/js/2.e15a1821.chunk.js.map": "/physic-shem/static/js/2.e15a1821.chunk.js.map",
     "index.html": "/physic-shem/index.html",
-    "static/css/main.851f09fb.chunk.css.map": "/physic-shem/static/css/main.851f09fb.chunk.css.map",
-    "static/js/2.512202a4.chunk.js.LICENSE.txt": "/physic-shem/static/js/2.512202a4.chunk.js.LICENSE.txt",
+    "static/css/main.f3519de6.chunk.css.map": "/physic-shem/static/css/main.f3519de6.chunk.css.map",
+    "static/js/2.e15a1821.chunk.js.LICENSE.txt": "/physic-shem/static/js/2.e15a1821.chunk.js.LICENSE.txt",
     "static/media/index.css": "/physic-shem/static/media/cmunss.d723cf47.otf"
   },
   "entrypoints": [
     "static/js/runtime-main.422b5ae2.js",
-    "static/js/2.512202a4.chunk.js",
-    "static/css/main.851f09fb.chunk.css",
-    "static/js/main.2cf51cad.chunk.js"
+    "static/js/2.e15a1821.chunk.js",
+    "static/css/main.f3519de6.chunk.css",
+    "static/js/main.b1b2a70f.chunk.js"
   ]
 }
