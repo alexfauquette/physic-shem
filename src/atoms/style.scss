@@ -4,9 +4,22 @@
     stroke-width: 2;
     cursor: pointer;
   }
+
   fill: transparent;
 }
-.anchor.selected {
+.anchor.empty {
+  stroke: black;
+  stroke-width: 2;
+  fill: lightgray;
+}
+.anchor.full {
+  stroke: black;
+  stroke-width: 2;
+  fill: black;
+}
+
+.anchor.selected,
+.anchor.visible.selected {
   fill: red;
 }
 

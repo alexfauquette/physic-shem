@@ -71,23 +71,40 @@ function update(state = initial_state, action) {
   switch (action.type) {
     case UPDATE_COMPONENT:
       const { id, name, value } = action;
-
-      if (name === "angle") {
-        return rotateNode(state, action);
-      }
-      return {
-        ...state,
-        components: {
-          ...state.components,
-          byId: {
-            ...state.components.byId,
-            [id]: {
-              ...state.components.byId[id],
-              [name]: value,
+      if (state.components.allIds.includes(id)) {
+        if (name === "angle") {
+          return rotateNode(state, action);
+        }
+        return {
+          ...state,
+          components: {
+            ...state.components,
+            byId: {
+              ...state.components.byId,
+              [id]: {
+                ...state.components.byId[id],
+                [name]: value,
+              },
             },
           },
-        },
-      };
+        };
+      }
+      if (state.coordinates.allIds.includes(id)) {
+        return {
+          ...state,
+          coordinates: {
+            ...state.coordinates,
+            byId: {
+              ...state.coordinates.byId,
+              [id]: {
+                ...state.coordinates.byId[id],
+                [name]: value,
+              },
+            },
+          },
+        };
+      }
+      return state;
     case TOGGLE_SELECTION:
       if (action.reset) {
         return {

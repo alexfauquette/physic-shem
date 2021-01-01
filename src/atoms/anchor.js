@@ -36,6 +36,7 @@ const mapStateToProps = (state, { id }) => {
   return {
     x: state.coordinates.byId[id].x,
     y: state.coordinates.byId[id].y,
+    shape: state.coordinates.byId[id].shape,
     mode: state.mode,
     selected: state.selection.includes(id),
   };
@@ -45,33 +46,66 @@ const Anchor = ({
   id,
   x,
   y,
+  shape,
   mode,
   selected,
   startDragging,
   toggleSelection,
-}) => (
-  <circle
-    cx={x}
-    cy={y}
-    r={5}
-    className={`anchor ${selected ? "selected" : ""}`}
-    onMouseDown={
-      mode === MODE_SELECT
-        ? (event) => {
-            event.stopPropagation();
-            if (!event.ctrlKey && selected) {
-              startDragging(
-                event.nativeEvent.clientX,
-                event.nativeEvent.clientY
-              );
-            } else {
-              toggleSelection(id, !event.ctrlKey);
-            }
+}) => {
+  switch (shape) {
+    case "d":
+      return (
+        <path
+          d={`M ${x - 5} ${y} L ${x} ${y - 5} L ${x + 5} ${y} L ${x} ${
+            y + 5
+          } Z`}
+          className={`anchor full ${selected ? "selected" : ""} `}
+          onMouseDown={
+            mode === MODE_SELECT
+              ? (event) => {
+                  event.stopPropagation();
+                  if (!event.ctrlKey && selected) {
+                    startDragging(
+                      event.nativeEvent.clientX,
+                      event.nativeEvent.clientY
+                    );
+                  } else {
+                    toggleSelection(id, !event.ctrlKey);
+                  }
+                }
+              : null
           }
-        : null
-    }
-  />
-);
+        />
+      );
+
+    default:
+      return (
+        <circle
+          cx={x}
+          cy={y}
+          r={5}
+          className={`anchor ${selected ? "selected" : ""} ${
+            shape === "o" ? " empty" : ""
+          }${shape === "*" ? " full" : ""}`}
+          onMouseDown={
+            mode === MODE_SELECT
+              ? (event) => {
+                  event.stopPropagation();
+                  if (!event.ctrlKey && selected) {
+                    startDragging(
+                      event.nativeEvent.clientX,
+                      event.nativeEvent.clientY
+                    );
+                  } else {
+                    toggleSelection(id, !event.ctrlKey);
+                  }
+                }
+              : null
+          }
+        />
+      );
+  }
+};
 
 const ConnectedAnchor = connect(mapStateToProps, mapDispatchToProps)(Anchor);
 

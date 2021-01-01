@@ -184,9 +184,7 @@ function App({
         anchor="right"
         variant="persistent"
         open={
-          (mode === MODE_SELECT || mode === MODE_DRAG) &&
-          selection.length === 1 &&
-          pathIds.includes(selection[0])
+          (mode === MODE_SELECT || mode === MODE_DRAG) && selection.length === 1
         }
         className={classes.optionDrawer}
         classes={{

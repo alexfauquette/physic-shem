@@ -13,6 +13,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import TextField from "@material-ui/core/TextField";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -24,16 +26,17 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state) => {
-  if (
-    state.selection.length < 1 ||
-    !state.components.allIds.includes(state.selection[0])
-  ) {
+  if (state.selection.length < 1) {
     return {};
   }
   const idOfInterest = state.selection[0];
+
   return {
     id: idOfInterest,
-    options: state.components.byId[idOfInterest],
+    options:
+      state.components.byId[idOfInterest] ||
+      state.coordinates.byId[idOfInterest] ||
+      {},
   };
 };
 
@@ -132,6 +135,19 @@ const inputElement = {
         }
         label="Invert"
       />
+    </ListItem>
+  ),
+  shape: (value, update) => (
+    <ListItem>
+      <ListItemText primary="shape" />
+      <ListItemSecondaryAction>
+        <Select value={value} onChange={update(null)}>
+          <MenuItem value=""></MenuItem>
+          <MenuItem value="*">*</MenuItem>
+          <MenuItem value="o">o</MenuItem>
+          <MenuItem value="d">d</MenuItem>
+        </Select>
+      </ListItemSecondaryAction>
     </ListItem>
   ),
   currant: (value, update) => (
