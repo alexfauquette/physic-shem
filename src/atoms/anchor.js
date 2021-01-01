@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
 import "./style.scss";
 import { connect } from "react-redux";
@@ -21,7 +21,6 @@ const mapDispatchToProps = (dispatch, { svgRef, displayOptions }) => {
         y: SVG_Y,
         width: SVG_WIDTH,
         height: SVG_HEIGHT,
-        zoom,
       } = displayOptions;
 
       dispatch(
@@ -74,4 +73,8 @@ const Anchor = ({
   />
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Anchor);
+const ConnectedAnchor = connect(mapStateToProps, mapDispatchToProps)(Anchor);
+
+export default forwardRef((props, ref) => (
+  <ConnectedAnchor {...props} svgRef={ref} />
+));

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import svgComponents from "components";
 import { connect } from "react-redux";
 import { MODE_SELECT } from "redux/store/interactionModes";
@@ -77,4 +77,11 @@ const ComponentsDrawer = ({
   </>
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(ComponentsDrawer);
+const ConnectedComponentsDrawer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ComponentsDrawer);
+
+export default forwardRef((props, ref) => (
+  <ConnectedComponentsDrawer {...props} svgRef={ref} />
+));

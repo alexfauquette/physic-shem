@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { connect } from "react-redux";
 import components from "components";
 import ToolBar from "./toolbar";
@@ -204,7 +204,7 @@ const Container = ({
         )}
 
         <g id="drawingArea">
-          <ComponentsDrawer svgRef={svgRef} displayOptions={displayOptions} />
+          <ComponentsDrawer ref={svgRef} displayOptions={displayOptions} />
 
           {/* display the path element in during its creation */}
 
@@ -259,8 +259,8 @@ const Container = ({
               <circle cx={newNode.position.x} cy={newNode.position.y} r={5} />
             )}
 
-          <Anchors svgRef={svgRef} displayOptions={displayOptions} />
-          <Magnets svgRef={svgRef} displayOptions={displayOptions} />
+          <Anchors ref={svgRef} displayOptions={displayOptions} />
+          <Magnets displayOptions={displayOptions} />
 
           {mode === MODE_RECTANGLE_SELECTION && (
             <path
@@ -274,4 +274,11 @@ const Container = ({
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Container);
+const ConnectedContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Container);
+
+export default forwardRef((props, ref) => (
+  <ConnectedContainer {...props} svgRef={ref} />
+));

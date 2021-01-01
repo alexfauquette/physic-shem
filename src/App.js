@@ -200,7 +200,7 @@ function App({
       </Drawer>
       <main className={classes.content}>
         <Toolbar />
-        <Container svgRef={svgRef} />
+        <Container ref={svgRef} />
       </main>
 
       <Dialog

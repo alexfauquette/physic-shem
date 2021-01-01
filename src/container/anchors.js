@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { connect } from "react-redux";
 
 import Anchor from "atoms/anchor";
@@ -12,14 +12,13 @@ const mapStateToProps = (state) => {
 const Anchors = ({ anchorIds, svgRef, displayOptions }) => (
   <>
     {anchorIds.map((id) => (
-      <Anchor
-        key={id}
-        id={id}
-        svgRef={svgRef}
-        displayOptions={displayOptions}
-      />
+      <Anchor key={id} id={id} ref={svgRef} displayOptions={displayOptions} />
     ))}
   </>
 );
 
-export default connect(mapStateToProps)(Anchors);
+const ConnectedAnchors = connect(mapStateToProps)(Anchors);
+
+export default forwardRef((props, ref) => (
+  <ConnectedAnchors {...props} svgRef={ref} />
+));
