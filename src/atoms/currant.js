@@ -1,5 +1,9 @@
 import React from "react";
-import { rotation, translateSVG2Canvas } from "../components/constantes";
+import {
+  rotation,
+  translateSVGbaseline2Canvas,
+  translateSVGalign2Canvas,
+} from "../components/constantes";
 
 const getTextAnchor = (angle, currantIsAbove) => {
   if (-5 < angle && angle < 5) {
@@ -188,44 +192,9 @@ export const drawRoughCurrant = (rc, ctx, x0, y0, angle, ratio, element) => {
     currantIsAbove
   );
 
-  ctx.textAlign = textAnchor;
-  ctx.textBaseline = translateSVG2Canvas[alignmentBaseline];
+  ctx.textAlign = translateSVGbaseline2Canvas[textAnchor];
+  ctx.textBaseline = translateSVGalign2Canvas[alignmentBaseline];
   ctx.fillText(currantText, xText, yText);
-
-  // return (
-  //   <g
-  //     style={{
-  //       fill: "black",
-  //       stroke: "none",
-  //     }}
-  //   >
-  //     <path
-  //       d={`M ${xI + 0.5 * rI} ${yI} L  ${xI - 0.5 * rI} ${yI + 0.5 * rI} L  ${
-  //         xI - 0.5 * rI
-  //       } ${yI - 0.5 * rI} Z`}
-  //       style={{
-  //         transform: `rotate(${angle + (currantIsForward ? 0 : 180)}deg)`,
-  //         transformOrigin: `${xI}px ${yI}px`,
-  //       }}
-  //     />
-  //     <text
-  //       key={Math.random()}
-  //       x={
-  //         xI -
-  //         (currantIsAbove ? -0.5 * rI : 0.5 * rI) *
-  //           Math.sin((angle / 180) * Math.PI)
-  //       }
-  //       y={
-  //         yI +
-  //         (currantIsAbove ? -0.5 * rI : 0.5 * rI) *
-  //           Math.cos((angle / 180) * Math.PI)
-  //       }
-  //       style={{ ...getTextAnchor(angle, currantIsAbove) }}
-  //     >
-  //       {currantText}
-  //     </text>
-  //   </g>
-  // );
 };
 
 export default CurrantArrow;

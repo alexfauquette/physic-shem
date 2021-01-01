@@ -5,6 +5,7 @@ import CurrantArrow, { getCurrantAttribute } from "../../atoms/currant";
 import Label, {
   getLabelAttribute,
   getAnnotationAttribute,
+  drawRoughLabel,
 } from "../../atoms/label";
 
 const mapStateToProps = (state, props) => {
@@ -111,7 +112,7 @@ export const withPathAttributes = ({ height = 1, width = 1 }) => (component) =>
     );
   });
 
-export const drawLinks = (rc, x0, y0, width, height, element) => {
+export const drawLinks = (rc, ctx, x0, y0, width, height, element) => {
   const { x: xFrom, y: yFrom } = element.fromCoords;
   const { x: xTo, y: yTo } = element.toCoords;
 
@@ -132,6 +133,31 @@ export const drawLinks = (rc, x0, y0, width, height, element) => {
     M ${xTo - x0} ${yTo - y0}
     L ${xTo + ratio * (xFrom - xTo) - x0} ${yTo + ratio * (yFrom - yTo) - y0}`
   );
+
+  const { label = null, annotation = null } = element;
+
+  if (label !== null) {
+    drawRoughLabel({
+      ctx,
+      text: label,
+      from: { x: xFrom - x0, y: yFrom - y0 },
+      to: { x: xTo - x0, y: yTo - y0 },
+      angle,
+      isAbove: true,
+      height: 0.5 * height * MULTIPLICATIVE_CONST * R_LEN,
+    });
+  }
+  if (annotation !== null) {
+    drawRoughLabel({
+      ctx,
+      text: annotation,
+      from: { x: xFrom - x0, y: yFrom - y0 },
+      to: { x: xTo - x0, y: yTo - y0 },
+      angle,
+      isAbove: false,
+      height: 0.5 * height * MULTIPLICATIVE_CONST * R_LEN,
+    });
+  }
 
   return { x, y, angle, ratio };
 };

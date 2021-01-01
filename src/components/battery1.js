@@ -22,7 +22,15 @@ const Battery1 = () => (
 );
 
 export const roughComponent = (rc, ctx, x0, y0, element) => {
-  const { x, y, angle, ratio } = drawLinks(rc, x0, y0, width, height, element);
+  const { x, y, angle, ratio } = drawLinks(
+    rc,
+    ctx,
+    x0,
+    y0,
+    width,
+    height,
+    element
+  );
 
   drawRoughCurrant(rc, ctx, x0, y0, angle, ratio, element);
   rc.path(

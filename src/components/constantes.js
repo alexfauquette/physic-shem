@@ -15,8 +15,14 @@ export const rotation = (angle, x0, y0, x, y) => {
   }`;
 };
 
-export const translateSVG2Canvas = {
+export const translateSVGbaseline2Canvas = {
   baseline: "bottom",
   hanging: "top",
   middle: "middle",
+};
+
+export const translateSVGalign2Canvas = {
+  start: "start",
+  end: "end",
+  middle: "center",
 };

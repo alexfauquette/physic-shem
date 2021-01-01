@@ -1,4 +1,8 @@
 import React from "react";
+import {
+  translateSVGbaseline2Canvas,
+  translateSVGalign2Canvas,
+} from "../components/constantes";
 
 const getTextAnchor = (angle, isAbove, x, y) => {
   if (-20 < angle && angle < 20) {
@@ -32,6 +36,7 @@ const getTextAnchor = (angle, isAbove, x, y) => {
       alignmentBaseline: isAbove ? "baseline" : "hanging",
       transform: `rotate(${angle}deg)`,
       transformOrigin: `${x}px ${y}px`,
+      rotationAngle: angle,
     };
   }
   if (angle >= 20 && angle <= 70) {
@@ -41,6 +46,7 @@ const getTextAnchor = (angle, isAbove, x, y) => {
       alignmentBaseline: isAbove ? "baseline" : "hanging",
       transform: `rotate(${angle}deg)`,
       transformOrigin: `${x}px ${y}px`,
+      rotationAngle: angle,
     };
   }
   if (angle <= -110 && angle >= -160) {
@@ -50,6 +56,7 @@ const getTextAnchor = (angle, isAbove, x, y) => {
       alignmentBaseline: isAbove ? "hanging" : "baseline",
       transform: `rotate(${angle + 180}deg)`,
       transformOrigin: `${x}px ${y}px`,
+      rotationAngle: angle + 180,
     };
   }
   if (angle >= 110 && angle <= 160) {
@@ -59,6 +66,7 @@ const getTextAnchor = (angle, isAbove, x, y) => {
       alignmentBaseline: isAbove ? "hanging" : "baseline",
       transform: `rotate(${angle + 180}deg)`,
       transformOrigin: `${x}px ${y}px`,
+      rotationAngle: angle + 180,
     };
   }
 };
@@ -128,4 +136,45 @@ const Label = ({
   );
 };
 
+export const drawRoughLabel = ({
+  ctx,
+  text,
+  from,
+  to,
+  angle,
+  isAbove,
+  height,
+}) => {
+  console.log({ angle });
+  const { x: xFrom, y: yFrom } = from;
+  const { x: xTo, y: yTo } = to;
+
+  const xL =
+    (xFrom + xTo) / 2 +
+    (isAbove ? height + gap : -(height + gap)) *
+      Math.sin((angle / 180) * Math.PI);
+  const yL =
+    (yFrom + yTo) / 2 +
+    (isAbove ? -(height + gap) : height + gap) *
+      Math.cos((angle / 180) * Math.PI);
+
+  const { textAnchor, alignmentBaseline, rotationAngle = 0 } = getTextAnchor(
+    angle,
+    isAbove,
+    0,
+    0
+  );
+
+  ctx.save();
+
+  ctx.textAlign = translateSVGalign2Canvas[textAnchor];
+  ctx.textBaseline = translateSVGbaseline2Canvas[alignmentBaseline];
+
+  ctx.translate(xL, yL);
+  ctx.rotate((rotationAngle * Math.PI) / 180);
+
+  ctx.fillText(text, 0, 0);
+
+  ctx.restore();
+};
 export default Label;
