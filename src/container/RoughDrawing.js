@@ -36,6 +36,7 @@ const RoughDrawing = ({ pathComponents, anchors }) => {
 
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, width + 2 * margin, height + 2 * margin);
+    ctx.fillStyle = "black";
 
     pathComponents.allIds.forEach((id) => {
       const element = pathComponents.byId[id];
