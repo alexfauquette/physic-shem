@@ -2,6 +2,8 @@ import React, { useRef, useState, useEffect } from "react";
 import rough from "roughjs/bundled/rough.esm.js";
 
 import { roughComponents } from "components";
+import { roughCoordinate } from "atoms/anchor";
+
 import { connect } from "react-redux";
 
 import Button from "@material-ui/core/Button";
@@ -49,6 +51,11 @@ const RoughDrawing = ({ components, coordinates }) => {
       element.toCoords = element.to ? coordinates.byId[element.to] : undefined;
 
       roughComponents(rc, ctx, svgBBox.x - margin, svgBBox.y - margin, element);
+    });
+
+    coordinates.allIds.forEach((id) => {
+      const element = coordinates.byId[id];
+      roughCoordinate(rc, ctx, svgBBox.x - margin, svgBBox.y - margin, element);
     });
   }, [width, height, components]);
 

@@ -107,6 +107,32 @@ const Anchor = ({
   }
 };
 
+export const roughCoordinate = (rc, ctx, x0, y0, { x, y, shape }) => {
+  if (shape === "o") {
+    rc.circle(x - x0, y - y0, 10, {
+      fill: "white",
+      fillStyle: "solid",
+      roughness: 0.5,
+    });
+  }
+  if (shape === "*") {
+    rc.circle(x - x0, y - y0, 10, {
+      fill: "black",
+      fillStyle: "solid",
+      roughness: 0.5,
+    });
+  }
+  if (shape === "d") {
+    rc.path(
+      `M ${x - x0 - 5} ${y - y0}
+      L ${x - x0} ${y - y0 - 5}
+      L ${x - x0 + 5} ${y - y0}
+      L ${x - x0} ${y - y0 + 5}
+      Z`,
+      { fill: "black", fillStyle: "solid", roughness: 0.5 }
+    );
+  }
+};
 const ConnectedAnchor = connect(mapStateToProps, mapDispatchToProps)(Anchor);
 
 export default forwardRef((props, ref) => (
