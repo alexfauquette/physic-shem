@@ -76,6 +76,44 @@ const inputElement = {
       </ListItemSecondaryAction>
     </ListItem>
   ),
+  wiper_pos: (value, update) => (
+    <ListItem button>
+      <ListItemText primary="wiper position" />
+      <ListItemSecondaryAction>
+        <Input
+          value={value || 0}
+          onKeyDown={(e) => e.stopPropagation()}
+          onChangeCapture={update(null)}
+          inputProps={{
+            step: 0.01,
+            min: 0,
+            max: 1,
+            type: "number",
+          }}
+        />
+      </ListItemSecondaryAction>
+    </ListItem>
+  ),
+  isOpen: (value, update) => (
+    <ListItem>
+      <FormControlLabel
+        control={
+          <Switch checked={value} onChange={update(!value)} name="isOpen" />
+        }
+        label="isOpen"
+      />
+    </ListItem>
+  ),
+  withArrow: (value, update) => (
+    <ListItem>
+      <FormControlLabel
+        control={
+          <Switch checked={value} onChange={update(!value)} name="withArrow" />
+        }
+        label="withArrow"
+      />
+    </ListItem>
+  ),
   mirror: (value, update) => (
     <ListItem>
       <FormControlLabel

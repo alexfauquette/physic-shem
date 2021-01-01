@@ -1,6 +1,6 @@
 import React from "react";
 import "./style.scss";
-import { MULTIPLICATIVE_CONST, R_LEN } from "utils";
+import { MULTIPLICATIVE_CONST, R_LEN, default_path_options } from "utils";
 import {
   withPathAttributes,
   getPathAttributes,
@@ -27,7 +27,7 @@ const Arrow = ({ x, y, r, theta1, theta2 }) => {
   );
 };
 
-const Switch = ({ isOpen, withArrow }) => {
+const Switch = ({ isOpen = true, withArrow = true }) => {
   const height = withArrow ? 0.35 : 0.3;
 
   const UNIT_X = 0.5 * width * MULTIPLICATIVE_CONST * R_LEN;
@@ -90,6 +90,12 @@ export const drawer = (element) => {
   return `to[normal ${isOpen ? "open" : "closed"} switch${getPathAttributes(
     element
   )}] `;
+};
+
+export const parameters = {
+  ...default_path_options,
+  isOpen: true,
+  withArrow: true,
 };
 
 export default withPathAttributes({ width, height })(Switch);

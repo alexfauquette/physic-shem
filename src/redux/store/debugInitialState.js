@@ -2,14 +2,6 @@ import { MODE_SELECT } from "./interactionModes";
 import { default_displayOptions } from "./displayOptions";
 import { default_magnetsOptions } from "./magnetsOptions";
 
-export const defaultCurrant = {
-  show: false,
-  currantText: "",
-  currantIsForward: true,
-  currantIsAbove: true,
-  currantIsAfter: true,
-};
-
 export const initial_state = {
   displayOptions: default_displayOptions,
   magnetsOptions: default_magnetsOptions,

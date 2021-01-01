@@ -1,6 +1,11 @@
 import React from "react";
 import "./style.scss";
-import { MULTIPLICATIVE_CONST, R_LEN, rotation } from "utils";
+import {
+  MULTIPLICATIVE_CONST,
+  R_LEN,
+  rotation,
+  default_path_options,
+} from "utils";
 import {
   withPathAttributes,
   getPathAttributes,
@@ -76,6 +81,11 @@ export const roughComponent = (rc, ctx, x0, y0, element) => {
 
 export const drawer = (element) => {
   return `to[pR${getPathAttributes(element)}] `;
+};
+
+export const parameters = {
+  ...default_path_options,
+  wiper_pos: 0.5,
 };
 
 export default withPathAttributes({ width, height })(PR);

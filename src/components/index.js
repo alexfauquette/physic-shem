@@ -11,6 +11,7 @@ import PR, {
   getAnchor as pR_getAnchor,
   drawer as pRDrawer,
   roughComponent as pRRoughComponent,
+  parameters as pRParameters,
 } from "./pR";
 import Vcapacitor, {
   drawer as vcapacitorDrawer,
@@ -40,6 +41,7 @@ import Battery1, {
 import Switch, {
   drawer as switchDrawer,
   roughComponent as switchRoughComponent,
+  parameters as switchParameters,
 } from "./switch";
 
 import Short, {
@@ -60,6 +62,11 @@ const getAnchors = {
   nmos: (props) => nmos_getAnchor(props),
   vee: (props) => vee_getAnchor(props),
   vcc: (props) => vcc_getAnchor(props),
+};
+
+export const pathOptions = {
+  pR: pRParameters,
+  switch: switchParameters,
 };
 
 const getDrawer = {
