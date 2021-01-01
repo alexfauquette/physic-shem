@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import "./style.scss";
 
-import { MULTIPLICATIVE_CONST, R_LEN, rotation } from "utils/constantes";
+import { MULTIPLICATIVE_CONST, R_LEN, rotation } from "utils";
 
 const width = 0.2;
 const STEP = width * R_LEN * MULTIPLICATIVE_CONST;

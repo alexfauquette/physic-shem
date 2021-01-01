@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  translateSVGbaseline2Canvas,
-  translateSVGalign2Canvas,
-} from "utils/constantes";
+import { translateSVGbaseline2Canvas, translateSVGalign2Canvas } from "utils";
 
 const getTextAnchor = (angle, isAbove, x, y) => {
   if (-20 < angle && angle < 20) {

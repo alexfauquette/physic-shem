@@ -1,5 +1,5 @@
 import { drawElement, isMultyPole, isPath } from "components";
-import { MULTIPLICATIVE_CONST } from "utils/constantes";
+import { MULTIPLICATIVE_CONST } from "utils";
 
 const simplifyNumber = (x) => {
   const rep = x.toFixed(2);
