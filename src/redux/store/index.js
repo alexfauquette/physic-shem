@@ -77,12 +77,12 @@ function update(state = initial_state, action) {
       }
       return {
         ...state,
-        pathComponents: {
-          ...state.pathComponents,
+        components: {
+          ...state.components,
           byId: {
-            ...state.pathComponents.byId,
+            ...state.components.byId,
             [id]: {
-              ...state.pathComponents.byId[id],
+              ...state.components.byId[id],
               [name]: value,
             },
           },

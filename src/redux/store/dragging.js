@@ -18,25 +18,23 @@ export const startDragging = (state, action) => {
           dy: action.y - state.anchors.byId[selectedId].y,
         });
       }
-    } else if (state.pathComponents.allIds.includes(selectedId)) {
+    } else if (state.components.allIds.includes(selectedId)) {
       const anchors = getElementAnchors({
-        ...state.pathComponents.byId[selectedId],
+        ...state.components.byId[selectedId],
         fromCoords:
-          state.pathComponents.byId[selectedId].from &&
-          state.anchors.byId[state.pathComponents.byId[selectedId].from],
+          state.components.byId[selectedId].from &&
+          state.anchors.byId[state.components.byId[selectedId].from],
         toCoords:
-          state.pathComponents.byId[selectedId].to &&
-          state.anchors.byId[state.pathComponents.byId[selectedId].to],
+          state.components.byId[selectedId].to &&
+          state.anchors.byId[state.components.byId[selectedId].to],
         positionCoords:
-          state.pathComponents.byId[selectedId].position &&
-          state.anchors.byId[state.pathComponents.byId[selectedId].position],
+          state.components.byId[selectedId].position &&
+          state.anchors.byId[state.components.byId[selectedId].position],
       });
 
       anchors.forEach(({ x, y, name }) => {
         adhesivePoints.push({
-          type: state.pathComponents.byId[selectedId].position
-            ? "NODE"
-            : "PATH", // TODO use constant file
+          type: state.components.byId[selectedId].position ? "NODE" : "PATH", // TODO use constant file
           name: name,
           id: selectedId,
           dx: action.x - x,
@@ -44,13 +42,13 @@ export const startDragging = (state, action) => {
         });
       });
       if (
-        state.pathComponents.byId[selectedId].from &&
+        state.components.byId[selectedId].from &&
         adhesivePoints.findIndex(
-          (elem) => elem.id === state.pathComponents.byId[selectedId].from
+          (elem) => elem.id === state.components.byId[selectedId].from
         ) === -1
       ) {
         //the from anchor is new
-        const fromId = state.pathComponents.byId[selectedId].from;
+        const fromId = state.components.byId[selectedId].from;
         adhesivePoints.push({
           type: "ANCHOR", // TODO use constant file
           id: fromId,
@@ -59,13 +57,13 @@ export const startDragging = (state, action) => {
         });
       }
       if (
-        state.pathComponents.byId[selectedId].to &&
+        state.components.byId[selectedId].to &&
         adhesivePoints.findIndex(
-          (elem) => elem.id === state.pathComponents.byId[selectedId].to
+          (elem) => elem.id === state.components.byId[selectedId].to
         ) === -1
       ) {
         //the to anchor is new
-        const toId = state.pathComponents.byId[selectedId].to;
+        const toId = state.components.byId[selectedId].to;
         adhesivePoints.push({
           type: "ANCHOR",
           id: toId,
@@ -80,26 +78,24 @@ export const startDragging = (state, action) => {
   const nodeSeen = [];
   while (pile.length > 0) {
     const selectedId = pile.pop();
-    if (state.pathComponents.allIds.includes(selectedId)) {
+    if (state.components.allIds.includes(selectedId)) {
       if (
-        state.pathComponents.byId[selectedId].from &&
-        !anchorsToMove.includes(state.pathComponents.byId[selectedId].from)
+        state.components.byId[selectedId].from &&
+        !anchorsToMove.includes(state.components.byId[selectedId].from)
       ) {
-        anchorsToMove.push(state.pathComponents.byId[selectedId].from);
+        anchorsToMove.push(state.components.byId[selectedId].from);
       }
       if (
-        state.pathComponents.byId[selectedId].to &&
-        !anchorsToMove.includes(state.pathComponents.byId[selectedId].to)
+        state.components.byId[selectedId].to &&
+        !anchorsToMove.includes(state.components.byId[selectedId].to)
       ) {
-        anchorsToMove.push(state.pathComponents.byId[selectedId].to);
+        anchorsToMove.push(state.components.byId[selectedId].to);
       }
-      if (state.pathComponents.byId[selectedId].position) {
+      if (state.components.byId[selectedId].position) {
         if (
-          !anchorsToMove.includes(
-            state.pathComponents.byId[selectedId].position
-          )
+          !anchorsToMove.includes(state.components.byId[selectedId].position)
         ) {
-          pile.push(state.pathComponents.byId[selectedId].position);
+          pile.push(state.components.byId[selectedId].position);
         }
         if (!nodeSeen.includes(selectedId)) {
           nodeSeen.push(selectedId);
@@ -133,7 +129,7 @@ export const startDragging = (state, action) => {
         .filter(
           ({ anchorId, nodeId }) =>
             anchorsToMove.includes(anchorId) &&
-            !anchorsToMove.includes(state.pathComponents.byId[nodeId].position)
+            !anchorsToMove.includes(state.components.byId[nodeId].position)
         )
         .map(({ anchorId, nodeId }) => anchorId + "-" + nodeId),
     ],
@@ -162,9 +158,9 @@ export const stopDragging = (state, action) => {
 
     //const update elements
     const newByIDElements = {};
-    state.pathComponents.allIds.forEach((id) => {
+    state.components.allIds.forEach((id) => {
       newByIDElements[id] = replaceComponentAnchor(
-        state.pathComponents.byId[id],
+        state.components.byId[id],
         anchorToRemoveID,
         anchorToUseId
       );
@@ -179,8 +175,8 @@ export const stopDragging = (state, action) => {
           ...state.anchors.allIds.slice(anchorToRemoveIDIndex + 1),
         ],
       },
-      pathComponents: {
-        ...state.pathComponents,
+      components: {
+        ...state.components,
         byId: { ...newByIDElements },
       },
       mode: MODE_SELECT,
@@ -211,7 +207,7 @@ export const stopDragging = (state, action) => {
     ) {
       newWeakLink.push({
         anchorId:
-          state.pathComponents.byId[state.currentMagnet.attracted.id].position,
+          state.components.byId[state.currentMagnet.attracted.id].position,
         nodeId: state.currentMagnet.attractor.id,
         name: state.currentMagnet.attractor.name,
         nameAnchor: state.currentMagnet.attracted.name,

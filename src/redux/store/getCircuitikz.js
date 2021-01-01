@@ -129,14 +129,14 @@ const drawPathFromCoord = (
       // create a node if possible
       coordIsNew = false;
       const nodeId = nextNode.pop();
-      const element = state.pathComponents.byId[nodeId];
+      const element = state.components.byId[nodeId];
 
       elementsToAdd.push(`${drawElement(element)} `);
       drawnElements[element.id] = true;
     } else {
       // create path if no more node is to draw
       coordIsNew = true;
-      const element = state.pathComponents.byId[nextPaths[0]];
+      const element = state.components.byId[nextPaths[0]];
 
       elementsToAdd.push(drawElement(element));
       drawnElements[element.id] = true;
@@ -201,8 +201,8 @@ const initializeCoords = (state) => {
   const nodeReference = {};
 
   // check coord of all to[] element
-  state.pathComponents.allIds.forEach((id) => {
-    const element = state.pathComponents.byId[id];
+  state.components.allIds.forEach((id) => {
+    const element = state.components.byId[id];
     if (isPath[element.type]) {
       const fromCoord = state.anchors.byId[element.from];
       const toCoord = state.anchors.byId[element.to];
@@ -272,7 +272,7 @@ const initializeCoords = (state) => {
     if (
       !coord.isNodePosition ||
       !isMultyPole[
-        state.pathComponents.byId[state.anchors.byId[anchorId].nodeId].type
+        state.components.byId[state.anchors.byId[anchorId].nodeId].type
       ]
     ) {
       const coordId = getCoordId(coord);
@@ -307,10 +307,10 @@ function getCircuitikz(state) {
   // ========================
   // 1. Draw multi-pole nodes
   // ========================
-  const multiAnchorNodeIds = state.pathComponents.allIds
+  const multiAnchorNodeIds = state.components.allIds
     .filter((elementId) => {
       // filter nodes to get only multi-pole
-      const element = state.pathComponents.byId[elementId];
+      const element = state.components.byId[elementId];
       return isNode(element) && isMultyPole[element.type];
     })
     .sort((id1, id2) => {
@@ -333,7 +333,7 @@ function getCircuitikz(state) {
     });
 
   multiAnchorNodeIds.forEach((elementId) => {
-    const element = state.pathComponents.byId[elementId];
+    const element = state.components.byId[elementId];
 
     // get parent information for positioning
     const positionInformations = {};

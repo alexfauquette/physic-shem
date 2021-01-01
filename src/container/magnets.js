@@ -13,7 +13,7 @@ import { getElementAnchors } from "../components";
 const mapStateToProps = (state) => {
   return {
     anchors: state.anchors,
-    pathComponents: state.pathComponents,
+    components: state.components,
     mode: state.mode,
     anchorsToMove: state.anchorsToMove,
     selection: state.selection,
@@ -45,7 +45,7 @@ const isMoving = (element, anchorsToMove) => {
 const Magnets = ({
   mode,
   anchors,
-  pathComponents,
+  components,
   anchorsToMove,
   adhesivePoints,
   isPathCoordinatesAttracting,
@@ -63,22 +63,22 @@ const Magnets = ({
   return (
     <>
       {isNodeAnchorsAttracting &&
-        pathComponents.allIds
-          .filter((id) => !isMoving(pathComponents.byId[id], anchorsToMove))
+        components.allIds
+          .filter((id) => !isMoving(components.byId[id], anchorsToMove))
           .reduce(
             (accumulator, id) => [
               ...accumulator,
               ...getElementAnchors({
-                ...pathComponents.byId[id],
+                ...components.byId[id],
                 fromCoords:
-                  pathComponents.byId[id].from &&
-                  anchors.byId[pathComponents.byId[id].from],
+                  components.byId[id].from &&
+                  anchors.byId[components.byId[id].from],
                 toCoords:
-                  pathComponents.byId[id].to &&
-                  anchors.byId[pathComponents.byId[id].to],
+                  components.byId[id].to &&
+                  anchors.byId[components.byId[id].to],
                 positionCoords:
-                  pathComponents.byId[id].position &&
-                  anchors.byId[pathComponents.byId[id].position],
+                  components.byId[id].position &&
+                  anchors.byId[components.byId[id].position],
               }).map(({ x, y, name }) =>
                 adhesivePoints.reduce(
                   (
@@ -97,9 +97,7 @@ const Magnets = ({
                         dy={dy}
                         mode={mode}
                         attractor={{
-                          type: pathComponents.byId[id].position
-                            ? "NODE"
-                            : "PATH",
+                          type: components.byId[id].position ? "NODE" : "PATH",
                           name: name,
                           id: id,
                         }}

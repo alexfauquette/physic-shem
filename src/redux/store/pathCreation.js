@@ -135,9 +135,9 @@ export const savePathElement = (state, action) => {
         y: null,
       },
     },
-    pathComponents: {
+    components: {
       byId: {
-        ...state.pathComponents.byId,
+        ...state.components.byId,
         [newId_element]: {
           id: newId_element,
           from: fromAnchor,
@@ -150,7 +150,7 @@ export const savePathElement = (state, action) => {
           invert: false,
         },
       },
-      allIds: [...state.pathComponents.allIds, newId_element],
+      allIds: [...state.components.allIds, newId_element],
     },
     anchors: { ...newAnchors },
     weakLinks: [...state.weakLinks, ...newWeakLinks],

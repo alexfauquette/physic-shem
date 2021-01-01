@@ -1,5 +1,5 @@
 import React from "react";
-import components from "../components";
+import svgComponents from "../components";
 import { connect } from "react-redux";
 import { MODE_SELECT } from "../redux/store/interactionModes";
 import { toggleSelection, startDragging } from "../redux/actions";
@@ -35,43 +35,43 @@ const mapDispatchToProps = (dispatch, { svgRef, displayOptions }) => {
 };
 const mapStateToProps = (state) => {
   return {
-    pathComponents: state.pathComponents,
+    components: state.components,
     selection: state.selection,
     mode: state.mode,
   };
 };
 
 const Components = ({
-  pathComponents,
+  components,
   selection,
   mode,
   startDragging,
   toggleSelection,
 }) => (
   <>
-    {pathComponents.allIds.map(
+    {components.allIds.map(
       (id) =>
-        pathComponents.byId[id].type &&
-        components[pathComponents.byId[id].type]({
-          ...pathComponents.byId[id],
+        components.byId[id].type &&
+        svgComponents[components.byId[id].type]({
+          ...components.byId[id],
           onMouseDown:
             mode === MODE_SELECT
               ? (event) => {
                   event.stopPropagation();
                   if (
                     !event.ctrlKey &&
-                    selection.includes(pathComponents.byId[id].id)
+                    selection.includes(components.byId[id].id)
                   ) {
                     startDragging(
                       event.nativeEvent.clientX,
                       event.nativeEvent.clientY
                     );
                   } else {
-                    toggleSelection(pathComponents.byId[id].id, !event.ctrlKey);
+                    toggleSelection(components.byId[id].id, !event.ctrlKey);
                   }
                 }
               : null,
-          selected: selection.includes(pathComponents.byId[id].id),
+          selected: selection.includes(components.byId[id].id),
           // showHandles: mode === MODE_LINK,
         })
     )}

@@ -21,7 +21,7 @@ export const initial_state = {
     attractor: null,
     attracted: null,
   },
-  pathComponents: {
+  components: {
     byId: {
       // id1: {
       //   id: "id1",

@@ -26,14 +26,14 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   if (
     state.selection.length < 1 ||
-    !state.pathComponents.allIds.includes(state.selection[0])
+    !state.components.allIds.includes(state.selection[0])
   ) {
     return {};
   }
   const idOfInterest = state.selection[0];
   return {
     id: idOfInterest,
-    options: state.pathComponents.byId[idOfInterest],
+    options: state.components.byId[idOfInterest],
   };
 };
 

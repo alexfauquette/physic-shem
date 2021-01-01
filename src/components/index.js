@@ -141,7 +141,7 @@ export const isMultyPole = {
   switch: false,
 };
 
-const components = {
+const svgComponents = {
   short: (props) => <Short key={props.id} {...props} />,
   rightUp: (props) => <RightUp key={props.id} {...props} />,
   upRight: (props) => <UpRight key={props.id} {...props} />,
@@ -174,4 +174,4 @@ export const structure = {
   transistors: ["nmos"],
 };
 
-export default components;
+export default svgComponents;

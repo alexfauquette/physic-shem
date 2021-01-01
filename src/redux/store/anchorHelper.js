@@ -84,15 +84,15 @@ export const splitAnchor = (state, action) => {
     anchorId = state.selection[0];
   }
   if (anchorId && state.anchors.allIds.includes(anchorId)) {
-    const componentsToChange = state.pathComponents.allIds.filter((id) =>
-      componentUseThisAnchor(state.pathComponents.byId[id], anchorId)
+    const componentsToChange = state.components.allIds.filter((id) =>
+      componentUseThisAnchor(state.components.byId[id], anchorId)
     );
     if (componentsToChange.length <= 1) {
       return state;
     }
 
     const newAnchors = state.anchors;
-    const newComponents = state.pathComponents.byId;
+    const newComponents = state.components.byId;
     const newWeakLinks = [];
     const weakLinksToCopy = state.weakLinks.filter(
       ({ anchorId: linkedAnchorId }) => anchorId === linkedAnchorId
@@ -102,7 +102,7 @@ export const splitAnchor = (state, action) => {
       const newAnchorId = uuid();
 
       newComponents[componentId] = replaceComponentAnchor(
-        state.pathComponents.byId[componentId],
+        state.components.byId[componentId],
         anchorId,
         newAnchorId
       );
@@ -120,8 +120,8 @@ export const splitAnchor = (state, action) => {
 
     return {
       ...state,
-      pathComponents: {
-        ...state.pathComponents,
+      components: {
+        ...state.components,
         byId: { ...newComponents },
       },
       anchors: {

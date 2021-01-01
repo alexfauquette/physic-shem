@@ -66,9 +66,9 @@ export const saveNodeCreation = (state, action) => {
         ...state.newNode,
         position: { x: null, y: null },
       },
-      pathComponents: {
+      components: {
         byId: {
-          ...state.pathComponents.byId,
+          ...state.components.byId,
           [newId_element]: {
             id: newId_element,
             position: positionId,
@@ -76,7 +76,7 @@ export const saveNodeCreation = (state, action) => {
             angle: 0,
           },
         },
-        allIds: [...state.pathComponents.allIds, newId_element],
+        allIds: [...state.components.allIds, newId_element],
       },
       anchors: {
         ...state.anchors,
@@ -114,7 +114,7 @@ const newPositions = (anchors, toUpdate, deltaToAdd) => {
 export const rotateNode = (state, { id, value }) => {
   // we prepare data for the update
   // first we get coordinate of anchors before and after rotation
-  const element = state.pathComponents.byId[id];
+  const element = state.components.byId[id];
 
   const positionCoords = state.anchors.byId[element.position];
   const prevAngle = element.angle;
@@ -160,12 +160,12 @@ export const rotateNode = (state, { id, value }) => {
           ),
         },
       },
-      pathComponents: {
-        ...state.pathComponents,
+      components: {
+        ...state.components,
         byId: {
-          ...state.pathComponents.byId,
+          ...state.components.byId,
           [id]: {
-            ...state.pathComponents.byId[id],
+            ...state.components.byId[id],
             angle: newAngle,
           },
         },
@@ -189,7 +189,7 @@ export const rotateNode = (state, { id, value }) => {
         if (
           !state.anchors.byId[anchorId].isNodePosition ||
           !isMultyPole[
-            state.pathComponents.byId[state.anchors.byId[anchorId].nodeId].type
+            state.components.byId[state.anchors.byId[anchorId].nodeId].type
           ]
         ) {
           // if child is path of mono pole
@@ -207,12 +207,12 @@ export const rotateNode = (state, { id, value }) => {
         ...state.anchors,
         byId: { ...newPositions(state.anchors.byId, IdToUpdate, deltaToAdd) },
       },
-      pathComponents: {
-        ...state.pathComponents,
+      components: {
+        ...state.components,
         byId: {
-          ...state.pathComponents.byId,
+          ...state.components.byId,
           [id]: {
-            ...state.pathComponents.byId[id],
+            ...state.components.byId[id],
             angle: newAngle,
           },
         },

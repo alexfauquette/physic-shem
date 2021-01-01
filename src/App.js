@@ -67,7 +67,7 @@ const mapStateToProps = (state) => {
   return {
     mode: state.mode,
     selection: state.selection,
-    pathIds: state.pathComponents.allIds,
+    pathIds: state.components.allIds,
     isPaperDragged: state.displayOptions.dragging.isDragging,
   };
 };

@@ -11,13 +11,13 @@ import DialogActions from "@material-ui/core/DialogActions";
 
 const mapStateToProps = (state) => {
   return {
-    pathComponents: state.pathComponents,
+    components: state.components,
     anchors: state.anchors,
   };
 };
 
 const margin = 50;
-const RoughDrawing = ({ pathComponents, anchors }) => {
+const RoughDrawing = ({ components, anchors }) => {
   const canvasRef = useRef();
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
@@ -38,8 +38,8 @@ const RoughDrawing = ({ pathComponents, anchors }) => {
     ctx.fillRect(0, 0, width + 2 * margin, height + 2 * margin);
     ctx.fillStyle = "black";
 
-    pathComponents.allIds.forEach((id) => {
-      const element = pathComponents.byId[id];
+    components.allIds.forEach((id) => {
+      const element = components.byId[id];
       element.positionCoords = element.position
         ? anchors.byId[element.position]
         : undefined;
@@ -50,7 +50,7 @@ const RoughDrawing = ({ pathComponents, anchors }) => {
 
       roughComponents(rc, ctx, svgBBox.x - margin, svgBBox.y - margin, element);
     });
-  }, [width, height, pathComponents]);
+  }, [width, height, components]);
 
   useEffect(() => {
     setCanvasURL(
