@@ -66,7 +66,7 @@ const RoughDrawing = ({ components, coordinates }) => {
       const element = coordinates.byId[id];
       roughCoordinate(rc, ctx, svgBBox.x - margin, svgBBox.y - margin, element);
     });
-  }, [width, height, components, seed, roughness]);
+  }, [width, height, components, coordinates, seed, roughness]);
 
   useEffect(() => {
     setCanvasURL(
