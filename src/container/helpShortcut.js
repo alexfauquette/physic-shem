@@ -38,13 +38,13 @@ const useStyles = makeStyles(() => ({
       "0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset",
     color: "#333",
     display: "inline-block",
-    fontSize: "1.5em",
+    fontSize: "1.2em",
     fontWeight: 600,
     lineHeight: 1,
     padding: "8px 8px",
   },
   keyboardDescription: {
-    fontSize: "1.4rem",
+    fontSize: "1.1rem",
   },
 }));
 
@@ -54,7 +54,7 @@ const HelpShortcut = () => {
   return (
     <>
       <DialogTitle>
-        <Typography variant="h4" component="h2">
+        <Typography variant="h5" component="h2">
           Short Cut
         </Typography>
       </DialogTitle>
