@@ -166,17 +166,8 @@ const svgComponents = {
 };
 
 export const structure = {
-  bipoles: [
-    "lampe",
-    "R",
-    "C",
-    "switch",
-    "battery1",
-    "empty led",
-    "vcapacitor",
-    "pR",
-  ],
-  sources: [],
+  bipoles: ["lampe", "switch", "R", "C", "empty led", "vcapacitor", "pR"],
+  sources: ["battery1"],
   references: ["vee", "vcc"],
   transistors: ["nmos"],
 };
