@@ -47,6 +47,7 @@ const ToolBar = ({
   startCreatePathElement,
   setZoom,
   setModeMovePaper,
+  startSelect,
   stackSelectedAnchors,
   updateMagnetOption,
 }) => {
@@ -189,6 +190,9 @@ const ToolBar = ({
         onChange={(event) =>
           updateMagnetOption("gridSpace", event.target.value)
         }
+        onMouseDown={(event) => {
+          event.stopPropagation();
+        }}
       >
         <MenuItem value={0.5}>0.5</MenuItem>
         <MenuItem value={1}>1</MenuItem>
