@@ -152,10 +152,7 @@ function update(state = initial_state, action) {
 
         const refSpace = MULTIPLICATIVE_CONST * state.magnetsOptions.gridSpace;
 
-        if (
-          state.mode === MODE_CREATE_PATH_ELEMENT ||
-          state.mode === MODE_CREATE_NODE_ELEMENT
-        ) {
+        if (state.mode === MODE_CREATE_PATH_ELEMENT) {
           const modX = Math.abs(x) % refSpace;
           const modY = Math.abs(y) % refSpace;
 
@@ -167,8 +164,16 @@ function update(state = initial_state, action) {
             action.x = refSpace * Math.round(x / refSpace);
             action.y = refSpace * Math.round(y / refSpace);
           }
-        } else if (state.mode === MODE_DRAG) {
-          state.adhesivePoints.forEach(({ dx, dy }) => {
+        } else if (
+          state.mode === MODE_DRAG ||
+          state.mode === MODE_CREATE_NODE_ELEMENT
+        ) {
+          const adhesivePoints =
+            state.mode === MODE_DRAG
+              ? state.adhesivePoints
+              : state.newNode.anchorsDelta;
+
+          adhesivePoints.forEach(({ dx, dy }) => {
             const xToTest = x - dx;
             const yToTest = y - dy;
 

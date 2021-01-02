@@ -25,6 +25,10 @@ export const startNodeCreation = (state, action) => {
     newNode: {
       elementType: action.elementType,
       position: { x: null, y: null },
+      anchorsDelta: getElementAnchors({
+        type: action.elementType,
+        positionCoords: { x: 0, y: 0 },
+      }).map(({ x, y }) => ({ dx: -x, dy: -y })),
     },
   };
 };
