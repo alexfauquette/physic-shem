@@ -38,28 +38,6 @@ export const saveNodeCreation = (state, action) => {
     const newId_element = uuid();
     const positionId = uuid();
 
-    const newWeakLink = [];
-
-    if (state.currentMagnet.attractor && state.currentMagnet.attracted) {
-      // node created relatively to an anchor
-      // We will link this anchor to the new node
-      if (state.currentMagnet.attractor.type === "ANCHOR") {
-        newWeakLink.push({
-          anchorId: state.currentMagnet.attractor.id,
-          nodeId: newId_element,
-          name: state.currentMagnet.attracted.name,
-        });
-      }
-      if (state.currentMagnet.attractor.type === "NODE") {
-        newWeakLink.push({
-          anchorId: positionId,
-          nodeId: state.currentMagnet.attractor.id,
-          name: state.currentMagnet.attractor.name,
-          nameAnchor: state.currentMagnet.attracted.name,
-        });
-      }
-    }
-
     return {
       ...state,
       newNode: {
@@ -91,13 +69,13 @@ export const saveNodeCreation = (state, action) => {
           },
         },
       },
-      weakLinks: [...state.weakLinks, ...newWeakLink],
     };
   }
   return state;
 };
 
 const newPositions = (coordinates, toUpdate, deltaToAdd) => {
+  // this function update coordinates by a delta
   const newAnchors = { ...coordinates };
 
   toUpdate.forEach(({ anchorId, anchorName }) => {
@@ -173,30 +151,12 @@ export const rotateNode = (state, { id, value }) => {
     };
   } else {
     const IdToUpdate = [];
-    const toRemove = [];
 
     // we will parse weakLinks to know what to update and what to remove
-    state.weakLinks.forEach(({ anchorId, nodeId, name, nameAnchor }, index) => {
-      if (
-        anchorId === element.position &&
-        !(deltaToAdd[nameAnchor].x === 0 && deltaToAdd[nameAnchor].y === 0)
-      ) {
-        // the element has a parent and it's anchor need to move
-        // TODO : here is a lazy soution : breking the link
-        toRemove.push(index);
-      }
+    state.weakLinks.forEach(({ anchorId, nodeId, name }) => {
       if (nodeId === id) {
-        if (
-          !state.coordinates.byId[anchorId].isNodePosition ||
-          !isMultyPole[
-            state.components.byId[state.coordinates.byId[anchorId].nodeId].type
-          ]
-        ) {
-          // if child is path of mono pole
-          IdToUpdate.push({ anchorId, anchorName: name });
-        } else {
-          toRemove.push(index);
-        }
+        // if child is path of mono pole
+        IdToUpdate.push({ anchorId, anchorName: name });
       }
     });
 
@@ -222,9 +182,6 @@ export const rotateNode = (state, { id, value }) => {
         IdToUpdate: IdToUpdate,
         id: id,
       },
-      weakLinks: [
-        ...state.weakLinks.filter((elem, index) => !toRemove.includes(index)),
-      ],
     };
   }
 };

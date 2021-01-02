@@ -27,7 +27,7 @@ const isMoving = (element, coordinatesToMove) => {
   if (!coordinatesToMove) {
     return false;
   }
-  if (typeof element == "string" && coordinatesToMove.includes(element)) {
+  if (typeof element === "string" && coordinatesToMove.includes(element)) {
     return true;
   }
   if (element.from && coordinatesToMove.includes(element.from)) {

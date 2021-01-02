@@ -208,29 +208,24 @@ export const stopDragging = (state, action) => {
 
     if (
       state.currentMagnet.attracted.type === "NODE" &&
+      state.currentMagnet.attractor.type === "ANCHOR"
+    ) {
+      const nodeId = state.currentMagnet.attracted.id;
+      const anchorId = state.currentMagnet.attractor.id;
+      const name = state.currentMagnet.attracted.name;
+      newWeakLink.push({
+        anchorId: anchorId,
+        nodeId: nodeId,
+        name: name,
+      });
+    }
+    if (
+      state.currentMagnet.attracted.type === "ANCHOR" &&
       state.currentMagnet.attractor.type === "NODE"
     ) {
-      newWeakLink.push({
-        anchorId:
-          state.components.byId[state.currentMagnet.attracted.id].position,
-        nodeId: state.currentMagnet.attractor.id,
-        name: state.currentMagnet.attractor.name,
-        nameAnchor: state.currentMagnet.attracted.name,
-      });
-    } else {
-      const nodeId =
-        state.currentMagnet.attracted.type === "NODE"
-          ? state.currentMagnet.attracted.id
-          : state.currentMagnet.attractor.id;
-      const anchorId =
-        state.currentMagnet.attracted.type === "ANCHOR"
-          ? state.currentMagnet.attracted.id
-          : state.currentMagnet.attractor.id;
-      const name =
-        state.currentMagnet.attracted.type === "NODE"
-          ? state.currentMagnet.attracted.name
-          : state.currentMagnet.attractor.name;
-
+      const nodeId = state.currentMagnet.attractor.id;
+      const anchorId = state.currentMagnet.attracted.id;
+      const name = state.currentMagnet.attractor.name;
       newWeakLink.push({
         anchorId: anchorId,
         nodeId: nodeId,
