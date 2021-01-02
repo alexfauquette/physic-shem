@@ -10,6 +10,10 @@ import Button from "@material-ui/core/Button";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
+import Slider from "@material-ui/core/Slider";
+import Typography from "@material-ui/core/Typography";
+
+import AutorenewIcon from "@material-ui/icons/Autorenew";
 
 const mapStateToProps = (state) => {
   return {
@@ -23,6 +27,9 @@ const RoughDrawing = ({ components, coordinates }) => {
   const canvasRef = useRef();
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
+  const [seed, setSeed] = useState(1);
+  const [roughness, setRoughness] = useState(1);
+
   const [canvasURL, setCanvasURL] = useState();
 
   useEffect(() => {
@@ -31,7 +38,9 @@ const RoughDrawing = ({ components, coordinates }) => {
     setHeight(svgBBox.height);
 
     // const rc = rough.canvas(canvasRef.current);
-    const rc = rough.canvas(document.getElementById("rough-canvas"));
+    const rc = rough.canvas(document.getElementById("rough-canvas"), {
+      options: { seed: seed, roughness: roughness, curveFitting: 1 },
+    });
     const ctx = document.getElementById("rough-canvas").getContext("2d");
 
     ctx.font = "0.7cm IndieFlower";
@@ -57,7 +66,7 @@ const RoughDrawing = ({ components, coordinates }) => {
       const element = coordinates.byId[id];
       roughCoordinate(rc, ctx, svgBBox.x - margin, svgBBox.y - margin, element);
     });
-  }, [width, height, components]);
+  }, [width, height, components, seed, roughness]);
 
   useEffect(() => {
     setCanvasURL(
@@ -67,6 +76,7 @@ const RoughDrawing = ({ components, coordinates }) => {
     );
   }, [canvasRef.current]);
 
+  const generateNewDrawing = () => setSeed(seed + 1);
   return (
     <>
       <DialogTitle>Image Generator</DialogTitle>
@@ -79,6 +89,22 @@ const RoughDrawing = ({ components, coordinates }) => {
         />
       </DialogContent>
       <DialogActions>
+        <div>
+          <Typography id="roughness-slider" gutterBottom>
+            Roughness
+          </Typography>
+          <Slider
+            value={roughness}
+            onChange={(event, newValue) => setRoughness(newValue)}
+            aria-labelledby="roughness-slider"
+            min={0}
+            max={5}
+            step={0.1}
+          />
+        </div>
+        <Button onClick={generateNewDrawing} variant="outlined">
+          <AutorenewIcon />
+        </Button>
         <Button
           href={canvasURL}
           download="circuit.png"
