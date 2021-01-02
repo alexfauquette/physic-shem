@@ -15,6 +15,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import SvgIcon from "@material-ui/core/SvgIcon";
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -141,11 +142,41 @@ const inputElement = {
     <ListItem>
       <ListItemText primary="shape" />
       <ListItemSecondaryAction>
-        <Select value={value} onChange={update(null)}>
-          <MenuItem value=""></MenuItem>
-          <MenuItem value="*">*</MenuItem>
-          <MenuItem value="o">o</MenuItem>
-          <MenuItem value="d">d</MenuItem>
+        <Select value={value} onChange={update(null)} autoFocus={true}>
+          <MenuItem value="">
+            <SvgIcon></SvgIcon>
+          </MenuItem>
+          <MenuItem value="*">
+            <SvgIcon>
+              <circle
+                cx={12}
+                cy={12}
+                r={5}
+                style={{ fill: "black", stroke: "black" }}
+              />
+            </SvgIcon>
+          </MenuItem>
+          <MenuItem value="o">
+            <SvgIcon>
+              <circle
+                cx={12}
+                cy={12}
+                r={5}
+                style={{ fill: "white", stroke: "black", strokeWidth: 2 }}
+              />
+            </SvgIcon>
+          </MenuItem>
+          <MenuItem value="d">
+            <SvgIcon>
+              <path
+                d={`M ${12 + 6} ${12}
+                  L ${12} ${12 + 6}
+                  L ${12 - 6} ${12}
+                  L ${12} ${12 - 6} Z`}
+                style={{ fill: "black", stroke: "black" }}
+              />
+            </SvgIcon>
+          </MenuItem>
         </Select>
       </ListItemSecondaryAction>
     </ListItem>
