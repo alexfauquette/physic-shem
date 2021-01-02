@@ -12,6 +12,10 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const shortcuts = [
   {
+    key: "S",
+    description: "Split coordinate point in multiple points",
+  },
+  {
     key: "Shift",
     description: "Lock dragging along x or y axis",
   },
