@@ -1,5 +1,48 @@
-import { drawElement, isMultyPole, isPath } from "components";
+import {
+  drawElement,
+  isMultyPole,
+  isPath,
+  getElementAnchors,
+} from "components";
 import { MULTIPLICATIVE_CONST } from "utils";
+
+// =============================================
+// THIS IS A NIGHTMARE
+// FIRST THING TO REFACTO
+//  -> first idea : use auxiliary function with long names to be precise
+//  -> put every information in nodeRef and Coords.
+//          After there creation we should not need of the state anymore
+// ==============================================
+
+const findCommonAnchor = (node1, node2) => {
+  const anchors1 = getElementAnchors(node1);
+  const anchors2 = getElementAnchors(node2);
+
+  const rep = {};
+  anchors1.forEach(({ name: name1, x: x1, y: y1 }) => {
+    anchors2.forEach(({ name: name2, x: x2, y: y2 }) => {
+      if (Math.abs(x1 - x2) < 0.01 && Math.abs(y1 - y2) < 0.01) {
+        rep.parentAnchor = name1;
+        rep.childAnchor = name2;
+      }
+    });
+  });
+
+  return rep;
+};
+
+const fillCoordWithAnchorsName = (multipoleNodes, coords, nodeReference) => {
+  multipoleNodes.forEach((node) => {
+    const anchors = getElementAnchors(node);
+    anchors.forEach(({ name: anchorName, x, y }) => {
+      const coordId = getCoordId({ x, y });
+
+      if (coords[coordId] !== undefined) {
+        coords[coordId].name = `${nodeReference[node.id].name}.${anchorName}`;
+      }
+    });
+  });
+};
 
 const getPoles = ({ shape: shapeFrom }, { shape: shapeTo }) => {
   // TODO could be improved : if for example the starting position is already a diamond, it should be -o and not d-o
@@ -11,6 +54,7 @@ const getPoles = ({ shape: shapeFrom }, { shape: shapeTo }) => {
     return "";
   }
 };
+
 const simplifyNumber = (x) => {
   const rep = x.toFixed(2);
   if (rep.slice(-3) === ".00") {
@@ -21,6 +65,7 @@ const simplifyNumber = (x) => {
   }
   return rep;
 };
+
 const isNode = (element) => !!element.position;
 
 const getCoordId = ({ x, y }) =>
@@ -279,8 +324,10 @@ const initializeCoords = (state) => {
     }
   });
 
+  const weakLinks = [...state.weakLinks];
+
   // add node informations
-  state.weakLinks.forEach(({ anchorId, nodeId, name, nameAnchor }) => {
+  state.weakLinks.forEach(({ anchorId, nodeId }) => {
     const coord = state.coordinates.byId[anchorId];
 
     if (
@@ -296,15 +343,59 @@ const initializeCoords = (state) => {
       if (!nodeReference[nodeId].associatedIds.includes(coordId)) {
         nodeReference[nodeId].associatedIds.push(coordId);
       }
-    } else {
-      const childId = state.coordinates.byId[anchorId].nodeId;
-      nodeReference[childId].parent = nodeId;
-      nodeReference[childId].anchor = nameAnchor;
-      nodeReference[childId].parentAnchor = name;
-      if (!nodeReference[nodeId].associatedIds.includes(childId)) {
-        nodeReference[nodeId].associatedIds.push(childId);
-      }
     }
+  });
+
+  const multipoleNodes = state.components.allIds.filter(
+    (id) => isMultyPole[state.components.byId[id].type]
+  );
+
+  multipoleNodes.forEach((parentNodeId, index) => {
+    const parent = { ...state.components.byId[parentNodeId] };
+    parent.positionCoords = { ...state.coordinates.byId[parent.position] };
+
+    // add multipole child (only those after in order to keep a directed tree structure)
+    multipoleNodes.slice(index + 1).forEach((childNodeIdId) => {
+      const child = { ...state.components.byId[childNodeIdId] };
+      child.positionCoords = { ...state.coordinates.byId[child.position] };
+
+      const { parentAnchor = null, childAnchor = null } = findCommonAnchor(
+        parent,
+        child
+      );
+
+      if (parentAnchor !== null && childAnchor !== null) {
+        nodeReference[childNodeIdId].parent = parentNodeId;
+        nodeReference[childNodeIdId].anchor = childAnchor;
+        nodeReference[childNodeIdId].parentAnchor = parentAnchor;
+        if (
+          !nodeReference[parentNodeId].associatedIds.includes(childNodeIdId)
+        ) {
+          nodeReference[parentNodeId].associatedIds.push(childNodeIdId);
+        }
+      }
+    });
+
+    // add link between coordinates and node anchors
+    Object.keys(coords).forEach((coordId) => {
+      const anchors = getElementAnchors(parent);
+
+      const { x: coordX, y: coordY } = coords[coordId];
+
+      anchors.forEach(({ x: anchorX, y: anchorY }) => {
+        if (
+          Math.abs(coordX - anchorX) < 0.01 &&
+          Math.abs(coordY - anchorY) < 0.01
+        ) {
+          if (!coords[coordId].nodeAssociated.includes(parent.id)) {
+            coords[coordId].nodeAssociated.push(parent.id);
+          }
+          if (!nodeReference[parent.id].associatedIds.includes(coordId)) {
+            nodeReference[parent.id].associatedIds.push(coordId);
+          }
+        }
+      });
+    });
   });
 
   return [coords, nodeReference];
@@ -383,19 +474,16 @@ function getCircuitikz(state) {
   // 2. Associate anchor name to coordinates when possible
   // =====================================================
   // TODO : an good idea could be not to trust weak links but to compare anchor coordinate with used coordinates
-  state.weakLinks.forEach(({ anchorId, nodeId, name, nameAnchor }) => {
-    const coord = state.coordinates.byId[anchorId];
-    const coordId = getCoordId(coord);
 
-    if (
-      coords[coordId] && //coord is a used coordinate (remove multipleAnchor node)
-      drawnElements[nodeId] && //parent is drawn (remove mono anchor node)
-      !coords[coordId].name && //name is not already attributed
-      nodeReference[nodeId].name //the parent has a name
-    ) {
-      coords[coordId].name = `${nodeReference[nodeId].name}.${name}`;
-    }
-  });
+  const multipoleNodes = state.components.allIds
+    .filter((id) => isMultyPole[state.components.byId[id].type])
+    .map((id) => {
+      const node = { ...state.components.byId[id] };
+      node.positionCoords = { ...state.coordinates.byId[node.position] };
+      return node;
+    });
+
+  fillCoordWithAnchorsName(multipoleNodes, coords, nodeReference, state);
 
   // ====================================
   // 3. Draw path from multi-pole coordinates
