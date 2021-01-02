@@ -145,30 +145,47 @@ function update(state = initial_state, action) {
     case UPDATE_POSITION:
       const { attractor, attracted } = action;
 
-      if (
-        attractor === null &&
-        (state.mode === MODE_CREATE_PATH_ELEMENT ||
-          state.mode === MODE_CREATE_NODE_ELEMENT) &&
-        state.magnetsOptions.isGridAttracting
-      ) {
-        //not already attracted by someone
+      if (attractor === null && state.magnetsOptions.isGridAttracting) {
+        // if not already attracted by someone check the grid attraction
 
-        // TODO adapt here for dragging :
-        // 1. all the moving magnets should be saved with there dx, dy (like in magnets.js)
-        // 2. check if x-dx, y-dy correspond to a point
         const { x, y } = action;
 
         const refSpace = MULTIPLICATIVE_CONST * state.magnetsOptions.gridSpace;
-        const modX = Math.abs(x) % refSpace;
-        const modY = Math.abs(y) % refSpace;
 
-        const R = 10;
         if (
-          (modX <= R || modX >= refSpace - R) &&
-          (modY <= R || modY >= refSpace - R)
+          state.mode === MODE_CREATE_PATH_ELEMENT ||
+          state.mode === MODE_CREATE_NODE_ELEMENT
         ) {
-          action.x = refSpace * Math.round(x / refSpace);
-          action.y = refSpace * Math.round(y / refSpace);
+          const modX = Math.abs(x) % refSpace;
+          const modY = Math.abs(y) % refSpace;
+
+          const R = 10;
+          if (
+            (modX <= R || modX >= refSpace - R) &&
+            (modY <= R || modY >= refSpace - R)
+          ) {
+            action.x = refSpace * Math.round(x / refSpace);
+            action.y = refSpace * Math.round(y / refSpace);
+          }
+        } else if (state.mode === MODE_DRAG) {
+          state.adhesivePoints.forEach(({ dx, dy }) => {
+            const xToTest = x - dx;
+            const yToTest = y - dy;
+
+            const modX = Math.abs(xToTest) % refSpace;
+            const modY = Math.abs(yToTest) % refSpace;
+
+            const R = 10;
+            if (
+              (modX <= R || modX >= refSpace - R) &&
+              (modY <= R || modY >= refSpace - R)
+            ) {
+              action.x =
+                x - (xToTest - refSpace * Math.round(xToTest / refSpace));
+              action.y =
+                y - (yToTest - refSpace * Math.round(yToTest / refSpace));
+            }
+          });
         }
       }
       switch (state.mode) {
