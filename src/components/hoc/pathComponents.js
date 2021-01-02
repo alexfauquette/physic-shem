@@ -169,5 +169,7 @@ export const getPathAttributes = (element) => {
 
   return `${label ? `, ${label}` : ""}${annotation ? `, ${annotation}` : ""}${
     currantAttribute ? `, ${currantAttribute}` : ""
-  }${element.mirror ? ", mirror" : ""}${element.invert ? ", invert" : ""}`;
+  }${element.mirror ? ", mirror" : ""}${element.invert ? ", invert" : ""}${
+    element.poles ? `, ${element.poles}` : ""
+  }`;
 };

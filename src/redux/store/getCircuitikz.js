@@ -1,6 +1,16 @@
 import { drawElement, isMultyPole, isPath } from "components";
 import { MULTIPLICATIVE_CONST } from "utils";
 
+const getPoles = ({ shape: shapeFrom }, { shape: shapeTo }) => {
+  // TODO could be improved : if for example the starting position is already a diamond, it should be -o and not d-o
+  const useStart = ["*", "o", "d"].includes(shapeFrom);
+  const useEnd = ["*", "o", "d"].includes(shapeTo);
+  if (useStart || useEnd) {
+    return `${useStart ? shapeFrom : ""}-${useEnd ? shapeTo : ""}`;
+  } else {
+    return "";
+  }
+};
 const simplifyNumber = (x) => {
   const rep = x.toFixed(2);
   if (rep.slice(-3) === ".00") {
@@ -138,6 +148,10 @@ const drawPathFromCoord = (
       coordIsNew = true;
       const element = state.components.byId[nextPaths[0]];
 
+      element.poles = getPoles(
+        state.coordinates.byId[element.from],
+        state.coordinates.byId[element.to]
+      );
       elementsToAdd.push(drawElement(element));
       drawnElements[element.id] = true;
 
