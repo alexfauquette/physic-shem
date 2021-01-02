@@ -11,6 +11,7 @@ import Container from "container/index.js";
 import LatexDisplay from "container/latexDisplay";
 import ElementOptions from "container/elementOptions";
 import LeftMenu from "container/leftMenu";
+import HelpShortcut from "container/helpShortcut";
 
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
@@ -21,7 +22,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
 import Dialog from "@material-ui/core/Dialog";
+
+import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
+import PhotoLibraryIcon from "@material-ui/icons/PhotoLibrary";
 
 import {
   startSelect,
@@ -61,13 +66,15 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: `${theme.spacing(8)} 0`,
   },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
 }));
 
 const mapStateToProps = (state) => {
   return {
     mode: state.mode,
     selection: state.selection,
-    pathIds: state.components.allIds,
     isPaperDragged: state.displayOptions.dragging.isDragging,
   };
 };
@@ -88,7 +95,6 @@ const mapDispatchToProps = (dispatch) => {
 function App({
   mode,
   selection,
-  pathIds,
   isPaperDragged,
   startSelect,
   splitAnchor,
@@ -100,6 +106,14 @@ function App({
   const classes = useStyles();
   const [showCode, setShowCode] = useState(false);
   const [showRough, setShowRough] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
+
+  const openRough = () => setShowRough(true);
+  const openCode = () => setShowCode(true);
+  const openHelp = () => setShowHelp(true);
+  const closeRough = () => setShowRough(false);
+  const closeCode = () => setShowCode(false);
+  const closeHelp = () => setShowHelp(false);
 
   const svgRef = useRef();
 
@@ -160,12 +174,29 @@ function App({
             Clipped drawer
           </Typography>
 
-          <Button color="inherit" onClick={() => setShowRough(true)}>
-            Rough
-          </Button>
-          <Button color="inherit" onClick={() => setShowCode(true)}>
-            LaTEX
-          </Button>
+          <div>
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="open drawer"
+              onClick={openHelp}
+            >
+              <HelpOutlineIcon />
+            </IconButton>
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="open rough drawer"
+              onClick={openRough}
+            >
+              <PhotoLibraryIcon />
+            </IconButton>
+            <Button color="inherit" variant="outlined" onClick={openCode}>
+              LaTEX
+            </Button>
+          </div>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -200,22 +231,14 @@ function App({
         <Container ref={svgRef} />
       </main>
 
-      <Dialog
-        open={showCode}
-        onClose={() => {
-          setShowCode(false);
-        }}
-      >
+      <Dialog open={showCode} onClose={closeCode}>
         <LatexDisplay />
       </Dialog>
-      <Dialog
-        maxWidth="lg"
-        open={showRough}
-        onClose={() => {
-          setShowRough(false);
-        }}
-      >
+      <Dialog maxWidth="lg" open={showRough} onClose={closeRough}>
         <RoughDrawing />
+      </Dialog>
+      <Dialog fullWidth maxWidth="sm" open={showHelp} onClose={closeHelp}>
+        <HelpShortcut />
       </Dialog>
     </div>
   );
