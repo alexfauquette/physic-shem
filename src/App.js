@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   optionDrawerPaper: { width: optionDrawerWidth },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: `${theme.spacing(8)} 0`,
   },
 }));
 
@@ -197,7 +197,6 @@ function App({
         <ElementOptions />
       </Drawer>
       <main className={classes.content}>
-        <Toolbar />
         <Container ref={svgRef} />
       </main>
 

@@ -51,7 +51,14 @@ const ToolBar = ({
   updateMagnetOption,
 }) => {
   return (
-    <>
+    <div
+      style={{
+        position: "sticky",
+        top: "64px",
+        padding: "8px 2px",
+        backgroundColor: "#fafafa",
+      }}
+    >
       {/* TODO create a clean toolbar */}
       <IconButton
         onMouseDown={(event) => {
@@ -217,7 +224,7 @@ const ToolBar = ({
           <path d="m 22,11.5 v 1 L 18.5,12.5 7,21 7,17 H 2 V 16 H 7 L 7,8 H 2 v -1 L 7,7 7,3 18.5,11.5 Z" />
         </SvgIcon>
       </IconButton>
-    </>
+    </div>
   );
 };
 
