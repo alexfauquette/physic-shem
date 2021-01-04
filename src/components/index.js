@@ -43,6 +43,7 @@ import Ground, {
   roughComponent as groundRoughComponent,
 } from "./ground";
 import C, { drawer as cDrawer, roughComponent as cRoughComponent } from "./C";
+import L, { drawer as lDrawer, roughComponent as lRoughComponent } from "./L";
 import R, { drawer as rDrawer, roughComponent as rRoughComponent } from "./R";
 import Battery1, {
   drawer as battery1Drawer,
@@ -95,6 +96,7 @@ const getDrawer = {
   ground: groundDrawer,
   vcapacitor: vcapacitorDrawer,
   C: cDrawer,
+  L: lDrawer,
   R: rDrawer,
   battery1: battery1Drawer,
   switch: switchDrawer,
@@ -114,6 +116,7 @@ const getRoughComponents = {
   ground: groundRoughComponent,
   vcapacitor: vcapacitorRoughComponent,
   C: cRoughComponent,
+  L: lRoughComponent,
   R: rRoughComponent,
   battery1: battery1RoughComponent,
   switch: switchRoughComponent,
@@ -144,6 +147,7 @@ export const isPath = {
   ground: false,
   vcapacitor: true,
   C: true,
+  L: true,
   R: true,
   battery1: true,
   switch: true,
@@ -163,6 +167,7 @@ export const isMultyPole = {
   ground: false,
   vcapacitor: false,
   C: false,
+  L: false,
   R: false,
   battery1: false,
   switch: false,
@@ -174,7 +179,7 @@ const svgComponents = {
   upRight: (props) => <UpRight key={props.id} {...props} />,
   lampe: (props) => <Lampe key={props.id} {...props} />,
   "empty led": (props) => <EmptyDiode key={props.id} {...props} />,
-  pR: (props) => <PR key={props.id} {...props} />,
+  pR: (props) => <L key={props.id} {...props} />,
   nmos: (props) => <NMOS key={props.id} {...props} />,
   op_amp: (props) => <OpAmp key={props.id} {...props} />,
   vee: (props) => <VEE key={props.id} {...props} />,
@@ -182,13 +187,14 @@ const svgComponents = {
   ground: (props) => <Ground key={props.id} {...props} />,
   vcapacitor: (props) => <Vcapacitor key={props.id} {...props} />,
   C: (props) => <C key={props.id} {...props} />,
+  L: (props) => <L key={props.id} {...props} />,
   R: (props) => <R key={props.id} {...props} />,
   battery1: (props) => <Battery1 key={props.id} {...props} />,
   switch: (props) => <Switch key={props.id} {...props} />,
 };
 
 export const structure = {
-  bipoles: ["lampe", "switch", "R", "C", "empty led", "vcapacitor", "pR"],
+  bipoles: ["lampe", "switch", "R", "C", "L", "empty led", "vcapacitor", "pR"],
   sources: ["battery1"],
   references: ["vee", "vcc", "ground"],
   transistors: ["nmos", "op_amp"],
