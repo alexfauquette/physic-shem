@@ -66,15 +66,21 @@ const RoughDrawing = ({ components, coordinates }) => {
       const element = coordinates.byId[id];
       roughCoordinate(rc, ctx, svgBBox.x - margin, svgBBox.y - margin, element);
     });
-  }, [width, height, components, coordinates, seed, roughness]);
 
-  useEffect(() => {
     setCanvasURL(
       canvasRef.current
         .toDataURL("image/jpg")
         .replace("image/png", "image/octet-stream")
     );
-  }, [canvasRef.current]);
+  }, [
+    canvasRef.current,
+    width,
+    height,
+    components,
+    coordinates,
+    seed,
+    roughness,
+  ]);
 
   const generateNewDrawing = () => setSeed(seed + 1);
   return (
