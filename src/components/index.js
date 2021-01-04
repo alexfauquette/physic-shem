@@ -37,6 +37,11 @@ import VCC, {
   drawer as vccDrawer,
   roughComponent as vccRoughComponent,
 } from "./vcc";
+import Ground, {
+  getAnchor as ground_getAnchor,
+  drawer as groundDrawer,
+  roughComponent as groundRoughComponent,
+} from "./ground";
 import C, { drawer as cDrawer, roughComponent as cRoughComponent } from "./C";
 import R, { drawer as rDrawer, roughComponent as rRoughComponent } from "./R";
 import Battery1, {
@@ -68,6 +73,7 @@ const getAnchors = {
   op_amp: (props) => op_amp_getAnchor(props),
   vee: (props) => vee_getAnchor(props),
   vcc: (props) => vcc_getAnchor(props),
+  ground: (props) => ground_getAnchor(props),
 };
 
 export const pathOptions = {
@@ -86,6 +92,7 @@ const getDrawer = {
   op_amp: op_ampDrawer,
   vee: veeDrawer,
   vcc: vccDrawer,
+  ground: groundDrawer,
   vcapacitor: vcapacitorDrawer,
   C: cDrawer,
   R: rDrawer,
@@ -104,6 +111,7 @@ const getRoughComponents = {
   op_amp: op_ampRoughComponent,
   vee: veeRoughComponent,
   vcc: vccRoughComponent,
+  ground: groundRoughComponent,
   vcapacitor: vcapacitorRoughComponent,
   C: cRoughComponent,
   R: rRoughComponent,
@@ -133,6 +141,7 @@ export const isPath = {
   op_amp: false,
   vee: false,
   vcc: false,
+  ground: false,
   vcapacitor: true,
   C: true,
   R: true,
@@ -151,6 +160,7 @@ export const isMultyPole = {
   op_amp: true,
   vee: false,
   vcc: false,
+  ground: false,
   vcapacitor: false,
   C: false,
   R: false,
@@ -169,6 +179,7 @@ const svgComponents = {
   op_amp: (props) => <OpAmp key={props.id} {...props} />,
   vee: (props) => <VEE key={props.id} {...props} />,
   vcc: (props) => <VCC key={props.id} {...props} />,
+  ground: (props) => <Ground key={props.id} {...props} />,
   vcapacitor: (props) => <Vcapacitor key={props.id} {...props} />,
   C: (props) => <C key={props.id} {...props} />,
   R: (props) => <R key={props.id} {...props} />,
@@ -179,7 +190,7 @@ const svgComponents = {
 export const structure = {
   bipoles: ["lampe", "switch", "R", "C", "empty led", "vcapacitor", "pR"],
   sources: ["battery1"],
-  references: ["vee", "vcc"],
+  references: ["vee", "vcc", "ground"],
   transistors: ["nmos", "op_amp"],
 };
 
