@@ -22,6 +22,11 @@ import NMOS, {
   drawer as nmosDrawer,
   roughComponent as nmosRoughComponent,
 } from "./nmos";
+import OpAmp, {
+  getAnchor as op_amp_getAnchor,
+  drawer as op_ampDrawer,
+  roughComponent as op_ampRoughComponent,
+} from "./op_amp";
 import VEE, {
   getAnchor as vee_getAnchor,
   drawer as veeDrawer,
@@ -60,6 +65,7 @@ import UpRight, {
 const getAnchors = {
   pR: (props) => pR_getAnchor(props),
   nmos: (props) => nmos_getAnchor(props),
+  op_amp: (props) => op_amp_getAnchor(props),
   vee: (props) => vee_getAnchor(props),
   vcc: (props) => vcc_getAnchor(props),
 };
@@ -77,6 +83,7 @@ const getDrawer = {
   "empty led": emptyDiodeDrawer,
   pR: pRDrawer,
   nmos: nmosDrawer,
+  op_amp: op_ampDrawer,
   vee: veeDrawer,
   vcc: vccDrawer,
   vcapacitor: vcapacitorDrawer,
@@ -94,6 +101,7 @@ const getRoughComponents = {
   "empty led": emptyDiodeRoughComponent,
   pR: pRRoughComponent,
   nmos: nmosRoughComponent,
+  op_amp: op_ampRoughComponent,
   vee: veeRoughComponent,
   vcc: vccRoughComponent,
   vcapacitor: vcapacitorRoughComponent,
@@ -122,6 +130,7 @@ export const isPath = {
   "empty led": true,
   pR: true,
   nmos: false,
+  op_amp: false,
   vee: false,
   vcc: false,
   vcapacitor: true,
@@ -139,6 +148,7 @@ export const isMultyPole = {
   "empty led": false,
   pR: false,
   nmos: true,
+  op_amp: true,
   vee: false,
   vcc: false,
   vcapacitor: false,
@@ -156,6 +166,7 @@ const svgComponents = {
   "empty led": (props) => <EmptyDiode key={props.id} {...props} />,
   pR: (props) => <PR key={props.id} {...props} />,
   nmos: (props) => <NMOS key={props.id} {...props} />,
+  op_amp: (props) => <OpAmp key={props.id} {...props} />,
   vee: (props) => <VEE key={props.id} {...props} />,
   vcc: (props) => <VCC key={props.id} {...props} />,
   vcapacitor: (props) => <Vcapacitor key={props.id} {...props} />,
@@ -169,7 +180,7 @@ export const structure = {
   bipoles: ["lampe", "switch", "R", "C", "empty led", "vcapacitor", "pR"],
   sources: ["battery1"],
   references: ["vee", "vcc"],
-  transistors: ["nmos"],
+  transistors: ["nmos", "op_amp"],
 };
 
 export default svgComponents;
