@@ -2,55 +2,62 @@ import { componentUseThisAnchor } from "./utils";
 
 const deleteElement = (state, action) => {
   const selection = action.selection;
-  if (
-    selection.length === 1 &&
-    state.components.allIds.includes(selection[0])
-  ) {
-    // we only consider the deletion of a component (not coordinates)
-    const componentId = selection[0];
 
+  const componentIdsToRemove = state.components.allIds.filter((id) =>
+    selection.includes(id)
+  );
+
+  const componentIdsToKeep = state.components.allIds.filter(
+    (id) => !selection.includes(id)
+  );
+
+  const coordinateToRemove = [];
+
+  componentIdsToRemove.forEach((componentId) => {
     const anchorToChange = ["from", "to", "position"]
       .map((arg) => state.components.byId[componentId][arg])
       .filter((id) => !!id);
 
     // get the list of of ids of coordinates that are not anymore used by components
-    const anchorToRemove = anchorToChange.filter((anchorId) => {
-      return (
-        state.components.allIds.filter((elementId) =>
-          componentUseThisAnchor(state.components.byId[elementId], anchorId)
-        ).length === 1
-      );
-    });
+    anchorToChange
+      .filter((anchorId) => {
+        return (
+          componentIdsToKeep.filter((elementId) =>
+            componentUseThisAnchor(state.components.byId[elementId], anchorId)
+          ).length === 0
+        );
+      })
+      .forEach((idToRemove) => coordinateToRemove.push(idToRemove));
+  });
 
-    const newAnchors = { ...state.coordinates.byId };
-    anchorToRemove.forEach((id) => delete newAnchors[id]);
-
-    const newComponents = { ...state.components.byId };
-    delete newComponents[componentId];
-    return {
-      ...state,
-      components: {
-        allIds: [...state.components.allIds.filter((id) => id !== componentId)],
-        byId: { ...newComponents },
-      },
-      coordinates: {
-        byId: { ...newAnchors },
-        allIds: [
-          ...state.coordinates.allIds.filter(
-            (id) => !anchorToRemove.includes(id)
-          ),
-        ],
-      },
-      weakLinks: [
-        ...state.weakLinks.filter(
-          ({ anchorId, nodeId, name }) =>
-            nodeId !== componentId && !anchorToRemove.includes(anchorId)
+  const newState = {
+    ...state,
+    components: {
+      byId: { ...state.components.byId },
+      allIds: [...componentIdsToKeep],
+    },
+    coordinates: {
+      byId: { ...state.coordinates.byId },
+      allIds: [
+        ...state.coordinates.allIds.filter(
+          (id) => !coordinateToRemove.includes(id)
         ),
       ],
-    };
-  } else {
-    return state;
-  }
+    },
+    weakLinks: [
+      ...state.weakLinks.filter(
+        ({ anchorId, nodeId, name }) =>
+          !componentIdsToRemove.includes(nodeId) &&
+          !coordinateToRemove.includes(anchorId)
+      ),
+    ],
+  };
+  componentIdsToRemove.forEach((id) => delete newState.components.byId[id]);
+  coordinateToRemove.forEach((id) => delete newState.coordinates.byId[id]);
+
+  return {
+    ...newState,
+  };
 };
 
 export default deleteElement;
