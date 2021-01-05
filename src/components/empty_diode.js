@@ -14,6 +14,13 @@ const width = 0.4;
 const UNIT_X = 0.5 * width * MULTIPLICATIVE_CONST * R_LEN;
 const UNIT_Y = 0.5 * height * MULTIPLICATIVE_CONST * R_LEN;
 
+export const getBoundingBox = () => ({
+  dx1: -UNIT_X,
+  dx2: UNIT_X,
+  dy1: -UNIT_Y,
+  dy2: UNIT_Y,
+});
+
 const EmptyDiode = () => (
   <>
     <path

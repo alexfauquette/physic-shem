@@ -1,6 +1,7 @@
-import { isInRectangle } from "./utils";
+import { point_included, rect_included } from "utils";
 
 import { MODE_SELECT, MODE_RECTANGLE_SELECTION } from "./interactionModes";
+import { getBoundingBox } from "components";
 
 export const updatePosition = (state, action) => {
   const { x, y } = action;
@@ -14,7 +15,13 @@ export const updatePosition = (state, action) => {
     ...state,
     selection: [
       ...state.coordinates.allIds.filter((id) =>
-        isInRectangle(state.coordinates.byId[id], newRectangle)
+        point_included(newRectangle, state.coordinates.byId[id])
+      ),
+      ...state.components.allIds.filter((id) =>
+        rect_included(
+          newRectangle,
+          getBoundingBox(state.components.byId[id], state.coordinates.byId)
+        )
       ),
     ],
     rectangleSelection: {

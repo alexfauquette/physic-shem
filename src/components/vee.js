@@ -7,6 +7,18 @@ import { MULTIPLICATIVE_CONST, R_LEN, rotation } from "utils";
 const width = 0.2;
 const STEP = width * R_LEN * MULTIPLICATIVE_CONST;
 
+export const getBoundingBox = ({ angle = 0, positionCoords }) => {
+  return {
+    x: positionCoords.x,
+    y: positionCoords.y,
+    angle,
+    dx1: 0.5 * STEP,
+    dx2: -0.5 * STEP,
+    dy1: 0,
+    dy2: 1.5 * STEP,
+  };
+};
+
 export const getAnchor = ({ positionCoords }) => {
   const { x, y } = positionCoords;
 

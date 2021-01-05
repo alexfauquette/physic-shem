@@ -8,6 +8,15 @@ import Label, {
   drawRoughLabel,
 } from "atoms/label";
 
+export const pathGetBoundingBoxCenter = ({ fromCoords, toCoords }) => {
+  const { x: xFrom, y: yFrom } = fromCoords;
+  const { x: xTo, y: yTo } = toCoords;
+  const angle = parseInt(
+    (180 * Math.atan2(yTo - yFrom, xTo - xFrom)) / Math.PI
+  );
+
+  return { x: (xTo + xFrom) / 2, y: (yTo + yFrom) / 2, angle };
+};
 const mapStateToProps = (state, props) => {
   return props.id
     ? {

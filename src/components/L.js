@@ -25,6 +25,13 @@ const UNIT_X = 0.5 * width * MULTIPLICATIVE_CONST * R_LEN;
 const UNIT_Y_UP = 0.5 * height * MULTIPLICATIVE_CONST * R_LEN;
 const UNIT_Y_DOWN = 0.5 * lower_coil_height * MULTIPLICATIVE_CONST * R_LEN;
 
+export const getBoundingBox = () => ({
+  dx1: -UNIT_X,
+  dx2: UNIT_X,
+  dy1: -UNIT_Y_UP,
+  dy2: UNIT_Y_DOWN,
+});
+
 const L = () => (
   <>
     <path

@@ -17,6 +17,13 @@ const UNIT_Y = 0.5 * height * MULTIPLICATIVE_CONST * R_LEN;
 
 const STEP = capacitor_width * UNIT_X;
 
+export const getBoundingBox = () => ({
+  dx1: -UNIT_X,
+  dx2: UNIT_X,
+  dy1: -UNIT_Y,
+  dy2: UNIT_Y,
+});
+
 const Vcapacitor = () => (
   <>
     <path d={`M  ${-STEP} ${-UNIT_Y} L ${-STEP} ${UNIT_Y}`} />

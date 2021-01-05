@@ -13,6 +13,13 @@ const height = 0.6;
 const R = 0.6 * 0.5 * MULTIPLICATIVE_CONST * R_LEN;
 const r = (0.7071 * R).toFixed(3);
 
+export const getBoundingBox = () => ({
+  dx1: -R,
+  dx2: R,
+  dy1: -R,
+  dy2: R,
+});
+
 const Lampe = () => (
   <>
     <circle cx={0} cy={0} r={R} />

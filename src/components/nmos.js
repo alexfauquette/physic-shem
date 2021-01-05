@@ -33,6 +33,18 @@ const getElementTranslation = (positionAnchor) => {
   }
 };
 
+export const getBoundingBox = ({ angle = 0, positionCoords }) => {
+  return {
+    x: positionCoords.x,
+    y: positionCoords.y,
+    angle,
+    dx1: -UNIT_X,
+    dx2: 0,
+    dy1: -UNIT_Y,
+    dy2: UNIT_Y,
+  };
+};
+
 export const getAnchor = ({ positionAnchor, angle = 0, positionCoords }) => {
   const { x, y } = positionCoords;
 
