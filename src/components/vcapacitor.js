@@ -33,14 +33,17 @@ const Vcapacitor = () => (
 );
 
 export const roughComponent = (rc, ctx, x0, y0, element) => {
-  const { x, y, angle } = drawLinks(
+  const { x, y, angle, ratio } = drawLinks(
     rc,
+    ctx,
     x0,
     y0,
     capacitor_width / 2,
     height,
     element
   );
+
+  drawRoughCurrant(rc, ctx, x0, y0, angle, ratio, element);
 
   rc.path(
     `M ${rotation(-angle, x, y, -STEP, UNIT_Y)}
