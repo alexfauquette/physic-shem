@@ -21,6 +21,7 @@ import {
   STACK_SELECTED_ANCHORS,
   DELETE_ELEMENT,
   UPDATE_COMPONENT,
+  LOAD_PROJECT,
 } from "redux/actions";
 
 import {
@@ -69,6 +70,12 @@ function update(state = initial_state, action) {
   state = { ...reducer_magnetsOptions(state, action) };
 
   switch (action.type) {
+    case LOAD_PROJECT:
+      return {
+        ...initial_state,
+        components: { ...action.components },
+        coordinates: { ...action.coordinates },
+      };
     case UPDATE_COMPONENT:
       const { id, name, value } = action;
       if (state.components.allIds.includes(id)) {

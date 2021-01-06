@@ -187,3 +187,12 @@ export function updateMagnetOption(optionName, optionValue) {
     optionValue,
   };
 }
+
+export const LOAD_PROJECT = "LOAD_PROJECT";
+export function loadProject({ components, coordinates }) {
+  return {
+    type: LOAD_PROJECT,
+    components,
+    coordinates,
+  };
+}

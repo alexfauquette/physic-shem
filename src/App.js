@@ -12,6 +12,7 @@ import LatexDisplay from "container/latexDisplay";
 import ElementOptions from "container/elementOptions";
 import LeftMenu from "container/leftMenu";
 import HelpShortcut from "container/helpShortcut";
+import FileManager from "container/FileManager";
 
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
@@ -184,6 +185,11 @@ function App({
             >
               <HelpOutlineIcon />
             </IconButton>
+            <FileManager
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+            />
             <IconButton
               edge="start"
               className={classes.menuButton}
