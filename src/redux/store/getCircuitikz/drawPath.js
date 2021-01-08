@@ -9,6 +9,7 @@ const drawPathFromCoord = (
   nbOfCoordinateUsed
 ) => {
   const elementsToAdd = []; // list of the elements in the line to write
+  let previousCoord = {};
 
   // variables to save some coordinates
   let nbOfCreatedNames = 0;
@@ -41,7 +42,7 @@ const drawPathFromCoord = (
     // add the coordinate if needed
     if (coordIsNew) {
       elementsToAdd.push(
-        `${getCoord(currantCoord.x, currantCoord.y, coords)} `
+        `${getCoord(currantCoord.x, currantCoord.y, coords, previousCoord)} `
       );
       if (
         !currantCoord.name &&
@@ -78,6 +79,8 @@ const drawPathFromCoord = (
       drawnElements[element.id] = true;
 
       // get information of the next coordinate
+      previousCoord = { ...currantCoord };
+
       currantCoordId = getCoordId(state.coordinates.byId[element.to]);
       currantCoord = coords[currantCoordId];
       nextPaths = removeDrawnElements(drawnElements)(
@@ -99,7 +102,7 @@ const drawPathFromCoord = (
     if (coordIsNew) {
       // if it's a new coordinate, we add it to the list
       elementsToAdd.push(
-        `${getCoord(currantCoord.x, currantCoord.y, coords)} `
+        `${getCoord(currantCoord.x, currantCoord.y, coords, previousCoord)} `
       );
       if (!currantCoord.name && arrivingPaths.length > 0) {
         // we give it a name if needed

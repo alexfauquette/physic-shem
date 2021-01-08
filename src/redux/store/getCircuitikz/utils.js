@@ -85,16 +85,28 @@ export const getCoordId = ({ x, y }) =>
   }`;
 
 // helper to write latex coordinate
-export const getCoord = (x, y, coords) => {
+export const getCoord = (x, y, coords, previousCoord) => {
   const coordId = getCoordId({ x: x, y: y });
 
   if (coords[coordId].name) {
     return `(${coords[coordId].name})`;
-  } else {
-    return `(${simplifyNumber(x / MULTIPLICATIVE_CONST)}, ${simplifyNumber(
-      -y / MULTIPLICATIVE_CONST
-    )})`;
   }
+  if (previousCoord && previousCoord.x && previousCoord.y) {
+    if (previousCoord.x === x) {
+      return `++(0, ${simplifyNumber(
+        -(y - previousCoord.y) / MULTIPLICATIVE_CONST
+      )})`;
+    }
+    if (previousCoord.y === y) {
+      return `++(${simplifyNumber(
+        (x - previousCoord.x) / MULTIPLICATIVE_CONST
+      )}, 0)`;
+    }
+  }
+
+  return `(${simplifyNumber(x / MULTIPLICATIVE_CONST)}, ${simplifyNumber(
+    -y / MULTIPLICATIVE_CONST
+  )})`;
 };
 
 // function to filter elements in drawnElements from a listOfId
