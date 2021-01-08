@@ -189,10 +189,19 @@ export const getBoundingBox = (element, coordinateById) => {
       default:
         break;
     }
-    return {
+    const rep = {
       ...pathGetBoundingBoxCenter({ fromCoords, toCoords }),
       ...getBoundingBoxComponent[element.type](element),
     };
+
+    const xScale = element.invert ? -1 : 1;
+    const yScale = element.mirror ? -1 : 1;
+    rep.dx1 = xScale * rep.dx1;
+    rep.dx2 = xScale * rep.dx2;
+    rep.dy1 = yScale * rep.dy1;
+    rep.dy2 = yScale * rep.dy2;
+
+    return rep;
   }
 };
 
