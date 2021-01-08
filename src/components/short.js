@@ -6,6 +6,7 @@ import Label from "atoms/label";
 
 import { drawRoughCurrant } from "atoms/currant";
 import { getPathAttributes } from "./hoc/pathComponents";
+import { defaultCurrant } from "utils";
 
 const mapStateToProps = (state, props) => {
   return props.id
@@ -95,6 +96,10 @@ export const roughComponent = (rc, ctx, x0, y0, element) => {
 
 export const drawer = (element) => {
   return `to[short${getPathAttributes(element)}] `;
+};
+
+export const parameters = {
+  currant: { ...defaultCurrant },
 };
 
 export default connect(mapStateToProps)(Short);

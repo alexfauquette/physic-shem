@@ -81,14 +81,17 @@ import Switch, {
 import Short, {
   drawer as shortDrawer,
   roughComponent as shortRoughComponent,
+  parameters as shortParameters,
 } from "./short";
 import RightUp, {
   drawer as rightUpDrawer,
   roughComponent as rightUpRoughComponent,
+  parameters as rightUpParameters,
 } from "./rightUp";
 import UpRight, {
   drawer as upRightDrawer,
   roughComponent as upRightRoughComponent,
+  parameters as upRightParameters,
 } from "./upRight";
 import { pathGetBoundingBoxCenter } from "components/hoc/pathComponents";
 
@@ -104,6 +107,9 @@ const getAnchors = {
 export const pathOptions = {
   pR: pRParameters,
   switch: switchParameters,
+  short: shortParameters,
+  rightUp: rightUpParameters,
+  upRight: upRightParameters,
 };
 
 const getDrawer = {

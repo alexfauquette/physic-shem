@@ -43,4 +43,6 @@ export const drawer = () => {
   return `|- `;
 };
 
+export const parameters = {};
+
 export default connect(mapStateToProps)(UpRight);
