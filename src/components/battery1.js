@@ -38,13 +38,16 @@ export const roughComponent = (rc, ctx, x0, y0, element) => {
     height,
     element
   );
-
   drawRoughCurrant(rc, ctx, x0, y0, angle, ratio, element);
+
+  const xScale = element.invert ? -1 : 1;
+  const yScale = element.mirror ? -1 : 1;
+
   rc.path(
-    `M ${rotation(-angle, x, y, -UNIT_X, -UNIT_Y)}
-    L ${rotation(-angle, x, y, -UNIT_X, UNIT_Y)}
-    M ${rotation(-angle, x, y, UNIT_X, 0.5 * UNIT_Y)}
-    L ${rotation(-angle, x, y, UNIT_X, -0.5 * UNIT_Y)}
+    `M ${rotation(-angle, x, y, -UNIT_X, -UNIT_Y, xScale, yScale)}
+    L ${rotation(-angle, x, y, -UNIT_X, UNIT_Y, xScale, yScale)}
+    M ${rotation(-angle, x, y, UNIT_X, 0.5 * UNIT_Y, xScale, yScale)}
+    L ${rotation(-angle, x, y, UNIT_X, -0.5 * UNIT_Y, xScale, yScale)}
     `
   );
 };

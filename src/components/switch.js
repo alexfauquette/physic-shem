@@ -97,24 +97,31 @@ export const roughComponent = (rc, ctx, x0, y0, element) => {
 
   drawRoughCurrant(rc, ctx, x0, y0, angle, ratio, element);
 
+  const xScale = element.invert ? -1 : 1;
+  const yScale = element.mirror ? -1 : 1;
+
+  const useNaiveCircleOrientation =
+    (element.invert && element.mirror) || (!element.invert && !element.mirror);
+
   const UNIT_X = 0.5 * width * MULTIPLICATIVE_CONST * R_LEN;
   const UNIT_Y = 0.5 * height * MULTIPLICATIVE_CONST * R_LEN;
+
   if (!withArrow) {
     rc.path(
-      `M ${rotation(-angle, x, y, -UNIT_X, 0)}
-        L ${rotation(-angle, x, y, 0.9 * UNIT_X, -UNIT_Y)}`
+      `M ${rotation(-angle, x, y, -UNIT_X, 0, xScale, yScale)}
+        L ${rotation(-angle, x, y, 0.9 * UNIT_X, -UNIT_Y, xScale, yScale)}`
     );
     if (!isOpen) {
       rc.path(
-        `M ${rotation(-angle, x, y, UNIT_X, 0)}
-          L ${rotation(-angle, x, y, 0.2 * UNIT_X, 0)} 
-          L ${rotation(-angle, x, y, 0.2 * UNIT_X, -UNIT_Y)}`
+        `M ${rotation(-angle, x, y, UNIT_X, 0, xScale, yScale)}
+          L ${rotation(-angle, x, y, 0.2 * UNIT_X, 0, xScale, yScale)} 
+          L ${rotation(-angle, x, y, 0.2 * UNIT_X, -UNIT_Y, xScale, yScale)}`
       );
     }
   } else {
     rc.path(
-      `M ${rotation(-angle, x, y, -UNIT_X, 0)}
-        L ${rotation(-angle, x, y, 0.6 * UNIT_X, -UNIT_Y)}`
+      `M ${rotation(-angle, x, y, -UNIT_X, 0, xScale, yScale)}
+        L ${rotation(-angle, x, y, 0.6 * UNIT_X, -UNIT_Y, xScale, yScale)}`
     );
 
     const cx = -UNIT_X;
@@ -129,12 +136,34 @@ export const roughComponent = (rc, ctx, x0, y0, element) => {
     const y2 = -r * Math.sin((theta2 / 180) * Math.PI);
 
     rc.path(
-      `M ${rotation(-angle, x, y, x1, y1)} A ${r} ${r} 0 0 ${
-        theta1 < theta2 ? 0 : 1
-      } ${rotation(-angle, x, y, x2, y2)}`
+      `M ${rotation(-angle, x, y, x1, y1, xScale, yScale)} A ${r} ${r} 1 0 ${
+        theta1 < theta2
+          ? useNaiveCircleOrientation
+            ? 0
+            : 1
+          : useNaiveCircleOrientation
+          ? 1
+          : 0
+      } ${rotation(-angle, x, y, x2, y2, xScale, yScale)}`
     );
 
-    drawRoughArrowEnd(rc, x, y, angle, x2, y2, theta1 < theta2 ? 194 : 96);
+    drawRoughArrowEnd(
+      rc,
+      x,
+      y,
+      angle,
+      x2,
+      y2,
+      theta1 < theta2
+        ? useNaiveCircleOrientation
+          ? 194
+          : 170
+        : useNaiveCircleOrientation
+        ? 96
+        : 70,
+      xScale,
+      yScale
+    );
   }
 };
 

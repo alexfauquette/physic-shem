@@ -67,29 +67,17 @@ export const roughComponent = (rc, ctx, x0, y0, element) => {
         ${[...Array(coils - 1)]
           .map(
             () =>
-              `a ${STEP} ${UNIT_Y_UP} ${angle} 0 1 ${rotation(
-                -angle,
-                0,
-                0,
-                2 * STEP,
-                0
-              )}
-              a ${OTHER} ${UNIT_Y_DOWN} ${angle} 0 1 ${rotation(
-                -angle,
-                0,
-                0,
-                -2 * OTHER,
-                0
-              )} `
+              `a ${STEP} ${UNIT_Y_UP} ${angle} 0 ${
+                element.mirror ? "0" : "1"
+              } ${rotation(-angle, 0, 0, 2 * STEP, 0)}
+              a ${OTHER} ${UNIT_Y_DOWN} ${angle} 0 ${
+                element.mirror ? "0" : "1"
+              } ${rotation(-angle, 0, 0, -2 * OTHER, 0)} `
           )
           .join("")}
-          a ${STEP} ${UNIT_Y_UP} ${angle} 0 1 ${rotation(
-      -angle,
-      0,
-      0,
-      2 * STEP,
-      0
-    )}`
+          a ${STEP} ${UNIT_Y_UP} ${angle} 0 ${
+      element.mirror ? "0" : "1"
+    } ${rotation(-angle, 0, 0, 2 * STEP, 0)}`
   );
 };
 

@@ -1,12 +1,12 @@
-export const rotation = (angle, x0, y0, x, y) => {
+export const rotation = (angle, x0, y0, x, y, xScale = 1, yScale = 1) => {
   return `${
     x0 +
-    Math.cos((-angle / 180) * Math.PI) * x -
-    Math.sin((-angle / 180) * Math.PI) * y
+    Math.cos((-angle / 180) * Math.PI) * xScale * x -
+    Math.sin((-angle / 180) * Math.PI) * yScale * y
   } ${
     y0 +
-    Math.sin((-angle / 180) * Math.PI) * x +
-    Math.cos((-angle / 180) * Math.PI) * y
+    Math.sin((-angle / 180) * Math.PI) * xScale * x +
+    Math.cos((-angle / 180) * Math.PI) * yScale * y
   }`;
 };
 
