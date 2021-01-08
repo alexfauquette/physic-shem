@@ -1,10 +1,16 @@
+import { drawElement, isMultyPole, getElementAnchors } from "components";
 import {
-  drawElement,
-  isMultyPole,
+  isNode,
   isPath,
-  getElementAnchors,
-} from "components";
-import { MULTIPLICATIVE_CONST } from "utils";
+  findCommonAnchor,
+  fillCoordWithAnchorsName,
+  getPoles,
+  simplifyNumber,
+  getCoordId,
+  getCoord,
+  removeDrawnElements,
+  compareCoord,
+} from "./utils";
 
 // =============================================
 // THIS IS A NIGHTMARE
@@ -13,120 +19,6 @@ import { MULTIPLICATIVE_CONST } from "utils";
 //  -> put every information in nodeRef and Coords.
 //          After there creation we should not need of the state anymore
 // ==============================================
-
-const findCommonAnchor = (node1, node2) => {
-  const anchors1 = getElementAnchors(node1);
-  const anchors2 = getElementAnchors(node2);
-
-  const rep = {};
-  anchors1.forEach(({ name: name1, x: x1, y: y1 }) => {
-    anchors2.forEach(({ name: name2, x: x2, y: y2 }) => {
-      if (Math.abs(x1 - x2) < 0.01 && Math.abs(y1 - y2) < 0.01) {
-        rep.parentAnchor = name1;
-        rep.childAnchor = name2;
-      }
-    });
-  });
-
-  return rep;
-};
-
-const fillCoordWithAnchorsName = (multipoleNodes, coords, nodeReference) => {
-  multipoleNodes.forEach((node) => {
-    const anchors = getElementAnchors(node);
-    anchors.forEach(({ name: anchorName, x, y }) => {
-      const coordId = getCoordId({ x, y });
-
-      if (coords[coordId] !== undefined) {
-        coords[coordId].name = `${nodeReference[node.id].name}.${anchorName}`;
-      }
-    });
-  });
-};
-
-const getPoles = ({ shape: shapeFrom }, { shape: shapeTo }) => {
-  // TODO could be improved : if for example the starting position is already a diamond, it should be -o and not d-o
-  const useStart = ["*", "o", "d"].includes(shapeFrom);
-  const useEnd = ["*", "o", "d"].includes(shapeTo);
-  if (useStart || useEnd) {
-    return `${useStart ? shapeFrom : ""}-${useEnd ? shapeTo : ""}`;
-  } else {
-    return "";
-  }
-};
-
-const simplifyNumber = (x) => {
-  const rep = x.toFixed(2);
-  if (rep.slice(-3) === ".00") {
-    return rep.slice(0, -3);
-  }
-  if (rep.slice(-1) === "0") {
-    return rep.slice(0, -1);
-  }
-  return rep;
-};
-
-const isNode = (element) => !!element.position;
-
-const getCoordId = ({ x, y }) =>
-  `${typeof x === "number" ? x.toFixed(2) : x}-${
-    typeof y === "number" ? y.toFixed(2) : y
-  }`;
-
-// helper to write latex coordinate
-const getCoord = (x, y, coords) => {
-  const coordId = getCoordId({ x: x, y: y });
-
-  if (coords[coordId].name) {
-    return `(${coords[coordId].name})`;
-  } else {
-    return `(${simplifyNumber(x / MULTIPLICATIVE_CONST)}, ${simplifyNumber(
-      -y / MULTIPLICATIVE_CONST
-    )})`;
-  }
-};
-
-const removeDrawnElements = (drawnElements) => (listeOfId) =>
-  listeOfId.filter((id) => !drawnElements[id]);
-
-// comparing function to decide which coordinate should be drawn first
-const compareCoord = (drawnElements, coords) => (coordId1, coordId2) => {
-  const { endingPaths: endingPaths1, nodeAssociated: nodeAssociated1 } = coords[
-    coordId1
-  ];
-  const { endingPaths: endingPaths2, nodeAssociated: nodeAssociated2 } = coords[
-    coordId2
-  ];
-
-  // we prefer starting from a coordinate with no arriving path element or as less a possible
-  if (
-    removeDrawnElements(drawnElements)(endingPaths1).length <
-    removeDrawnElements(drawnElements)(endingPaths2).length
-  ) {
-    return -1;
-  }
-  if (
-    removeDrawnElements(drawnElements)(endingPaths1).length >
-    removeDrawnElements(drawnElements)(endingPaths2).length
-  ) {
-    return 1;
-  }
-
-  // for equivalent number of arriving path, we prefer the one with the most important number of nodes
-  if (
-    removeDrawnElements(drawnElements)(nodeAssociated1).length >
-    removeDrawnElements(drawnElements)(nodeAssociated2).length
-  ) {
-    return -1;
-  }
-  if (
-    removeDrawnElements(drawnElements)(nodeAssociated1).length <
-    removeDrawnElements(drawnElements)(nodeAssociated2).length
-  ) {
-    return 1;
-  }
-  return 0;
-};
 
 // this function start from the coordinate "startCoordId" and follow a path by drawing components
 const drawPathFromCoord = (
@@ -262,7 +154,7 @@ const initializeCoords = (state) => {
   // check coord of all to[] element
   state.components.allIds.forEach((id) => {
     const element = state.components.byId[id];
-    if (isPath[element.type]) {
+    if (isPath(element)) {
       const fromCoord = state.coordinates.byId[element.from];
       const toCoord = state.coordinates.byId[element.to];
 
