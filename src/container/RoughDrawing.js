@@ -92,6 +92,7 @@ const RoughDrawing = ({ components, coordinates }) => {
           ref={canvasRef}
           width={width + 2 * margin}
           height={height + 2 * margin}
+          style={{ width: "100%" }}
         />
       </DialogContent>
       <DialogActions>
