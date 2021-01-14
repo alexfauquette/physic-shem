@@ -69,6 +69,11 @@ function update(state = initial_state, action) {
   state = { ...reducer_displayOptions(state, action) };
   state = { ...reducer_magnetsOptions(state, action) };
 
+  if (!(action.type === UPDATE_COMPONENT && action.name === "angle")) {
+    // we clean rotation helper after use of stop rotation
+    // TODO do it in a clean way (not mutating previous state)
+    state = { ...state, rotationHelper: null };
+  }
   switch (action.type) {
     case LOAD_PROJECT:
       return {
