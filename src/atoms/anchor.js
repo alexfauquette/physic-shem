@@ -108,18 +108,19 @@ const Anchor = ({
 };
 
 export const roughCoordinate = (rc, ctx, x0, y0, { x, y, shape }) => {
+  console.log(rc.gen.config.options.roughness / 2);
   if (shape === "o") {
     rc.circle(x - x0, y - y0, 10, {
       fill: "white",
       fillStyle: "solid",
-      roughness: 0.5,
+      roughness: rc.gen.config.options.roughness / 2,
     });
   }
   if (shape === "*") {
     rc.circle(x - x0, y - y0, 10, {
       fill: "black",
       fillStyle: "solid",
-      roughness: 0.5,
+      roughness: rc.gen.config.options.roughness / 2,
     });
   }
   if (shape === "d") {
@@ -129,7 +130,11 @@ export const roughCoordinate = (rc, ctx, x0, y0, { x, y, shape }) => {
       L ${x - x0 + 5} ${y - y0}
       L ${x - x0} ${y - y0 + 5}
       Z`,
-      { fill: "black", fillStyle: "solid", roughness: 0.5 }
+      {
+        fill: "black",
+        fillStyle: "solid",
+        roughness: rc.gen.config.options.roughness / 2,
+      }
     );
   }
 };
