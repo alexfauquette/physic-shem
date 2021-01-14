@@ -192,8 +192,8 @@ export const drawRoughCurrant = (rc, ctx, x0, y0, angle, ratio, element) => {
     currantIsAbove
   );
 
-  ctx.textAlign = translateSVGbaseline2Canvas[textAnchor];
-  ctx.textBaseline = translateSVGalign2Canvas[alignmentBaseline];
+  ctx.textAlign = translateSVGalign2Canvas[textAnchor];
+  ctx.textBaseline = translateSVGbaseline2Canvas[alignmentBaseline];
   ctx.fillText(currantText, xText, yText);
 };
 
