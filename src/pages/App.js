@@ -1,5 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
+
+import { Link as RouterLink } from "react-router-dom";
+import Link from "@material-ui/core/Link";
+
 import {
   MODE_DRAG,
   MODE_SELECT,
@@ -19,11 +23,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 
-import {
-  makeStyles,
-  ThemeProvider,
-  createMuiTheme,
-} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
 import Button from "@material-ui/core/Button";
@@ -43,17 +43,6 @@ import {
 
 const drawerWidth = 180;
 const optionDrawerWidth = 280;
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "#1565c0",
-    },
-    secondary: {
-      main: "#42a5f5",
-    },
-  },
-});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -186,89 +175,88 @@ function App({
   };
   return (
     // TODO : Proper listen key event
-    <ThemeProvider theme={theme}>
-      <div
-        className={classes.root}
-        tabIndex="0"
-        onMouseDown={startSelect}
-        onMouseMove={
-          mode === MODE_MOVE_PAPER && isPaperDragged ? mouseMove : null
-        }
-        onMouseUp={
-          mode === MODE_MOVE_PAPER && isPaperDragged ? endMovePaper : null
-        }
-      >
-        <CssBaseline />
+    <div
+      className={classes.root}
+      tabIndex="0"
+      onMouseDown={startSelect}
+      onMouseMove={
+        mode === MODE_MOVE_PAPER && isPaperDragged ? mouseMove : null
+      }
+      onMouseUp={
+        mode === MODE_MOVE_PAPER && isPaperDragged ? endMovePaper : null
+      }
+    >
+      <CssBaseline />
 
-        <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar className={classes.toolBar}>
+      <AppBar position="fixed" className={classes.appBar}>
+        <Toolbar className={classes.toolBar}>
+          <Link component={RouterLink} to="/home" color="inherit">
             <Typography variant="h6" noWrap>
-              Phys Schem
+              Physic Schem
             </Typography>
+          </Link>
 
-            <div>
-              <Tutorial classes={classes} />
-              <FileManager
-                edge="start"
-                className={classes.menuButton}
-                color="inherit"
-              />
-              <IconButton
-                edge="start"
-                className={classes.menuButton}
-                color="inherit"
-                aria-label="open rough drawer"
-                onClick={openRough}
-              >
-                <PhotoLibraryIcon />
-              </IconButton>
-              <Button color="inherit" variant="outlined" onClick={openCode}>
-                LaTEX
-              </Button>
-            </div>
-          </Toolbar>
-        </AppBar>
-        <Drawer
-          className={classes.drawer}
-          variant="permanent"
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <Toolbar />
-          <div className={classes.drawerContainer}>
-            <LeftMenu />
+          <div>
+            <Tutorial classes={classes} />
+            <FileManager
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+            />
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="open rough drawer"
+              onClick={openRough}
+            >
+              <PhotoLibraryIcon />
+            </IconButton>
+            <Button color="inherit" variant="outlined" onClick={openCode}>
+              LaTEX
+            </Button>
           </div>
-        </Drawer>
-        <Drawer
-          anchor="right"
-          variant="persistent"
-          open={
-            (mode === MODE_SELECT || mode === MODE_DRAG) &&
-            selection.length === 1
-          }
-          className={classes.optionDrawer}
-          classes={{
-            paper: classes.optionDrawerPaper,
-          }}
-          // catch mousedown in element options
-          onMouseDown={(event) => event.stopPropagation()}
-        >
-          <Toolbar />
-          <ElementOptions />
-        </Drawer>
-        <main className={classes.content}>
-          <Container ref={svgRef} />
-        </main>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        className={classes.drawer}
+        variant="permanent"
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <Toolbar />
+        <div className={classes.drawerContainer}>
+          <LeftMenu />
+        </div>
+      </Drawer>
+      <Drawer
+        anchor="right"
+        variant="persistent"
+        open={
+          (mode === MODE_SELECT || mode === MODE_DRAG) && selection.length === 1
+        }
+        className={classes.optionDrawer}
+        classes={{
+          paper: classes.optionDrawerPaper,
+        }}
+        // catch mousedown in element options
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <Toolbar />
+        <ElementOptions />
+      </Drawer>
+      <main className={classes.content}>
+        <Container ref={svgRef} />
+      </main>
 
-        <Dialog open={showCode} onClose={closeCode}>
-          <LatexDisplay />
-        </Dialog>
-        <Dialog maxWidth="lg" open={showRough} onClose={closeRough}>
-          <RoughDrawing />
-        </Dialog>
-      </div>
-    </ThemeProvider>
+      <Dialog open={showCode} onClose={closeCode}>
+        <LatexDisplay />
+      </Dialog>
+      <Dialog maxWidth="lg" open={showRough} onClose={closeRough}>
+        <RoughDrawing />
+      </Dialog>
+    </div>
   );
 }
 
