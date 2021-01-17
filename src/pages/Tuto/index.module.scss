@@ -11,4 +11,25 @@
 .content {
   max-width: 950px;
   margin: 8px auto;
+  text-align: justify;
+
+  h2 {
+    text-decoration: underline;
+  }
+  pre {
+    background-color: #1e1e1e;
+    color: white;
+
+    padding: 1rem;
+    margin: 0 0 1rem 0;
+    border-radius: 8px;
+    overflow-x: auto;
+
+    text-align: left;
+    font-family: monospace;
+    font-size: 1rem;
+  }
+  p {
+    margin-bottom: 1rem;
+  }
 }
