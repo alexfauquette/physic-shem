@@ -10,12 +10,22 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
+import ExplanationCurrant from "tutorial/currantExplanation";
+
 const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
   },
   toolBar: {
     justifyContent: "space-between",
+  },
+  contentContainer: {
+    padding: "64px 8px",
+    textAlign: "center",
+  },
+  content: {
+    maxWidth: "950px",
+    margin: "8px auto",
   },
 }));
 
@@ -36,6 +46,11 @@ const Tuto = () => {
           </Link>
         </Toolbar>
       </AppBar>
+      <div className={classes.contentContainer}>
+        <div className={classes.content}>
+          <ExplanationCurrant />
+        </div>
+      </div>
     </div>
   );
 };
