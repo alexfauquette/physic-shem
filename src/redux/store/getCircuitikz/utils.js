@@ -88,7 +88,7 @@ export const getCoordId = ({ x, y }) =>
 export const getCoord = (x, y, coords, previousCoord) => {
   const coordId = getCoordId({ x: x, y: y });
 
-  if (coords[coordId].name) {
+  if (coords[coordId] && coords[coordId].name) {
     return `(${coords[coordId].name})`;
   }
   if (previousCoord && previousCoord.x && previousCoord.y) {
