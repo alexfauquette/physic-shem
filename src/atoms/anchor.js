@@ -33,13 +33,15 @@ const mapDispatchToProps = (dispatch, { svgRef, displayOptions }) => {
   };
 };
 const mapStateToProps = (state, { id }) => {
-  return {
-    x: state.coordinates.byId[id].x,
-    y: state.coordinates.byId[id].y,
-    shape: state.coordinates.byId[id].shape,
-    mode: state.mode,
-    selected: state.selection.includes(id),
-  };
+  return id
+    ? {
+        x: state.coordinates.byId[id].x,
+        y: state.coordinates.byId[id].y,
+        shape: state.coordinates.byId[id].shape,
+        mode: state.mode,
+        selected: state.selection.includes(id),
+      }
+    : {};
 };
 
 const Anchor = ({
