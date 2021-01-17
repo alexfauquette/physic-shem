@@ -158,13 +158,13 @@ const Explanation = () => {
             variant={isAbove ? "contained" : "outlined"}
             onClick={setCurrantYPosition(true)}
           >
-            après
+            haut
           </Button>
           <Button
             variant={!isAbove ? "contained" : "outlined"}
             onClick={setCurrantYPosition(false)}
           >
-            avant
+            bas
           </Button>
         </ButtonGroup>
 
