@@ -1,0 +1,21 @@
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  .options {
+    max-width: 100%;
+    padding-right: 16px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: line;
+    align-items: flex-start;
+
+    .selector {
+      min-width: 100px;
+      margin-right: 8px;
+    }
+  }
+  .drawing {
+    max-width: 100%;
+    flex-grow: 1;
+  }
+}

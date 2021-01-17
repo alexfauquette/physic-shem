@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import ExplanationCurrant from "tutorial/currantExplanation";
 import ExplanationPosition from "tutorial/positionExplanation";
 import ExplanationBipoles from "tutorial/bipoleExplanation";
+import ExplanationDecoraion from "tutorial/decorationExplanation";
 
 const Tuto = () => (
   // TODO : Proper listen key event
@@ -55,6 +56,7 @@ const Tuto = () => (
         <ExplanationBipoles withAnnotations />
         <ExplanationBipoles withAnnotations withMultipleComponents />
         <h2>Un peu d'esthétisme aux extrémités</h2>
+        <ExplanationDecoraion />
         <h2>Ajouter du courant</h2>
         <p>
           Il est assez courant de vouloir dessiner les courant passant à travers
