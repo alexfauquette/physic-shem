@@ -5,7 +5,7 @@
   justify-content: space-between;
 }
 .contentContainer {
-  padding: 64px 8px;
+  padding: 64px 16px;
   text-align: center;
 }
 .content {
@@ -15,6 +15,7 @@
 
   h2 {
     text-decoration: underline;
+    text-align: left;
   }
   pre {
     background-color: #1e1e1e;
@@ -31,5 +32,10 @@
   }
   p {
     margin-bottom: 1rem;
+  }
+  code {
+    border-radius: 4px;
+    background-color: lightgray;
+    padding: 2px 4px;
   }
 }

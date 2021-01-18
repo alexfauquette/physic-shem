@@ -60,22 +60,18 @@ const Tuto = () => (
         <h2>Ajouter du courant</h2>
         <p>
           Il est assez courant de vouloir dessiner les courant passant à travers
-          un composant. Pour cela rien de plus simple, il suffit d'ajouter
-          <code>i=i1</code> et vous voila avec un magnifique courant nomé i1.
-          Rest à savoir si vous voulez afficher le nom au dessus (grace à{" "}
-          <code>^</code> ) ou en dessous (avec <code>_</code> ) du fil. La
-          fléche va-t-elle vers l'avant ( <code>{">"}</code> ) ou l'arrière ({" "}
-          <code>{"<"}</code> ). Enfin faut-il mettre la fléche avant ou après le
-          composant ? our cette dernière, c'est un peu plus compliqué. Si on
-          veut la flèche avant le composant, il faut mettre le chevron ({" "}
-          <code>{">"}</code> ou <code>{"<"}</code>) qui symbolise la fléche
-          avant l'indicateur du text ( <code>^</code> ou <code>_</code> ). Et
-          inversement pour place la flèche après le composant.
+          un composant. Pour cela rien de plus simple, il suffit d'ajouter{" "}
+          <code>i=i1</code>. Vous pouvez modifier le sens de la flèche, sa
+          position et la place du texte avec les characters <code>^</code> et{" "}
+          <code>_</code> pour la place du texte (au dessus en dessous). Les
+          characters <code>{">"}</code> et <code>{"<"}</code> pour le sens de la
+          flèche. Leur ordre indique la place de la flèche. Je vous laisse
+          tester par vous même ca sera plus simple.
         </p>
         <p>
-          Je vous laisse tester, ca sera plus simple comme ça. Attention, si
-          vous inverser l'ordre des coordonnées, c'est comme si vous faisiez
-          faire un tour à 180° à votre composant. Tous sera donc inversé.
+          Petit point d'attention, si vous inverser l'ordre des coordonnées,
+          c'est comme si vous aviez fait une rotation de 180° à votre composant.
+          Tous sera donc inversé.
         </p>
         <ExplanationCurrant />
         <h2>Dessiner un monopôle</h2>

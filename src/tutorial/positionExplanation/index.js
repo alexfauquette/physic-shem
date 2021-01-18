@@ -3,8 +3,6 @@ import Displayer from "../interaction";
 import styles from "./index.module.scss";
 
 import Slider from "@material-ui/core/Slider";
-import Button from "@material-ui/core/Button";
-import CachedIcon from "@material-ui/icons/Cached";
 
 const components = {
   id1: {
