@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import store from "redux/store";
@@ -11,7 +11,22 @@ import * as serviceWorker from "./serviceWorker";
 
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  useLocation,
+} from "react-router-dom";
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
 
 const theme = createMuiTheme({
   palette: {
@@ -29,6 +44,7 @@ ReactDOM.render(
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <Router>
+          <ScrollToTop />
           <p id="load-font">aaa</p>
           <Switch>
             <Route path="/home">
