@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import "./style.scss";
 
 import { MULTIPLICATIVE_CONST, R_LEN, rotation } from "utils";
+import { getCoord } from "redux/store/getCircuitikz/utils";
 
 const width = 1.7; // Total width
 const port_width = 0.7; // Terminals length
@@ -212,11 +213,7 @@ export const roughComponent = (rc, ctx, x0, y0, element) => {
 export const drawer = (element, positionInformations, name = null) => {
   const { x, y, position, anchor } = positionInformations;
 
-  const coord = position
-    ? `(${position})`
-    : `(${(x / MULTIPLICATIVE_CONST).toFixed(2)}, ${(
-        -y / MULTIPLICATIVE_CONST
-      ).toFixed(2)})`;
+  const coord = position ? `(${position})` : getCoord(x, y, {}, {});
 
   return `\\draw ${coord} node[op amp${anchor ? `, anchor=${anchor}` : ""}${
     element.angle && parseFloat(element.angle) !== 0
