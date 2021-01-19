@@ -43,7 +43,7 @@ ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
-        <Router>
+        <Router basename={process.env.PUBLIC_URL}>
           <ScrollToTop />
           <p id="load-font">aaa</p>
           <Switch>
