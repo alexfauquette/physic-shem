@@ -13,6 +13,7 @@ import ExplanationPosition from "tutorial/positionExplanation";
 import ExplanationBipoles from "tutorial/bipoleExplanation";
 import ExplanationDecoraion from "tutorial/decorationExplanation";
 import ExplanationMonopole from "tutorial/monopoleExplanation";
+import ExplanationMultipole from "tutorial/multipoleExplanation";
 
 const Tuto = () => (
   // TODO : Proper listen key event
@@ -78,6 +79,7 @@ const Tuto = () => (
         <h2>Dessiner un monopôle</h2>
         <ExplanationMonopole withAngle withPosition />
         <h2>Et des multipôles</h2>
+        <ExplanationMultipole withAnchor withAngle withPosition />
         <h2>Utiliser les points d'intérêt des multipôles</h2>
         <h2>Utiliser des coordonnées relatives</h2>
       </div>

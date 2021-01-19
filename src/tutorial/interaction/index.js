@@ -2,7 +2,7 @@ import React from "react";
 
 import styles from "./index.module.scss";
 
-import svgComponents, { drawElement } from "components";
+import svgComponents, { drawElement, isMultyPole } from "components";
 import Anchor from "atoms/anchor";
 
 import { getPoles, getCoord } from "redux/store/getCircuitikz/utils";
@@ -80,12 +80,27 @@ const ShowLatexCode = ({ components, coordinates }) => {
       line.push(` ${drawElement(element)}`);
       const { x: xTo, y: yTo } = coordinates[element.to];
       line.push(` ${getCoord(xTo, yTo, {}, {})}`);
-    } else if (element.position) {
+    } else if (element.position && !isMultyPole[element.type]) {
       const { x, y } = coordinates[element.position];
       line.push(` ${getCoord(x, y, {}, {})}`);
       line.push(` ${drawElement(element)}`);
+    } else if (element.position && isMultyPole[element.type]) {
+      line.pop(); //the \draw (x, x is added by the drawer function)
+      const { x, y, dx = 0, dy = 0 } = coordinates[element.position];
+
+      line.push(
+        ` ${drawElement(element, {
+          x: x - dx,
+          y: y - dy,
+          position: false,
+          anchor: element.anchor,
+        })}`
+      );
     }
-    line.push(";");
+
+    if (!isMultyPole[element.type]) {
+      line.push(";");
+    }
 
     code.push(line.join(""));
   });
