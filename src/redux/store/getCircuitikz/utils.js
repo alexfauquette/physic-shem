@@ -92,12 +92,12 @@ export const getCoord = (x, y, coords, previousCoord) => {
     return `(${coords[coordId].name})`;
   }
   if (previousCoord && previousCoord.x && previousCoord.y) {
-    if (previousCoord.x === x) {
+    if (previousCoord.x.toFixed(2) === x.toFixed(2)) {
       return `++(0, ${simplifyNumber(
         -(y - previousCoord.y) / MULTIPLICATIVE_CONST
       )})`;
     }
-    if (previousCoord.y === y) {
+    if (previousCoord.y.toFixed(2) === y.toFixed(2)) {
       return `++(${simplifyNumber(
         (x - previousCoord.x) / MULTIPLICATIVE_CONST
       )}, 0)`;

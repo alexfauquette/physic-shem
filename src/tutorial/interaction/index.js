@@ -5,7 +5,11 @@ import styles from "./index.module.scss";
 import svgComponents, { drawElement, isMultyPole } from "components";
 import Anchor from "atoms/anchor";
 
-import { getPoles, getCoord } from "redux/store/getCircuitikz/utils";
+import {
+  getPoles,
+  getCoord,
+  getCoordId,
+} from "redux/store/getCircuitikz/utils";
 
 const DrawSvg = ({
   components,
@@ -61,8 +65,21 @@ const DrawSvg = ({
   );
 };
 
-const ShowLatexCode = ({ components, coordinates }) => {
+const ShowLatexCode = ({
+  components,
+  coordinates,
+  useRelativeCoord = false,
+}) => {
   const code = ["\\begin{circuitikz}"];
+
+  let previousCoord = {};
+  const coordinates_info = {};
+
+  Object.keys(coordinates).forEach((id) => {
+    const coord = coordinates[id];
+    const coordId = getCoordId(coord);
+    coordinates_info[coordId] = { ...coord };
+  });
 
   Object.keys(components).forEach((id) => {
     const element = components[id];
@@ -70,7 +87,8 @@ const ShowLatexCode = ({ components, coordinates }) => {
     const line = ["\\draw"];
     if (element.from && element.to) {
       const { x: xFrom, y: yFrom } = coordinates[element.from];
-      line.push(` ${getCoord(xFrom, yFrom, {}, {})}`);
+      line.push(` ${getCoord(xFrom, yFrom, coordinates_info, previousCoord)}`);
+      previousCoord = useRelativeCoord ? { x: xFrom, y: yFrom } : {};
 
       element.poles = getPoles(
         coordinates[element.from],
@@ -79,22 +97,29 @@ const ShowLatexCode = ({ components, coordinates }) => {
 
       line.push(` ${drawElement(element)}`);
       const { x: xTo, y: yTo } = coordinates[element.to];
-      line.push(` ${getCoord(xTo, yTo, {}, {})}`);
+      line.push(` ${getCoord(xTo, yTo, coordinates_info, previousCoord)}`);
+      previousCoord = useRelativeCoord ? { x: xTo, y: yTo } : {};
     } else if (element.position && !isMultyPole[element.type]) {
+      previousCoord = {};
       const { x, y } = coordinates[element.position];
-      line.push(` ${getCoord(x, y, {}, {})}`);
+      line.push(` ${getCoord(x, y, coordinates_info, {})}`);
       line.push(` ${drawElement(element)}`);
     } else if (element.position && isMultyPole[element.type]) {
-      line.pop(); //the \draw (x, x is added by the drawer function)
+      previousCoord = {};
+      line.pop(); //the "\draw (x, y)" is added by the drawer function
       const { x, y, dx = 0, dy = 0 } = coordinates[element.position];
 
       line.push(
-        ` ${drawElement(element, {
-          x: x - dx,
-          y: y - dy,
-          position: false,
-          anchor: element.anchor,
-        })}`
+        ` ${drawElement(
+          element,
+          {
+            x: x - dx,
+            y: y - dy,
+            position: false,
+            anchor: element.anchor,
+          },
+          element.name || null
+        )}`
       );
     }
 
