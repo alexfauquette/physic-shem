@@ -106,7 +106,7 @@ const getMultipleComponents = (type, label = "", annotation = "") => {
       invert: false,
     };
   });
-  console.log(rep);
+
   return rep;
 };
 

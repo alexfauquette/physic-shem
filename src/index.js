@@ -3,6 +3,11 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import store from "redux/store";
 
+// import i18n (needs to be bundled ;))
+import "./i18n";
+import i18n from "i18next";
+import { I18nextProvider } from "react-i18next";
+
 import "./index.css";
 import App from "pages/App";
 import Home from "pages/Home";
@@ -41,25 +46,27 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <Provider store={store}>
-        <Router basename={process.env.PUBLIC_URL}>
-          <ScrollToTop />
-          <p id="load-font">aaa</p>
-          <Switch>
-            <Route path="/home">
-              <Home />
-            </Route>
-            <Route path="/tutorial">
-              <Tuto />
-            </Route>
-            <Route path="/">
-              <App />
-            </Route>
-          </Switch>
-        </Router>
-      </Provider>
-    </ThemeProvider>
+    <I18nextProvider i18n={i18n}>
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>
+          <Router basename={process.env.PUBLIC_URL}>
+            <ScrollToTop />
+            <p id="load-font">aaa</p>
+            <Switch>
+              <Route path="/home">
+                <Home />
+              </Route>
+              <Route path="/tutorial">
+                <Tuto />
+              </Route>
+              <Route path="/">
+                <App />
+              </Route>
+            </Switch>
+          </Router>
+        </Provider>
+      </ThemeProvider>
+    </I18nextProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

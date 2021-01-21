@@ -77,7 +77,6 @@ const Explanation = ({
     setAnchor("");
   }, [type]);
 
-  console.log(availableAnchors);
   return (
     <div className={styles.root}>
       <div className={styles.options}>
