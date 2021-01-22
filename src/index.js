@@ -17,7 +17,7 @@ import * as serviceWorker from "./serviceWorker";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route,
   useLocation,
