@@ -1,1 +1,50 @@
-{}
+{
+    "importModule": {
+        "title": "Import circuitikz",
+        "paragraph1": "The first thing to do is importing the circuitikz package. That's easy, just add <c>\\usepackage{circuitikz}</c> at the beginning of your LaTeX document. Precisely where you already have lines starting by <c>\\usepackage{...}</c>.",
+        "paragraph2": "Congrats! Now, you're ready to use circuitikz. To do that simply open a drawing are in your document with <c>\\begin{circuitikz }</c>. As usual you close this area with <c>\\end{circuitikz}</c>. Your document should look like that:"
+    },
+    "bipolePosition": {
+        "title": "Draw a resistor",
+        "paragraph1": "Let start with easy stuff, drawing a resistor. First, say that you're going to draw an amazing component with <c>\\draw</c>. Then you indicate the starting point  <c>(x, y)</c>. We say that we want a bipole component with <c>to</c> and precise it is a resistor with <c>R</c>. You add the destination coordinate, and please, don't forget to put a <c>;</c> to say that you finished your drawing. Most of the time beginner compilation errors are due to missing semi-colon at the end of line."
+    },
+    "bipoleNames": {
+        "title": "Drawing more dipoles",
+        "paragraph1": "You want something elle than resistor? No problem, as long as it is a dipole, you will use <c>to</c>. You just need to change the argument inside brackets. For example <c>to[C]</c> will draw a capacitor, using <c>battery1</c> will give you a battery (As you can imagine, their is also <c>battery</c> and <c>battery2</c> components). I let you test the dipoles already implemented in physic-schem (more are available in circuitikz)."
+    },
+    "bipoleAnnotations": {
+        "title": "Label your components",
+        "paragraph1": "Usually, we giv kind names to our components like Donald the diode, or R1 the resistor. We can also add information such as resistivity or inductance. To do it, circuitikz allow to add labels and annotations as options. The label is set with <c>l=</c> and the annotation with <c>a=</c>. What a simple syntax <3",
+        "paragraph2": "Warning 1, physic-schem is limited compared to circuitikz, since LaTeX equation support is not implement (yet). So by using circuitikz, you will be able to use LaTeX in you labels and annotation. For example, our kind resistor R1 could be written <c>to[R, l=$R_1$ ]</c> to get R indice 1.",
+        "paragraph3": "Warning 2 your component has a direction. Look at th next example. The resistor do 180° rotation with intermediate steps. The left component is drawn 'right to left' whereas the right component is drawn 'left to right' (the opposite direction). This invert label et annotation positions.",
+        "paragraph4": "Keep in mind that the order of coordinates have an impact on bipole direction and so on the render."
+    },
+    "bipoleDecorations": {
+        "title": "Make beautiful extremities",
+        "paragraph1": "You can easily add decorations to the extremities of your dipoles. You have choice between <c>*</c>, <c>*</c> and <c>d</c> corresponding to filled circle, empty circle and diamond. I let you try all the possibilities and observe the associated code."
+    },
+    "bipoleCurrant": {
+        "title": "Add courant",
+        "paragraph1": {
+            "1": "To represent the currant going through you bipole, you can add the option <c>i=i1</c>. Of course you can put something else than i1, (event an equation if directly using circuitikz). You can modify the direction of the arrow, its position et the text position with the following character: <c>^</c> and <c>_</c> are for text position (top or bottom). Characters <c>></c> and ",
+            "2": " are for the arrow direction (same or opposite of bipole direction). The arrow position is given by the order of those character. It will be easier if you try by yourself."
+        },
+        "paragraph2": "I repeat, if you invert coordinate order, it is like applying 180° rotation so every thing will be inverted. Including the currant display."
+    },
+    "monopole": {
+        "title": "Drawing monopole",
+        "paragraph1": "Circuits are not only made of dipole. There is also monopoles \\o/ (most of the time ground or supply voltage). For that, you will use <c>node</c> instead of <c>to</c>. And at the end of the component, you will have to add <c>{}</c>. Those braces are mandatory. In circuitikz, you can write inside a label associated to the component. This feature is not available in physic-schem for now."
+    },
+    "multipoles": {
+        "title": "And multipoles",
+        "paragraph1": "For multipoles, it is the same. But now, you have multiple pôles (yes it's in the name). So we will be able to choose which pole correspond to the coordinate. This is done by the option <c>anchor=...</c> replace the ... by the name of the pole you want to use as a coordinate reference. For example <c>(2, 3) \\node[nmos, anchor=B]</c> correspond to an nmos  component drawn such that the pole B is placed at coordinate (2, 3). Of course, each component has its own pole names. But don't be scarred, circuitikz is written by physicist, so name should be familiar. For example, the operational amplifier have <c>+</c> and <c>-</c> for the input, <c>out</c> for the output and the power supplies are <c>up</c> and <c>down</c>."
+    },
+    "multipolesPointOfInterest": {
+        "title": "Using points of interest",
+        "paragraph1": "Now, we have a problem. If I want to put a resistor on the output of my operational amplifier, how can I compute the correct coordinate? Don't care, you can simply give a name to your component by adding parenthesis <c>node[... ](nameOfComponent) {}</c>. In the next example I chose the name <c>opAmp</c> (yes I'm a creative guy). From the name of your component, you can access to the coordinates of its pole by using <c>(nameOfComponent.poleName)</c>, Which gives <c>(opAmp.-)</c> to access the inverting input (the - input) of the operational amplifier. So now you can move your operational amplifier as you want, resistors will stay attached to the poles"
+    },
+    "relative coordinates": {
+        "title": "Using relative coordinates",
+        "paragraph1": "You probably noticed in the last example, resistors are attached to the operational amplifier, but their second pole is fixed. A solution could be to use reative coordinates. If you write <c>++(dx, dy)</c> the compiler will add dx and dy to the previous coordinates. For example <c>(0, 0) \\to[R] ++(2, 0) \\to[R] ++(2, 0)</c> will draw resistor between points (0, 0), (2, 0) and (4, 0). With all that you can move every things by just moving the operational amplifier."
+    }
+}

@@ -10,12 +10,12 @@
     },
     "bipoleNames": {
         "title": "Dessiner d'autres dipôles",
-        "paragraph1": "Vous voulez dessiner autre chose ? Tant que c'est un dipôle, on va utiliser <c>to</c>. Il suffit alors de changer le contenu de crochets. Par exemple <c>C</c> vous donner un condensateur, et <c>battery1</c> une pile (comme vous vous en douté il existe aussi <c>battery</c> et <c>battery2</c>). Je vous laisse tester les dipôles présent pour l'instant dans physic-schem."
+        "paragraph1": "Vous voulez dessiner autre chose ? Tant que c'est un dipôle, on va utiliser <c>to</c>. Il suffit alors de changer le contenu de crochets. Par exemple <c>to[C]</c> vous donner un condensateur, et <c>battery1</c> une pile (comme vous vous en douté il existe aussi <c>battery</c> et <c>battery2</c>). Je vous laisse tester les dipôles présent pour l'instant dans physic-schem."
     },
     "bipoleAnnotations": {
         "title": "Annoter ses composants",
         "paragraph1": "Il est fréquent que l'on veuille donner un petit nom à nos composants, tel que Robert le potentiomètre, ou plus classiquement la résistance R1. On peut aussi indiquer une information sur le composant, comme sa résistivité. Pour cela vous avez le label et l'annotation, qui sont des options à ajouter. Pour le label c'est <c>l=</c> et pour l'annotation c'est <c>a=</c>. Simple non ?",
-        "paragraph2": "Attention, physic-schem présente une grande limite comparé à l'utilisation de circuitikz : l'absence d'équation. En effet, je n'ai pas encore implémenté la gestion des équations LaTeX. ALors que si vous utilisez circuitikz, vous pouvez utiliser des équations dans vos labels et annotations. Par exemple une résistance R1 s'écrira <c>to[R, l=$R_1$ ]</c> pour avoir un R indice 1.",
+        "paragraph2": "Attention, physic-schem présente une grande limite comparé à l'utilisation de circuitikz : l'absence d'équation. En effet, je n'ai pas encore implémenté la gestion des équations LaTeX. Alors que si vous utilisez circuitikz, vous pouvez utiliser des équations dans vos labels et annotations. Par exemple une résistance R1 s'écrira <c>to[R, l=$R_1$ ]</c> pour avoir un R indice 1.",
         "paragraph3": "Attention aussi au sens de vos composants. Si vous regardez l'exemple suivant, vous remarquerez que la résistance à fait un demi tour avec des étapes intermédiaires. Celle de gauche est tracée de droite à gauche alors que celle de droite est tracée de gauche à droite, ce qui inverse le sens des labels et annotations.",
         "paragraph4": "Retenez que l'ordre des coordonnées à un impact sur le sens du dipôle et donc sur le rendu."
     },
