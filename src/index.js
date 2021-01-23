@@ -23,11 +23,16 @@ import {
   useLocation,
 } from "react-router-dom";
 
+import ReactGA from "react-ga";
+ReactGA.initialize("G-JCS6D2Q6RR");
+ReactGA.pageview(window.location.pathname + window.location.search);
+
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }, [pathname]);
 
   return null;
