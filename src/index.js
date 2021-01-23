@@ -54,7 +54,7 @@ ReactDOM.render(
     <I18nextProvider i18n={i18n}>
       <ThemeProvider theme={theme}>
         <Provider store={store}>
-          <Router basename={process.env.PUBLIC_URL}>
+          <Router>
             <ScrollToTop />
             <p id="load-font">aaa</p>
             <Switch>
