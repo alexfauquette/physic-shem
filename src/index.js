@@ -5,8 +5,6 @@ import store from "redux/store";
 
 // import i18n (needs to be bundled ;))
 import "./i18n";
-import i18n from "i18next";
-import { I18nextProvider } from "react-i18next";
 
 import "./index.css";
 import App from "pages/App";
@@ -25,14 +23,14 @@ import {
 
 import ReactGA from "react-ga";
 ReactGA.initialize("UA-143450655-2");
-ReactGA.pageview(window.location.pathname + window.location.search);
+ReactGA.pageview(window.location.href);
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    ReactGA.pageview(window.location.pathname + window.location.search);
+    ReactGA.pageview(window.location.href);
   }, [pathname]);
 
   return null;
@@ -51,27 +49,25 @@ const theme = createMuiTheme({
 
 ReactDOM.render(
   <React.StrictMode>
-    <I18nextProvider i18n={i18n}>
-      <ThemeProvider theme={theme}>
-        <Provider store={store}>
-          <Router>
-            <ScrollToTop />
-            <p id="load-font">aaa</p>
-            <Switch>
-              <Route path="/home">
-                <Home />
-              </Route>
-              <Route path="/tutorial">
-                <Tuto />
-              </Route>
-              <Route path="/">
-                <App />
-              </Route>
-            </Switch>
-          </Router>
-        </Provider>
-      </ThemeProvider>
-    </I18nextProvider>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <Router>
+          <ScrollToTop />
+          <p id="load-font">aaa</p>
+          <Switch>
+            <Route path="/home">
+              <Home />
+            </Route>
+            <Route path="/tutorial">
+              <Tuto />
+            </Route>
+            <Route path="/">
+              <App />
+            </Route>
+          </Switch>
+        </Router>
+      </Provider>
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
