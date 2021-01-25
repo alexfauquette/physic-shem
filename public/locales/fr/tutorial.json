@@ -2,7 +2,7 @@
     "importModule": {
         "title": "Importer circuitikz",
         "paragraph1": "Première chose à faire, importer le package circuitikz. Pour cela rien de plus simple, vous ajoutez <c>\\usepackage{circuitikz}</c> dans l'entête de votre document LaTeX. Pour être précis, là où il y a toutes les autres lignes commençant par <c>\\usepackage{...}</c>.",
-        "paragraph2": "Et voilà, vous êtes prêt\u00B7e à utiliser circuitikz. Pour cela, à l'intérieur du document ouvrez une zone de dessin avec <c>\\begin{circuitikz }</c>, et fermez là comme d'habitude avec <c>\\end{circuitikz}</c>. Votre code devrait ressembler à ceci :"
+        "paragraph2": "Et voilà, vous êtes prêt·e à utiliser circuitikz. Pour cela, à l'intérieur du document ouvrez une zone de dessin avec <c>\\begin{circuitikz }</c>, et fermez là comme d'habitude avec <c>\\end{circuitikz}</c>. Votre code devrait ressembler à ceci :"
     },
     "bipolePosition": {
         "title": "Dessiner une résistance",
@@ -14,7 +14,7 @@
     },
     "bipoleAnnotations": {
         "title": "Annoter ses composants",
-        "paragraph1": "Il est fréquent que l'on veuille donner un petit nom à nos composants, tel que Robert le potentiomètre, ou plus classiquement la résistance R1. On peut aussi indiquer une information sur le composant, comme sa résistivité. Pour cela vous avez le label et l'annotation, qui sont des options à ajouter. Pour le label c'est <c>l=</c> et pour l'annotation c'est <c>a=</c>. Simple non ?",
+        "paragraph1": "Il est fréquent que l'on veuille donner un petit nom à nos composants, tel que Robert le potentiomètre, ou plus classiquement la résistance R1. On peut aussi indiquer une information sur le composant, comme sa résistivité. Pour cela, vous avez le label et l'annotation qui sont des options à ajouter. Pour le label, utilisez <c>l=</c> et pour l'annotation c'est <c>a=</c>. Simple non ?",
         "paragraph2": "Attention, physic-schem présente une grande limite comparé à l'utilisation de circuitikz : l'absence d'équation. En effet, je n'ai pas encore implémenté la gestion des équations LaTeX. Alors que si vous utilisez circuitikz, vous pouvez utiliser des équations dans vos labels et annotations. Par exemple une résistance R1 s'écrira <c>to[R, l=$R_1$]</c> pour avoir un R indice 1.",
         "paragraph3": "Attention aussi au sens de vos composants. Si vous regardez l'exemple suivant, vous remarquerez que la résistance à fait un demi tour avec des étapes intermédiaires. Celle de gauche est tracée de droite à gauche alors que celle de droite est tracée de gauche à droite, ce qui inverse le sens des labels et annotations.",
         "paragraph4": "Retenez que l'ordre des coordonnées à un impact sur le sens du dipôle et donc sur le rendu."
@@ -26,10 +26,10 @@
     "bipoleCurrant": {
         "title": "Ajouter du courant",
         "paragraph1": {
-            "1": "Il est assez courant de vouloir dessiner les courant passant à travers un composant. Pour cela rien de plus simple, il suffit d'ajouter <c>i=i1</c>. Vous pouvez modifier le sens de la flèche, sa position et la place du texte avec les caractères <c>^</c> et <c>_</c> pour la place du texte (au dessus en dessous). Les caractères <c>></c> et ",
-            "2": " pour le sens de la flèche. Leur ordre indique la place de la flèche. Je vous laisse tester par vous même ca sera plus simple."
+            "1": "Il est assez courant de vouloir dessiner le courant passant à travers un composant. Pour cela rien de plus simple, il suffit d'ajouter <c>i=i1</c>. Vous pouvez modifier le sens de la flèche, sa position et la place du texte avec les caractères <c>^</c> et <c>_</c> pour la place du texte (au dessus en dessous). Les caractères <c>></c> et ",
+            "2": " pour le sens de la flèche. Leur ordre indique la place de la flèche. Je vous laisse tester par vous même, ça sera plus simple."
         },
-        "paragraph2": "Petit point d'attention, si vous inverser l'ordre des coordonnées, c'est comme si vous aviez fait une rotation de 180° à votre composant. Tous sera donc inversé."
+        "paragraph2": "Petit point d'attention, si vous inversez l'ordre des coordonnées, c'est comme si vous aviez fait faire une rotation de 180° à votre composant. Tous sera donc inversé."
     },
     "monopole": {
         "title": "Dessiner un monopôle",
