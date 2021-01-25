@@ -2,7 +2,7 @@
     "importModule": {
         "title": "Import circuitikz",
         "paragraph1": "The first thing to do is importing the circuitikz package. That's easy, just add <c>\\usepackage{circuitikz}</c> at the beginning of your LaTeX document. Precisely where you already have lines starting by <c>\\usepackage{...}</c>.",
-        "paragraph2": "Congrats! Now, you're ready to use circuitikz. To do that simply open a drawing are in your document with <c>\\begin{circuitikz }</c>. As usual you close this area with <c>\\end{circuitikz}</c>. Your document should look like that:"
+        "paragraph2": "Congrats! Now, you're ready to use circuitikz. To do that simply open a drawing are in your document with <c>\\begin{circuitikz}</c>. As usual you close this area with <c>\\end{circuitikz}</c>. Your document should look like that:"
     },
     "bipolePosition": {
         "title": "Draw a resistor",
@@ -15,7 +15,7 @@
     "bipoleAnnotations": {
         "title": "Label your components",
         "paragraph1": "Usually, we giv kind names to our components like Donald the diode, or R1 the resistor. We can also add information such as resistivity or inductance. To do it, circuitikz allow to add labels and annotations as options. The label is set with <c>l=</c> and the annotation with <c>a=</c>. What a simple syntax <3",
-        "paragraph2": "Warning 1, physic-schem is limited compared to circuitikz, since LaTeX equation support is not implement (yet). So by using circuitikz, you will be able to use LaTeX in you labels and annotation. For example, our kind resistor R1 could be written <c>to[R, l=$R_1$ ]</c> to get R indice 1.",
+        "paragraph2": "Warning 1, physic-schem is limited compared to circuitikz, since LaTeX equation support is not implement (yet). So by using circuitikz, you will be able to use LaTeX in you labels and annotation. For example, our kind resistor R1 could be written <c>to[R, l=$R_1$]</c> to get R indice 1.",
         "paragraph3": "Warning 2 your component has a direction. Look at th next example. The resistor do 180° rotation with intermediate steps. The left component is drawn 'right to left' whereas the right component is drawn 'left to right' (the opposite direction). This invert label et annotation positions.",
         "paragraph4": "Keep in mind that the order of coordinates have an impact on bipole direction and so on the render."
     },
