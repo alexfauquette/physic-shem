@@ -24,7 +24,7 @@ import {
 } from "react-router-dom";
 
 import ReactGA from "react-ga";
-ReactGA.initialize("G-JCS6D2Q6RR");
+ReactGA.initialize("UA-143450655-2");
 ReactGA.pageview(window.location.pathname + window.location.search);
 
 const ScrollToTop = () => {
