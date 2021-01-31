@@ -21,8 +21,8 @@ i18n
   .init({
     fallbackLng: "en",
     lng: ["fr", "en"],
-    debug: true,
-
+    debug: process.env.NODE_ENV === "production",
+    preload: ["fr"],
     react: {
       useSuspense: false,
     },
@@ -30,7 +30,7 @@ i18n
       escapeValue: false, // not needed for react as it escapes by default
     },
     backend: {
-      loadPath: "locales/{{lng}}/{{ns}}.json",
+      loadPath: `${process.env.REACT_APP_I18N_LOCATION}/{{lng}}/{{ns}}.json`,
     },
   });
 
