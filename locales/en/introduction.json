@@ -1,0 +1,15 @@
+{
+    "keys": {
+        "S": "Split coordinate point in multiple points",
+        "Shift": "Lock dragging along x or y axis",
+        "Ctrl": "Allow to select multiple element",
+        "Suppr": "Delete selected component (only one)",
+        "Arrows": "Stack coordinates along given direction"
+    },
+    "steps": {
+        "0": "Select components to draw from the left menu.",
+        "1": "Modify properties of selected component with right menu",
+        "2": "Save and Export your creation with latex, png or json",
+        "3": "Some shortcut to simplify your experience"
+    }
+}
