@@ -4,7 +4,7 @@
         "Shift": "bloque le mouvement le long de l'axe x ou y",
         "Ctrl": "Permet de sélectionner plusieurs éléments",
         "Suppr": "Supprime l'élément sélectionné",
-        "Arrows": "alligne les éléments le long de l'axe indiqué"
+        "Arrows": "aligne les éléments le long de l'axe indiqué"
     },
     "steps": {
         "0": "Sélectionner l'élément à dessiner dans le menu gauche",
