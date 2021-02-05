@@ -2,7 +2,7 @@
     "importModule": {
         "title": "Importer circuitikz",
         "paragraph1": "Première chose à faire, importer le package circuitikz. Pour cela rien de plus simple, vous ajoutez <c>\\usepackage{circuitikz}</c> dans l'entête de votre document LaTeX. Pour être précis, là où il y a toutes les autres lignes commençant par <c>\\usepackage{...}</c>.",
-        "paragraph2": "Et voilà, vous êtes prêt·e à utiliser circuitikz. Pour cela, à l'intérieur du document ouvrez une zone de dessin avec <c>\\begin{circuitikz }</c>, et fermez là comme d'habitude avec <c>\\end{circuitikz}</c>. Votre code devrait ressembler à ceci :"
+        "paragraph2": "Et voilà, vous êtes prêt·e à utiliser circuitikz. Pour cela, à l'intérieur du document ouvrez une zone de dessin avec <c>\\begin{circuitikz}</c>, et fermez là comme d'habitude avec <c>\\end{circuitikz}</c>. Votre code devrait ressembler à ceci :"
     },
     "bipolePosition": {
         "title": "Dessiner une résistance",

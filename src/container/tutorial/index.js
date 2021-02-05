@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -51,6 +52,8 @@ const shortcuts = [
 ];
 
 const HelpShortcut = ({ classes }) => {
+  const { t, ready } = useTranslation("introduction");
+
   const [showHelp, setShowHelp] = useState(!localStorage.getItem("dontShow"));
   const [helpStep, setHelpStep] = useState(
     localStorage.getItem("helpStep") || 0
@@ -83,7 +86,9 @@ const HelpShortcut = ({ classes }) => {
         <HelpOutlineIcon />
       </IconButton>
       <Dialog fullWidth maxWidth="sm" open={showHelp} onClose={closeHelp}>
-        <DialogTitle>{titles[helpStep]}</DialogTitle>
+        <DialogTitle>
+          {ready ? t(`steps.${helpStep}`) : titles[helpStep]}
+        </DialogTitle>
         <DialogContent>
           {helpStep === 3 ? (
             <List>
@@ -91,7 +96,9 @@ const HelpShortcut = ({ classes }) => {
                 <ListItem key={shortcut.key}>
                   <ListItemText
                     classes={{ primary: classes.keyboardDescription }}
-                    primary={shortcut.description}
+                    primary={
+                      ready ? t(`keys.${shortcut.key}`) : shortcut.description
+                    }
                   />
                   <span className={classes.keyboardKey}>{shortcut.key}</span>
                 </ListItem>

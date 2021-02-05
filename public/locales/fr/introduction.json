@@ -1,0 +1,15 @@
+{
+    "keys": {
+        "S": "sépare les points de coordonnés regroupés",
+        "Shift": "bloque le mouvement le long de l'axe x ou y",
+        "Ctrl": "Permet de sélectionner plusieurs éléments",
+        "Suppr": "Supprime l'élément sélectionné",
+        "Arrows": "aligne les éléments le long de l'axe indiqué"
+    },
+    "steps": {
+        "0": "Sélectionner l'élément à dessiner dans le menu gauche",
+        "1": "Modifier ses propriétés dans le menu droit",
+        "2": "Sauvegarder et exporter en LaTeX ou png",
+        "3": "Quelques raccourcis clavier"
+    }
+}

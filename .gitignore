@@ -24,3 +24,6 @@ yarn-error.log*
 texTests/*
 circuitikz/*
 icon-design/*
+
+
+.vscode/*

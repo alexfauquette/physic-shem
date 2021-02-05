@@ -19,7 +19,7 @@ import ExplanationMultipole from "tutorial/multipoleExplanation";
 import ExplanationAnchors from "tutorial/anchorExplanation";
 
 const Tuto = () => {
-  const { t, i18n, ready } = useTranslation("tutorial");
+  const { t, ready } = useTranslation("tutorial");
 
   return (
     // TODO : Proper listen key event

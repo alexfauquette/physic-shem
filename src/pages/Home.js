@@ -1,5 +1,7 @@
 import React from "react";
 
+import { useTranslation } from "react-i18next";
+
 import { Link as RouterLink } from "react-router-dom";
 
 import Button from "@material-ui/core/Button";
@@ -58,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = useStyles();
+  const { t, ready } = useTranslation();
 
   return (
     <div tabIndex="0">
@@ -73,8 +76,8 @@ const Home = () => {
       <div className={classes.header}>
         <div className={classes.headerTitle}>
           <h1>
-            <span style={{ fontSize: "2rem" }}>Physic Schem</span>, votre
-            générateur de schéma
+            <span style={{ fontSize: "2rem" }}>Physic Schem</span>
+            {ready ? t("title") : ", votre générateur de schéma"}
           </h1>
         </div>
         <div className={classes.callToActionContainer}>
@@ -85,7 +88,7 @@ const Home = () => {
             color="primary"
             size="large"
           >
-            Générateur
+            {ready ? t("button.generator") : "Générateur"}
           </Button>
           <Button
             component={RouterLink}
@@ -94,30 +97,39 @@ const Home = () => {
             color="primary"
             size="large"
           >
-            Tuto
+            {ready ? t("button.tutorial") : "Tuto"}
           </Button>
         </div>
       </div>
       <div className={classes.content}>
-        <h2>Des schémas beau facilement</h2>
+        <h2>{ready ? t("paragraph1.title") : "Des schémas beau facilement"}</h2>
         <p>
-          Avec quoi faite vous vos schémas ? Paint ou Word ? Dans les deux cas,
-          tu dois souffrir, et le résultat ne peut qu'ptre décevant face à tous
-          les efforts mis en oeuvre. Ici tu pourras faire tes schémas rapidement
-          en ne te concentrant que sur le contenue de ton schéma. Une fois fini
-          exporte le en png pour ou en svg (fonctionnalité à venir). Ou mieux
-          encore récupère le code LaTeX associé.
+          {ready
+            ? t("paragraph1.txt")
+            : "Avec quoi faite vous vos schémas ? Paint ou Word ? Dans les deux cas, tu dois souffrir, et le résultat ne peut qu'être décevant face à tous les efforts mis en oeuvre. Ici tu pourras faire tes schémas rapidement en ne te concentrant que sur le contenue de ton schéma. Une fois fini exporte le en png pour ou en svg (fonctionnalité à venir). Ou mieux encore récupère le code LaTeX associé."}
         </p>
-        <h2>Du code LaTeX?</h2>
+        <h2>{ready ? t("paragraph2.title") : "Du code LaTeX ?"}</h2>
         <p>
-          Tu as déjà vue un cours de science que tu trouves magnifique ?
-          Probalement qu'il était écrit en LaTeX. Si tu veux toi aussi créer de
-          magnifiques documents, je te recommande ce{" "}
-          <a href="https://fr.wikibooks.org/wiki/LaTeX/G%C3%A9n%C3%A9ralit%C3%A9s">
-            Wikibook
-          </a>{" "}
-          qui te donnera toutes les bases.
+          {ready ? (
+            <>
+              {t("paragraph2.txt.1")}
+              <a href={t("paragraph2.txt.url")}>Wikibook</a>
+              {t("paragraph2.txt.2")}
+            </>
+          ) : (
+            <>
+              Tu as déjà vue un cours de science que tu trouves magnifique ?
+              Probablement qu'il était écrit en LaTeX. Si tu veux toi aussi
+              créer de magnifiques documents, je te recommande ce{" "}
+              <a href="https://fr.wikibooks.org/wiki/LaTeX/G%C3%A9n%C3%A9ralit%C3%A9s">
+                Wikibook
+              </a>{" "}
+              qui te donnera toutes les bases.
+            </>
+          )}
         </p>
+        <h2></h2>
+        <p></p>
       </div>
     </div>
   );
