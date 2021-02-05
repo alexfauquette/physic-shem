@@ -55,14 +55,14 @@ ReactDOM.render(
           <ScrollToTop />
           <p id="load-font">aaa</p>
           <Switch>
-            <Route path="/home">
-              <Home />
+            <Route path="/app">
+              <App />
             </Route>
             <Route path="/tutorial">
               <Tuto />
             </Route>
             <Route path="/">
-              <App />
+              <Home />
             </Route>
           </Switch>
         </Router>

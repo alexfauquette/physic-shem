@@ -83,7 +83,7 @@ const Home = () => {
         <div className={classes.callToActionContainer}>
           <Button
             component={RouterLink}
-            to="/"
+            to="/app"
             variant="contained"
             color="primary"
             size="large"
