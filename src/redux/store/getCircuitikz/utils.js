@@ -79,6 +79,9 @@ export const simplifyNumber = (x) => {
   return rep;
 };
 
+export const fixNumber = (x, precision = 2) =>
+  typeof x === "number" ? x.toFixed(precision) : x;
+
 export const getCoordId = ({ x, y }) =>
   `${typeof x === "number" ? x.toFixed(2) : x}-${
     typeof y === "number" ? y.toFixed(2) : y
@@ -91,13 +94,14 @@ export const getCoord = (x, y, coords, previousCoord) => {
   if (coords[coordId] && coords[coordId].name) {
     return `(${coords[coordId].name})`;
   }
+
   if (previousCoord && previousCoord.x && previousCoord.y) {
-    if (previousCoord.x.toFixed(2) === x.toFixed(2)) {
+    if (fixNumber(previousCoord.x) === fixNumber(x)) {
       return `++(0, ${simplifyNumber(
         -(y - previousCoord.y) / MULTIPLICATIVE_CONST
       )})`;
     }
-    if (previousCoord.y.toFixed(2) === y.toFixed(2)) {
+    if (fixNumber(previousCoord.y) === fixNumber(y)) {
       return `++(${simplifyNumber(
         (x - previousCoord.x) / MULTIPLICATIVE_CONST
       )}, 0)`;
