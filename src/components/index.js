@@ -93,6 +93,17 @@ import UpRight, {
   roughComponent as upRightRoughComponent,
   parameters as upRightParameters,
 } from "./upRight";
+import {
+  V_SourceComponent,
+  I_SourceComponent,
+  V_OO_SourceComponent,
+  I_OO_SourceComponent,
+  getBoundingBox as sourcesBoundingBoxe,
+  drawer as sourcesDrawer,
+  roughComponent as sourceRoughComponent,
+  parameters as voltageSourceParameters,
+} from "./sourcess";
+
 import { pathGetBoundingBoxCenter } from "components/hoc/pathComponents";
 
 const getAnchors = {
@@ -110,6 +121,8 @@ export const pathOptions = {
   short: shortParameters,
   rightUp: rightUpParameters,
   upRight: upRightParameters,
+  voosource: voltageSourceParameters,
+  vsource: voltageSourceParameters,
 };
 
 const getDrawer = {
@@ -130,6 +143,10 @@ const getDrawer = {
   R: rDrawer,
   battery1: battery1Drawer,
   switch: switchDrawer,
+  vsource: sourcesDrawer("vsource"),
+  isource: sourcesDrawer("isource"),
+  voosource: sourcesDrawer("voosource"),
+  ioosource: sourcesDrawer("ioosource"),
 };
 
 const getRoughComponents = {
@@ -150,6 +167,10 @@ const getRoughComponents = {
   R: rRoughComponent,
   battery1: battery1RoughComponent,
   switch: switchRoughComponent,
+  vsource: sourceRoughComponent("vsource"),
+  isource: sourceRoughComponent("isource"),
+  voosource: sourceRoughComponent("voosource"),
+  ioosource: sourceRoughComponent("ioosource"),
 };
 
 const getBoundingBoxComponent = {
@@ -167,6 +188,10 @@ const getBoundingBoxComponent = {
   R: rGetBoundingBox,
   battery1: battery1GetBoundingBox,
   switch: switchGetBoundingBox,
+  vsource: sourcesBoundingBoxe,
+  isource: sourcesBoundingBoxe,
+  voosource: sourcesBoundingBoxe,
+  ioosource: sourcesBoundingBoxe,
 };
 
 export const getBoundingBox = (element, coordinateById) => {
@@ -234,6 +259,10 @@ export const isPath = {
   R: true,
   battery1: true,
   switch: true,
+  vsource: true,
+  isource: true,
+  voosource: true,
+  ioosource: true,
 };
 
 export const isMultyPole = {
@@ -254,6 +283,10 @@ export const isMultyPole = {
   R: false,
   battery1: false,
   switch: false,
+  vsource: false,
+  isource: false,
+  voosource: false,
+  ioosource: false,
 };
 
 const svgComponents = {
@@ -274,11 +307,15 @@ const svgComponents = {
   R: (props) => <R key={props.id} {...props} />,
   battery1: (props) => <Battery1 key={props.id} {...props} />,
   switch: (props) => <Switch key={props.id} {...props} />,
+  vsource: (props) => <V_SourceComponent key={props.id} {...props} />,
+  isource: (props) => <I_SourceComponent key={props.id} {...props} />,
+  voosource: (props) => <V_OO_SourceComponent key={props.id} {...props} />,
+  ioosource: (props) => <I_OO_SourceComponent key={props.id} {...props} />,
 };
 
 export const structure = {
   bipoles: ["lampe", "switch", "R", "C", "L", "empty led", "vcapacitor", "pR"],
-  sources: ["battery1"],
+  sources: ["battery1", "vsource", "isource", "voosource", "ioosource"],
   references: ["vee", "vcc", "ground"],
   transistors: ["nmos", "op_amp"],
 };

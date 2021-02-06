@@ -181,6 +181,44 @@ const inputElement = {
       </ListItemSecondaryAction>
     </ListItem>
   ),
+  voltageName: (value, update) => (
+    <ListItem>
+      <TextField
+        label="Voltage"
+        value={value}
+        onKeyDown={(e) => e.stopPropagation()}
+        onChangeCapture={update(null)}
+      />
+    </ListItem>
+  ),
+  voltageIsDown: (value, update) => (
+    <ListItem>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={value}
+            onChange={update(!value)}
+            name="voltage position"
+          />
+        }
+        label="Voltage Position"
+      />
+    </ListItem>
+  ),
+  voltageIsDirect: (value, update) => (
+    <ListItem>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={value}
+            onChange={update(!value)}
+            name="voltage direction"
+          />
+        }
+        label="Voltage Direction"
+      />
+    </ListItem>
+  ),
   currant: (value, update) => (
     <>
       <ListItem button>
