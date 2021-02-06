@@ -21,8 +21,8 @@ const ArrowEnd = ({ x, y, angle }) => (
 );
 
 export const drawRoughArrowEnd = (rc, x, y, angle, xScale, yScale) => {
-  rc.path(`M ${x} ${y}
-      L ${rotation(
+  rc.path(`
+      M ${rotation(
         angle,
         x,
         y,
@@ -31,6 +31,7 @@ export const drawRoughArrowEnd = (rc, x, y, angle, xScale, yScale) => {
         xScale,
         yScale
       )}
+  L ${x} ${y}
       L ${rotation(
         angle,
         x,
@@ -40,7 +41,7 @@ export const drawRoughArrowEnd = (rc, x, y, angle, xScale, yScale) => {
         xScale,
         yScale
       )}
-      Z
+      
   `);
 };
 export default ArrowEnd;

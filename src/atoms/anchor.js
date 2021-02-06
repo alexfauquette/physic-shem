@@ -110,7 +110,6 @@ const Anchor = ({
 };
 
 export const roughCoordinate = (rc, ctx, x0, y0, { x, y, shape }) => {
-  console.log(rc.gen.config.options.roughness / 2);
   if (shape === "o") {
     rc.circle(x - x0, y - y0, 10, {
       fill: "white",
