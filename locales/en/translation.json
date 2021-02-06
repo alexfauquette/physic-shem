@@ -1,0 +1,19 @@
+{
+    "title": ", your schema generator",
+    "button": {
+        "generator": "Generator",
+        "tutorial": "Tuto"
+    },
+    "paragraph1": {
+        "title": "Schema must be beautiful and easy to do",
+        "txt": "What are you using to create your own electric schemas? Paint or Word? Then it is likely that you suffer to do them, and you must be disappointed by the results. Here you can draw schemas easily by focussing only on the content. Once done, you can export it as a png, or even better get the LaTeX code associated."
+    },
+    "paragraph2": {
+        "title": "LaTeX code?",
+        "txt": {
+            "1": "Yes! Have you seen scientific classe note with wonderful math equations and schemas? If yes, it is probably written in LaTeX. If you're interested in creating such magnificent documents, I recomand you this ",
+            "url": "https://en.wikibooks.org/wiki/LaTeX",
+            "2": " which will teach you the basics of LaTeX."
+        }
+    }
+}

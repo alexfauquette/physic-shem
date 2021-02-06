@@ -1,15 +1,19 @@
 {
-          "title": ", votre générateur de schéma",
-          "button": {
-                    "generator": "Générateur",
-                    "tutorial": "Tuto"
-          },
-          "paragraph1": {
-                    "title": "Des schémas beau facilement",
-                    "txt": "\"Avec quoi faite vous vos schémas ? Paint ou Word ? Dans les deux cas, tu dois souffrir, et le résultat ne peut qu'être décevant face à tous les efforts mis en oeuvre. Ici tu pourras faire tes schémas rapidement en ne te concentrant que sur le contenue de ton schéma. Une fois fini exporte le en png pour ou en svg (fonctionnalité à venir). Ou mieux encore récupère le code LaTeX associé."
-          },
-          "paragraph2": {
-                    "title": "Du code LaTeX ?",
-                    "txt": "Tu as déjà vue un cours de science que tu trouves magnifique ? Probablement qu'il était écrit en LaTeX. Si tu veux toi aussi créer de magnifiques documents, je te recommande ce <a href=\"https://fr.wikibooks.org/wiki/LaTeX/G%C3%A9n%C3%A9ralit%C3%A9s\">Wikibook</a> qui te donnera toutes les bases."
-          }
+    "title": ", votre générateur de schéma",
+    "button": {
+        "generator": "Générateur",
+        "tutorial": "Tuto"
+    },
+    "paragraph1": {
+        "title": "Des schémas beau facilement",
+        "txt": "Avec quoi faite vous vos schémas ? Paint ou Word ? Dans les deux cas, tu dois souffrir, et le résultat ne peut qu'être décevant face à tous les efforts mis en oeuvre. Ici tu pourras faire tes schémas rapidement en ne te concentrant que sur le contenue de ton schéma. Une fois fini exporte le en png pour ou en svg (fonctionnalité à venir). Ou mieux encore récupère le code LaTeX associé."
+    },
+    "paragraph2": {
+        "title": "Du code LaTeX ?",
+        "txt": {
+            "1": "Tu as déjà vue un cours de science que tu trouves magnifique ? Probablement qu'il était écrit en LaTeX. Si tu veux toi aussi créer de magnifiques documents, je te recommande ce ",
+            "url": "https://fr.wikibooks.org/wiki/LaTeX",
+            "2": " qui te donnera toutes les bases."
+        }
+    }
 }
