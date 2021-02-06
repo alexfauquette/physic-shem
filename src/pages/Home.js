@@ -11,6 +11,9 @@ import Typography from "@material-ui/core/Typography";
 
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import IconButton from "@material-ui/core/IconButton";
+
+import GitHubIcon from "@material-ui/icons/GitHub";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -71,6 +74,12 @@ const Home = () => {
           <Typography variant="h6" noWrap>
             Physic Schem
           </Typography>
+          <IconButton
+            component="a"
+            href={"https://github.com/alexfauquette/physic-shem"}
+          >
+            <GitHubIcon style={{ color: "white" }} fontSize="large" />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <div className={classes.header}>
