@@ -20,44 +20,23 @@ const ArrowEnd = ({ x, y, angle }) => (
   </g>
 );
 
-export const drawRoughArrowEnd = (
-  rc,
-  x,
-  y,
-  angle,
-  x2,
-  y2,
-  theta,
-  xScale = 1,
-  yScale = 1
-) => {
-  const x0 =
-    x +
-    Math.cos((angle / 180) * Math.PI) * xScale * x2 -
-    Math.sin((angle / 180) * Math.PI) * yScale * y2;
-
-  const y0 =
-    y +
-    Math.sin((angle / 180) * Math.PI) * xScale * x2 +
-    Math.cos((-angle / 180) * Math.PI) * yScale * y2;
-
-  rc.path(`
-      M ${x0} ${y0}
+export const drawRoughArrowEnd = (rc, x, y, angle, xScale, yScale) => {
+  rc.path(`M ${x} ${y}
       L ${rotation(
-        -angle - theta,
-        x0,
-        y0,
+        angle,
+        x,
+        y,
         -dx * MULTIPLICATIVE_CONST,
-        -dy * MULTIPLICATIVE_CONST,
+        dy * MULTIPLICATIVE_CONST,
         xScale,
         yScale
       )}
       L ${rotation(
-        -angle - theta,
-        x0,
-        y0,
+        angle,
+        x,
+        y,
         -dx * MULTIPLICATIVE_CONST,
-        dy * MULTIPLICATIVE_CONST,
+        -dy * MULTIPLICATIVE_CONST,
         xScale,
         yScale
       )}

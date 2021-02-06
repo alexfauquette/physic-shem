@@ -147,20 +147,28 @@ export const roughComponent = (rc, ctx, x0, y0, element) => {
       } ${rotation(-angle, x, y, x2, y2, xScale, yScale)}`
     );
 
+    const xEnd =
+      x +
+      Math.cos((angle / 180) * Math.PI) * xScale * x2 -
+      Math.sin((angle / 180) * Math.PI) * yScale * y2;
+
+    const yEnd =
+      y +
+      Math.sin((angle / 180) * Math.PI) * xScale * x2 +
+      Math.cos((angle / 180) * Math.PI) * yScale * y2;
+
     drawRoughArrowEnd(
       rc,
-      x,
-      y,
-      angle,
-      x2,
-      y2,
-      theta1 < theta2
-        ? useNaiveCircleOrientation
-          ? 194
-          : 170
-        : useNaiveCircleOrientation
-        ? 96
-        : 70,
+      xEnd,
+      yEnd,
+      -angle -
+        (theta1 < theta2
+          ? useNaiveCircleOrientation
+            ? 194
+            : 170
+          : useNaiveCircleOrientation
+          ? 96
+          : 70),
       xScale,
       yScale
     );
