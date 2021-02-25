@@ -10,6 +10,7 @@ import "./index.css";
 import App from "pages/App";
 import Home from "pages/Home";
 import Tuto from "pages/Tuto";
+import Catalogue from "pages/Catalogue";
 import * as serviceWorker from "./serviceWorker";
 
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -57,6 +58,9 @@ ReactDOM.render(
           <Switch>
             <Route path="/app">
               <App />
+            </Route>
+            <Route path="/catalogue">
+              <Catalogue />
             </Route>
             <Route path="/tutorial">
               <Tuto />

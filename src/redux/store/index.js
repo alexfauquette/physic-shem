@@ -1,4 +1,6 @@
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import thunkMiddleware from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 import reducer_displayOptions from "./displayOptions";
 import reducer_magnetsOptions from "./magnetsOptions";
@@ -22,6 +24,7 @@ import {
   DELETE_ELEMENT,
   UPDATE_COMPONENT,
   LOAD_PROJECT,
+  LIST_PROJECTS,
 } from "redux/actions";
 
 import {
@@ -80,6 +83,17 @@ function update(state = initial_state, action) {
         ...initial_state,
         components: { ...action.components },
         coordinates: { ...action.coordinates },
+        currentProject: {
+          id: action.id,
+          username: action.username,
+          circuitname: action.circuitname,
+        },
+      };
+    case LIST_PROJECTS:
+      return {
+        ...state,
+        projects: [...action.projects],
+      };
       };
     case UPDATE_COMPONENT:
       const { id, name, value } = action;
@@ -277,6 +291,10 @@ function update(state = initial_state, action) {
 
 // Create a Redux store holding the state of your app.
 // Its API is { subscribe, dispatch, getState }.
-let store = createStore(update);
+
+const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware));
+
+// The store now has the ability to accept thunk functions in `dispatch`
+let store = createStore(update, composedEnhancer);
 
 export default store;

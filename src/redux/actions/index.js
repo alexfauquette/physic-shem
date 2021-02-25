@@ -189,10 +189,32 @@ export function updateMagnetOption(optionName, optionValue) {
 }
 
 export const LOAD_PROJECT = "LOAD_PROJECT";
-export function loadProject({ components, coordinates }) {
+export function loadProject({
+  components,
+  coordinates,
+  id = "",
+  username = "",
+  circuitname = "",
+}) {
   return {
     type: LOAD_PROJECT,
+    id,
+    username,
+    circuitname,
     components,
     coordinates,
+  };
+}
+
+export const LIST_PROJECTS = "LIST_PROJECTS";
+export function listProjects(jsonRep) {
+  return {
+    type: LIST_PROJECTS,
+    projects: jsonRep.map(({ id, username, circuitname, date }) => ({
+      id,
+      username,
+      circuitname,
+      date,
+    })),
   };
 }
