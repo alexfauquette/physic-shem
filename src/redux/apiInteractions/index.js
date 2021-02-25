@@ -1,5 +1,13 @@
 import { loadProject, listProjects } from "redux/actions";
+import { openMessage } from "redux/actions/messages";
 import { v4 as uuid } from "uuid";
+
+const extractData = async (response) => {
+  const returnedData = await response.json();
+  const severity = response.ok ? "success" : "error";
+
+  return { severity, returnedData };
+};
 
 export const saveProject = ({ formData }) => async (dispatch, getState) => {
   const { components, coordinates } = getState();
@@ -10,12 +18,20 @@ export const saveProject = ({ formData }) => async (dispatch, getState) => {
       coordinates,
     })
   );
-  await fetch("https://amathjourney.com/api/circuits/", {
+  const response = await fetch("https://amathjourney.com/api/circuits/", {
     method: "POST",
     body: formData,
-  }).catch((e) => {
-    console.log(e);
   });
+
+  const { severity, returnedData } = await extractData(response);
+
+  dispatch(
+    openMessage({
+      id: uuid(),
+      severity,
+      text: returnedData.error || "project saved",
+    })
+  );
 };
 
 export const updateProject = ({ id, formData }) => async (
@@ -36,6 +52,16 @@ export const updateProject = ({ id, formData }) => async (
     method: "PUT",
     body: formData,
   });
+
+  const { severity, returnedData } = await extractData(response);
+
+  dispatch(
+    openMessage({
+      id: uuid(),
+      severity,
+      text: returnedData.error || "project updated",
+    })
+  );
 };
 
 export const deleteProject = ({ id, password }) => async (
@@ -53,6 +79,16 @@ export const deleteProject = ({ id, password }) => async (
       "Content-Type": "application/json",
     },
   });
+
+  const { severity, returnedData } = await extractData(response);
+
+  dispatch(
+    openMessage({
+      id: uuid(),
+      severity,
+      text: returnedData.error || "project deleted",
+    })
+  );
 };
 
 export const getProject = (id = "") => async (dispatch, getState) => {

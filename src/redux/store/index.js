@@ -26,6 +26,11 @@ import {
   LOAD_PROJECT,
   LIST_PROJECTS,
 } from "redux/actions";
+import {
+  CLOSE_MESSAGE,
+  REMOVE_MESSAGE,
+  OPEN_MESSAGE,
+} from "redux/actions/messages";
 
 import {
   MODE_SELECT,
@@ -94,7 +99,39 @@ function update(state = initial_state, action) {
         ...state,
         projects: [...action.projects],
       };
+
+    case CLOSE_MESSAGE: {
+      if (!(action.id in state.messages)) {
+        return state;
+      }
+      const { id } = action;
+      return {
+        ...state,
+        messages: {
+          ...state.messages,
+          [id]: { ...state.messages[id], show: false },
+        },
       };
+    }
+    case REMOVE_MESSAGE: {
+      if (!(action.id in state.messages)) {
+        return state;
+      }
+      const messages = { ...state.messages };
+      delete messages[action.id];
+      return {
+        ...state,
+        messages: { ...messages },
+      };
+    }
+    case OPEN_MESSAGE: {
+      const { id, text, severity } = action;
+      return {
+        ...state,
+        messages: { ...state.messages, [id]: { text, severity, show: true } },
+      };
+    }
+
     case UPDATE_COMPONENT:
       const { id, name, value } = action;
       if (state.components.allIds.includes(id)) {

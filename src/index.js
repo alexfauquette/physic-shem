@@ -11,6 +11,8 @@ import App from "pages/App";
 import Home from "pages/Home";
 import Tuto from "pages/Tuto";
 import Catalogue from "pages/Catalogue";
+import Messages from "container/serverMessages";
+
 import * as serviceWorker from "./serviceWorker";
 
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
@@ -69,6 +71,7 @@ ReactDOM.render(
               <Home />
             </Route>
           </Switch>
+          <Messages />
         </Router>
       </Provider>
     </ThemeProvider>
