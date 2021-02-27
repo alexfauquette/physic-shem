@@ -13,7 +13,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 import GitHubIcon from "@material-ui/icons/GitHub";
 
-import { getProject } from "redux/apiInteractions";
+import { getProjects } from "redux/apiInteractions";
 import { connect } from "react-redux";
 import CircuitCard from "atoms/CircuitCard";
 
@@ -53,15 +53,15 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    getProject: (id) => dispatch(getProject(id)),
+    getProjects: () => dispatch(getProjects()),
   };
 };
 
-const Catalogue = ({ projects, getProject }) => {
+const Catalogue = ({ projects, getProjects }) => {
   const classes = useStyles();
 
   useEffect(() => {
-    getProject();
+    getProjects();
   }, []);
 
   return (
@@ -96,7 +96,6 @@ const Catalogue = ({ projects, getProject }) => {
               username={username}
               circuitname={circuitname}
               date={date}
-              onClick={() => getProject(id)}
             />
           ))}
         </div>

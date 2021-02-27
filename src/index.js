@@ -58,7 +58,7 @@ ReactDOM.render(
           <ScrollToTop />
           <p id="load-font">aaa</p>
           <Switch>
-            <Route path="/app">
+            <Route path="/app/:schemId?">
               <App />
             </Route>
             <Route path="/catalogue">

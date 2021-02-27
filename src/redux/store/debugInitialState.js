@@ -6,6 +6,11 @@ export const initial_state = {
   displayOptions: default_displayOptions,
   magnetsOptions: default_magnetsOptions,
   mode: MODE_SELECT,
+  currentProject: {
+    id: "",
+    username: "",
+    circuitname: "",
+  },
   selection: [],
   adhesivePoints: [],
   weakLinks: [],

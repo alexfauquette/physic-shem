@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { connect } from "react-redux";
 
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import Link from "@material-ui/core/Link";
 
 import {
@@ -40,6 +40,7 @@ import {
   movePaper,
   endMovePaper,
 } from "redux/actions";
+import { getProject } from "redux/apiInteractions";
 
 const drawerWidth = 180;
 const optionDrawerWidth = 280;
@@ -97,6 +98,7 @@ const mapStateToProps = (state) => {
     mode: state.mode,
     selection: state.selection,
     isPaperDragged: state.displayOptions.dragging.isDragging,
+    currentProject: state.currentProject,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -110,6 +112,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     movePaper: (x, y) => dispatch(movePaper(x, y)),
     endMovePaper: () => dispatch(endMovePaper()),
+    getProject: (id) => dispatch(getProject(id)),
   };
 };
 
@@ -117,12 +120,14 @@ function App({
   mode,
   selection,
   isPaperDragged,
+  currentProject,
   startSelect,
   splitAnchor,
   stackSelectedAnchors,
   deleteElement,
   movePaper,
   endMovePaper,
+  getProject,
 }) {
   const classes = useStyles();
 
@@ -136,6 +141,14 @@ function App({
   const closeCode = () => setShowCode(false);
 
   const svgRef = useRef();
+
+  const { schemId } = useParams();
+  useEffect(() => {
+    // load the project when the url param does not match anymore
+    if (`${currentProject.id}` !== schemId) {
+      getProject(schemId);
+    }
+  }, [schemId, currentProject.id]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {

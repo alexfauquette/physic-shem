@@ -32,13 +32,12 @@ const CircuitCard = ({ circuitname, username, date, id = null, ...props }) => {
 
   return (
     <Card className={classes.card}>
-      <CardActionArea component={RouterLink} to="/app" {...props}>
+      <CardActionArea component={RouterLink} to={`/app/${id || ""}`} {...props}>
         <CardContent>
           {id === null ? (
             <p className={classes.newSchemaText}>+ NEW SCHEMA</p>
           ) : (
             <>
-              {" "}
               <CardMedia
                 image={`https://amathjourney.com/circuits/img/${id}.png`}
                 title=""

@@ -91,7 +91,39 @@ export const deleteProject = ({ id, password }) => async (
   );
 };
 
+export const getProjects = () => async (dispatch, getState) => {
+  const rep = await fetch(`https://amathjourney.com/api/circuits/`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const jsonRep = await rep.json();
+  if (jsonRep.length > 0) {
+    dispatch(listProjects(jsonRep));
+  }
+};
+
 export const getProject = (id = "") => async (dispatch, getState) => {
+  if (!id) {
+    dispatch(
+      loadProject({
+        id: "",
+        username: "",
+        circuitname: "",
+        components: {
+          byId: {},
+          allIds: [],
+        },
+        coordinates: {
+          byId: {},
+          allIds: [],
+        },
+      })
+    );
+    return null;
+  }
+
   const rep = await fetch(`https://amathjourney.com/api/circuits/${id}`, {
     method: "GET",
     headers: {
@@ -99,25 +131,21 @@ export const getProject = (id = "") => async (dispatch, getState) => {
     },
   });
   const jsonRep = await rep.json();
-  console.log(jsonRep);
-  if (id !== "") {
-    if (
-      jsonRep.length > 0 &&
-      jsonRep[0].data &&
-      jsonRep[0].data.components &&
-      jsonRep[0].data.coordinates
-    ) {
-      dispatch(
-        loadProject({
-          id: jsonRep[0].id,
-          username: jsonRep[0].username,
-          circuitname: jsonRep[0].circuitname,
-          components: jsonRep[0].data.components,
-          coordinates: jsonRep[0].data.coordinates,
-        })
-      );
-    }
-  } else if (jsonRep.length > 0) {
-    dispatch(listProjects(jsonRep));
+
+  if (
+    jsonRep.length > 0 &&
+    jsonRep[0].data &&
+    jsonRep[0].data.components &&
+    jsonRep[0].data.coordinates
+  ) {
+    dispatch(
+      loadProject({
+        id: jsonRep[0].id,
+        username: jsonRep[0].username,
+        circuitname: jsonRep[0].circuitname,
+        components: jsonRep[0].data.components,
+        coordinates: jsonRep[0].data.coordinates,
+      })
+    );
   }
 };
