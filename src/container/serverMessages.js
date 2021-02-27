@@ -20,7 +20,12 @@ const Messages = ({ messages, closeAndDeleteMessage }) => {
       {Object.keys(messages).map((id) => {
         const { text, severity, show } = messages[id];
         return (
-          <Snackbar key={id} open={show} autoHideDuration={10000}>
+          <Snackbar
+            key={id}
+            open={show}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            autoHideDuration={10000}
+          >
             <MuiAlert
               elevation={6}
               severity={severity}
