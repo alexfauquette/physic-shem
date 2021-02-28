@@ -5,6 +5,7 @@ import { roughComponents } from "components";
 import { roughCoordinate } from "atoms/anchor";
 
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import { loadProject } from "redux/actions";
 import {
@@ -67,8 +68,8 @@ const mapDispatchToProps = (dispatch) => {
     saveProject: ({ formData }) => dispatch(saveProject({ formData })),
     updateProject: ({ id, formData }) =>
       dispatch(updateProject({ id, formData })),
-    deleteProject: ({ id, password }) =>
-      dispatch(deleteProject({ id, password })),
+    deleteProject: ({ id, password, history }) =>
+      dispatch(deleteProject({ id, password, history })),
   };
 };
 
@@ -83,6 +84,8 @@ const SaveOnline = ({
   components,
   coordinates,
 }) => {
+  const history = useHistory();
+
   const id = (currentProject && currentProject.id) || "";
   const [canvasUrl, setCanvasUrl] = useState("");
   const [erase, setErase] = useState(id !== "");
@@ -257,7 +260,7 @@ const SaveOnline = ({
             fd.append("password", password1);
             fd.append("file", dataURItoBlob(canvasUrl), "image.png");
             if (id && toDelete) {
-              deleteProject({ id, password: password1 });
+              deleteProject({ id, password: password1, history });
             } else if (id && erase) {
               updateProject({ id, formData: fd });
             } else if (password1 === password2) {
@@ -364,7 +367,13 @@ const FileManager = ({
         </MenuItem>
         <Divider />
         <ListSubheader>Online</ListSubheader>
-        <MenuItem color="primary" onClick={() => setOpenDialogue(true)}>
+        <MenuItem
+          color="primary"
+          onClick={() => {
+            setOpenDialogue(true);
+            setToDelete(false);
+          }}
+        >
           Save Online
         </MenuItem>
         <MenuItem

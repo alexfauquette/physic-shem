@@ -2,9 +2,12 @@ import { loadProject, listProjects } from "redux/actions";
 import { openMessage } from "redux/actions/messages";
 import { v4 as uuid } from "uuid";
 
+const SUCCESS = "success";
+const ERROR = "error";
+
 const extractData = async (response) => {
   const returnedData = await response.json();
-  const severity = response.ok ? "success" : "error";
+  const severity = response.ok ? SUCCESS : ERROR;
 
   return { severity, returnedData };
 };
@@ -64,7 +67,7 @@ export const updateProject = ({ id, formData }) => async (
   );
 };
 
-export const deleteProject = ({ id, password }) => async (
+export const deleteProject = ({ id, password, history }) => async (
   dispatch,
   getState
 ) => {
@@ -89,6 +92,9 @@ export const deleteProject = ({ id, password }) => async (
       text: returnedData.error || "project deleted",
     })
   );
+  if (severity === SUCCESS) {
+    history.push("/catalogue");
+  }
 };
 
 export const getProjects = () => async (dispatch, getState) => {

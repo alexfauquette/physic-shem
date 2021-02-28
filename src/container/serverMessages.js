@@ -24,7 +24,8 @@ const Messages = ({ messages, closeAndDeleteMessage }) => {
             key={id}
             open={show}
             anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            autoHideDuration={10000}
+            autoHideDuration={4000}
+            onClose={() => closeAndDeleteMessage(id)}
           >
             <MuiAlert
               elevation={6}
