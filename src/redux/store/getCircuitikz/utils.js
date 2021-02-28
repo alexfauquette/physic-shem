@@ -20,7 +20,10 @@ export const findCommonAnchor = (node1, node2) => {
   const rep = {};
   anchors1.forEach(({ name: name1, x: x1, y: y1 }) => {
     anchors2.forEach(({ name: name2, x: x2, y: y2 }) => {
-      if (Math.abs(x1 - x2) < EPSILON && Math.abs(y1 - y2) < EPSILON) {
+      if (
+        Math.round(x1) === Math.round(x2) &&
+        Math.round(y1) === Math.round(y2)
+      ) {
         rep.parentAnchor = name1;
         rep.childAnchor = name2;
       }
@@ -79,12 +82,9 @@ export const simplifyNumber = (x) => {
   return rep;
 };
 
-export const fixNumber = (x, precision = 2) =>
-  typeof x === "number" ? x.toFixed(precision) : x;
-
 export const getCoordId = ({ x, y }) =>
-  `${typeof x === "number" ? x.toFixed(2) : x}-${
-    typeof y === "number" ? y.toFixed(2) : y
+  `${typeof x === "number" ? Math.round(x) : x}-${
+    typeof y === "number" ? Math.round(y) : y
   }`;
 
 // helper to write latex coordinate
@@ -96,12 +96,12 @@ export const getCoord = (x, y, coords, previousCoord) => {
   }
 
   if (previousCoord && previousCoord.x && previousCoord.y) {
-    if (fixNumber(previousCoord.x) === fixNumber(x)) {
+    if (previousCoord.x === x) {
       return `++(0, ${simplifyNumber(
         -(y - previousCoord.y) / MULTIPLICATIVE_CONST
       )})`;
     }
-    if (fixNumber(previousCoord.y) === fixNumber(y)) {
+    if (previousCoord.y === y) {
       return `++(${simplifyNumber(
         (x - previousCoord.x) / MULTIPLICATIVE_CONST
       )}, 0)`;

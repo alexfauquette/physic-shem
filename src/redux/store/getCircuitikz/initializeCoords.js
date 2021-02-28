@@ -38,8 +38,8 @@ const initializeCoords = (state) => {
 
       if (coords[fromCoordId] === undefined) {
         coords[fromCoordId] = {
-          x: fromCoord.x.toFixed(2),
-          y: fromCoord.y.toFixed(2),
+          x: Math.round(fromCoord.x),
+          y: Math.round(fromCoord.y),
           name: null,
           startingPaths: [element.id],
           endingPaths: [],
@@ -51,8 +51,8 @@ const initializeCoords = (state) => {
 
       if (coords[toCoordId] === undefined) {
         coords[toCoordId] = {
-          x: toCoord.x.toFixed(2),
-          y: toCoord.y.toFixed(2),
+          x: Math.round(toCoord.x),
+          y: Math.round(toCoord.y),
           name: null,
           endingPaths: [element.id],
           startingPaths: [],
@@ -75,8 +75,8 @@ const initializeCoords = (state) => {
 
         if (coords[positionCoordId] === undefined) {
           coords[positionCoordId] = {
-            x: positionCoord.x.toFixed(2),
-            y: positionCoord.y.toFixed(2),
+            x: Math.round(positionCoord.x),
+            y: Math.round(positionCoord.y),
             name: null,
             startingPaths: [],
             endingPaths: [],
@@ -150,10 +150,7 @@ const initializeCoords = (state) => {
       const { x: coordX, y: coordY } = coords[coordId];
 
       anchors.forEach(({ x: anchorX, y: anchorY }) => {
-        if (
-          Math.abs(coordX - anchorX) < 0.01 &&
-          Math.abs(coordY - anchorY) < 0.01
-        ) {
+        if (coordX === Math.round(anchorX) && coordY === Math.round(anchorY)) {
           if (!coords[coordId].nodeAssociated.includes(parent.id)) {
             coords[coordId].nodeAssociated.push(parent.id);
           }
