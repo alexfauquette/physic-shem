@@ -37,6 +37,7 @@ const Tuto = () => {
       </AppBar>
       <div className={classes.contentContainer}>
         <div className={classes.content}>
+          <p>{ready && <Trans t={t} i18nKey="introduction" />}</p>
           <h2>{ready && <Trans t={t} i18nKey="importModule.title" />}</h2>
           <p>
             {ready && (
@@ -78,7 +79,7 @@ const Tuto = () => {
             {ready && (
               <Trans
                 t={t}
-                i18nKey="bipolePosition.paragraph1"
+                i18nKey="bipoleNames.paragraph1"
                 components={{ c: <code /> }}
               />
             )}
