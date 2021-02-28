@@ -1,4 +1,5 @@
 {
+    "introduction": "Welcome to this short introduction to circuitikz, which is a TikZ package for naturally describe electronic networks.",
     "importModule": {
         "title": "Import circuitikz",
         "paragraph1": "The first thing to do is importing the circuitikz package. That's easy, just add <c>\\usepackage{circuitikz}</c> at the beginning of your LaTeX document. Precisely where you already have lines starting by <c>\\usepackage{...}</c>.",
