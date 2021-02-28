@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Displayer from "../interaction";
-import styles from "./index.module.scss";
+import styles from "../index.module.scss";
 
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -79,7 +79,7 @@ const Explanation = ({
 
   return (
     <div className={styles.root}>
-      <div className={styles.options}>
+      <div className={`${styles.options} ${styles.optionsColumn}`}>
         <FormControl className={styles.selector}>
           <InputLabel id="select-component-to-draw">
             Type de composant

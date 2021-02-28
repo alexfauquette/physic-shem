@@ -21,7 +21,7 @@
     },
     "bipoleDecorations": {
         "title": "Make beautiful extremities",
-        "paragraph1": "You can easily add decorations to the extremities of your dipoles. You have choice between <c>*</c>, <c>*</c> and <c>d</c> corresponding to filled circle, empty circle and diamond. I let you try all the possibilities and observe the associated code."
+        "paragraph1": "You can easily add decorations to the extremities of your dipoles. You have choice between <c>*</c>, <c>o</c> and <c>d</c> corresponding to filled circle, empty circle and diamond. I let you try all the possibilities and observe the associated code."
     },
     "bipoleCurrant": {
         "title": "Add courant",

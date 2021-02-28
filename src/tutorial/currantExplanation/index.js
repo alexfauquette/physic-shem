@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Displayer from "../interaction";
-import styles from "./index.module.scss";
+import styles from "../index.module.scss";
 
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
@@ -107,7 +107,7 @@ const Explanation = () => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.options}>
+      <div className={`${styles.options} ${styles.optionsColumn}`}>
         <label>sens du courant</label>
         <ButtonGroup
           color="primary"

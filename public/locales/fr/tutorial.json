@@ -21,7 +21,7 @@
     },
     "bipoleDecorations": {
         "title": "Un peu d'esthétisme aux extrémités",
-        "paragraph1": "Vous pouvez ajouter facilement des décorateurs aux extrémités de vos bipôles. Vous avez le choix entre <c>*</c>, <c>*</c> et <c>d</c> qui correspondent à un cercle plein, un cercle vide et un carreau (diamond en anglais). Je vous laisse tester si dessous les différentes combinaisons possibles et le code associé."
+        "paragraph1": "Vous pouvez ajouter facilement des décorateurs aux extrémités de vos bipôles. Vous avez le choix entre <c>*</c>, <c>o</c> et <c>d</c> qui correspondent à un cercle plein, un cercle vide et un carreau (diamond en anglais). Je vous laisse tester si dessous les différentes combinaisons possibles et le code associé."
     },
     "bipoleCurrant": {
         "title": "Ajouter du courant",

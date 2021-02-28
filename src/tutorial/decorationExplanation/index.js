@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Displayer from "../interaction";
-import styles from "./index.module.scss";
+import styles from "../index.module.scss";
 
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -49,7 +49,7 @@ const Explanation = () => {
   return (
     <div className={styles.root}>
       <div className={styles.options}>
-        <FormControl className={styles.selector}>
+        <FormControl className={styles.decorationSelector}>
           <InputLabel id="input-for-shape1">decoration 1</InputLabel>
           <Select
             labelId="input-for-shape1"
@@ -62,7 +62,7 @@ const Explanation = () => {
             <MenuItem value={"d"}>d</MenuItem>
           </Select>
         </FormControl>
-        <FormControl className={styles.selector}>
+        <FormControl className={styles.decorationSelector}>
           <InputLabel id="input-for-shape2">decoration 2</InputLabel>
           <Select
             labelId="input-for-shape2"

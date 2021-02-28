@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Displayer from "../interaction";
-import styles from "./index.module.scss";
+import styles from "../index.module.scss";
 
 import Slider from "@material-ui/core/Slider";
 import { getElementAnchors } from "components";
@@ -106,7 +106,7 @@ const Explanation = ({
 
   return (
     <div className={styles.root}>
-      <div className={styles.options}>
+      <div className={`${styles.options} ${styles.optionsColumn}`}>
         {withAngle && (
           <>
             <label>angle</label>

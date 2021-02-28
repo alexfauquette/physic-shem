@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Displayer from "../interaction";
-import styles from "./index.module.scss";
+import styles from "../index.module.scss";
 
 import Slider from "@material-ui/core/Slider";
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-import styles from "./index.module.scss";
+import styles from "../index.module.scss";
 
 import svgComponents, { drawElement, isMultyPole } from "components";
 import Anchor from "atoms/anchor";
@@ -25,7 +25,6 @@ const DrawSvg = ({
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox={`0 ${-height} ${width} ${height}`}
-      className={styles.drawingArea}
     >
       {/* draw the grid */}
       <>
@@ -33,14 +32,14 @@ const DrawSvg = ({
           <path
             key={`x-${xIndex}`}
             d={`M ${xIndex * 100} 0 L ${xIndex * 100} ${-height}`}
-            className={styles.grid}
+            className={styles.gridLine}
           />
         ))}
         {Ypoints.map((_, yIndex) => (
           <path
             key={`y-${yIndex}`}
             d={`M 0 ${-yIndex * 100} L ${width} ${-yIndex * 100}`}
-            className={styles.grid}
+            className={styles.gridLine}
           />
         ))}
       </>
@@ -132,7 +131,7 @@ const ShowLatexCode = ({
   code.push("\\end{circuitikz}");
 
   return (
-    <pre className={styles.latexArea}>
+    <pre>
       {code.slice(0, code.length - 1).join("\n\t") +
         "\n" +
         code[code.length - 1]}
@@ -146,7 +145,7 @@ const Displayer = ({
   svgOption = {},
   latexOption = {},
 }) => (
-  <div className={styles.showArea}>
+  <div>
     <ShowLatexCode
       components={components}
       coordinates={coordinates}
