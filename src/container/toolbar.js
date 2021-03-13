@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
 
 import {
   setZoom,
@@ -40,6 +41,16 @@ const mapStateToProps = (state) => {
   };
 };
 
+const useStyles = makeStyles(() => ({
+  root: {
+    position: "sticky",
+    top: "64px",
+    padding: "8px 2px",
+    backgroundColor: "#fafafa",
+    "& path": { fill: "inherit" },
+  },
+}));
+
 const ToolBar = ({
   mode,
   zoom,
@@ -51,15 +62,10 @@ const ToolBar = ({
   stackSelectedAnchors,
   updateMagnetOption,
 }) => {
+  const classes = useStyles();
+
   return (
-    <div
-      style={{
-        position: "sticky",
-        top: "64px",
-        padding: "8px 2px",
-        backgroundColor: "#fafafa",
-      }}
-    >
+    <div className={classes.root}>
       <IconButton
         onMouseDown={(event) => {
           startCreatePathElement("short");
@@ -219,7 +225,6 @@ const ToolBar = ({
       >
         <SvgIcon>
           <path d="M4 11.5h20v1h-20Z" />
-
           <circle cx={2} cy={12} r={2} />
           <circle cx={22} cy={12} r={2} />
         </SvgIcon>

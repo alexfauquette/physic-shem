@@ -23,8 +23,13 @@ export const getBoundingBox = () => ({
 
 const Battery1 = () => (
   <>
-    <path d={`M ${-UNIT_X} ${-UNIT_Y} L ${-UNIT_X} ${UNIT_Y}`} />
-    <path d={`M ${UNIT_X} ${-0.5 * UNIT_Y}L ${UNIT_X} ${0.5 * UNIT_Y}`} />
+    <path
+      d={`
+      M ${-UNIT_X} ${-UNIT_Y}
+      L ${-UNIT_X} ${UNIT_Y}
+      M ${UNIT_X} ${-0.5 * UNIT_Y}
+      L ${UNIT_X} ${0.5 * UNIT_Y}`}
+    />
   </>
 );
 

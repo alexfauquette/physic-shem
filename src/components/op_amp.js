@@ -113,6 +113,7 @@ const OpAmp = ({
             L ${-port_width * UNIT_X} ${UNIT_Y}
             L ${-port_width * UNIT_X} ${-UNIT_Y}
             Z`}
+            style={{ fill: "transparent" }}
           />
           {/* % Negative input terminal */}
           <path

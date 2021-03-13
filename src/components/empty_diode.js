@@ -25,6 +25,7 @@ const EmptyDiode = () => (
   <>
     <path
       d={`M ${UNIT_X} 0 L ${-UNIT_X} ${-UNIT_Y} L ${-UNIT_X} ${UNIT_Y} Z`}
+      style={{ fill: "transparent" }}
     />
     <path d={`M ${UNIT_X} ${UNIT_Y} L ${UNIT_X} ${-UNIT_Y}`} />
   </>
