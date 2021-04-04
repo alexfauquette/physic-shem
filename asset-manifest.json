@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/physic-shem/static/css/main.5eec4826.chunk.css",
+    "main.css": "/physic-shem/static/css/main.7cd5c243.chunk.css",
     "main.js": "/physic-shem/static/js/main.3101e3b4.chunk.js",
     "main.js.map": "/physic-shem/static/js/main.3101e3b4.chunk.js.map",
     "runtime-main.js": "/physic-shem/static/js/runtime-main.56ce5451.js",
@@ -8,7 +8,7 @@
     "static/js/2.ab38f2d1.chunk.js": "/physic-shem/static/js/2.ab38f2d1.chunk.js",
     "static/js/2.ab38f2d1.chunk.js.map": "/physic-shem/static/js/2.ab38f2d1.chunk.js.map",
     "index.html": "/physic-shem/index.html",
-    "static/css/main.5eec4826.chunk.css.map": "/physic-shem/static/css/main.5eec4826.chunk.css.map",
+    "static/css/main.7cd5c243.chunk.css.map": "/physic-shem/static/css/main.7cd5c243.chunk.css.map",
     "static/js/2.ab38f2d1.chunk.js.LICENSE.txt": "/physic-shem/static/js/2.ab38f2d1.chunk.js.LICENSE.txt",
     "static/media/index.css": "/physic-shem/static/media/cmunss.d723cf47.otf",
     "static/media/getFetch.cjs": "/physic-shem/static/media/getFetch.d7d6010d.cjs",
@@ -19,7 +19,7 @@
   "entrypoints": [
     "static/js/runtime-main.56ce5451.js",
     "static/js/2.ab38f2d1.chunk.js",
-    "static/css/main.5eec4826.chunk.css",
+    "static/css/main.7cd5c243.chunk.css",
     "static/js/main.3101e3b4.chunk.js"
   ]
 }
