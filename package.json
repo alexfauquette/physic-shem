@@ -29,6 +29,10 @@
     "uuid": "^8.3.2"
   },
   "homepage": "http://alexfauquette.github.io/physic-shem",
+  "bugs": {
+    "url": "https://github.com/alexfauquette/physic-shem/issues"
+  },
+  "license": "MIT",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
