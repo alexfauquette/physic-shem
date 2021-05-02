@@ -1,24 +1,24 @@
 {
-    "introduction": "Bienvenu dans cette introduction à circuitikz, un package basé sur TikZ qui vous permettra de dessiner facilement des schémas électrique.",
+    "introduction": "Bienvenue dans cette introduction à circuitikz, un package basé sur TikZ qui vous permettra de dessiner facilement des schémas électriques.",
     "importModule": {
         "title": "Importer circuitikz",
         "paragraph1": "Première chose à faire, importer le package circuitikz. Pour cela rien de plus simple, ajoutez <c>\\usepackage{circuitikz}</c> dans l'entête de votre document LaTeX, là où il y a toutes les autres lignes commençant par <c>\\usepackage{...}</c>.",
-        "paragraph2": "Et voilà, vous êtes prêt·e à utiliser circuitikz. Dans votre <c>document</c> créez une zone de dessin avec <c>\\begin{circuitikz}</c> et <c>\\end{circuitikz}</c>. Votre code devrait globalement ressembler à ceci :"
+        "paragraph2": "Et voilà, vous êtes prêt·e à utiliser circuitikz. Dans votre <c>\\document</c>, créez une zone de dessin avec <c>\\begin{circuitikz}</c> et <c>\\end{circuitikz}</c>. Votre code devrait globalement ressembler à ceci :"
     },
     "bipolePosition": {
         "title": "Dessiner une résistance",
-        "paragraph1": "Commençons par quelque chose de simple : dessiner une résistance. Pour celà, vous avez besoin de <c>\\draw</c>, qui indique le début d'un dessiner, un point de départ <c>(x, y)</c> pour savoir où commence votre résistance. Ajoutez <c>to</c> pour préciser qu'il s'agit d'un dipôle, et <c>R</c> pour avoir une résistance. Il ne vous reste plus qu'à indiquer le point d'arriver, et surtout mettre un <c>;</c> à la fin pour arrêter le dessin. Souvent les erreurs de compilation viennent d'un <c>;</c> oublié."
+        "paragraph1": "Commençons par quelque chose de simple : dessiner une résistance. Pour celà, vous avez besoin de <c>\\draw</c>, qui indique le début d'un dessin, un point de départ <c>(x, y)</c> pour savoir où commence votre résistance. Ajoutez <c>to</c> pour préciser qu'il s'agit d'un dipôle, et <c>R</c> pour avoir une résistance. Il ne vous reste plus qu'à indiquer le point d'arrivée, et surtout mettre un <c>;</c> à la fin pour arrêter le dessin. Souvent les erreurs de compilation viennent d'un <c>;</c> oublié."
     },
     "bipoleNames": {
         "title": "Dessiner d'autres dipôles",
-        "paragraph1": "Vous voulez dessiner autre chose ? Tant que c'est un dipôle, on garde le <c>to</c> et on change le contenu des crochets. Par exemple <c>to[C]</c> vous donnera un condensateur, et <c>battery1</c> une pile. Je vous laisse tester les dipôles présent pour l'instant dans physic-schem."
+        "paragraph1": "Vous voulez dessiner autre chose ? Tant que c'est un dipôle, on garde le <c>to</c> et on change le contenu des crochets. Par exemple <c>to[C]</c> vous donnera un condensateur, et <c>battery1</c> une pile. Je vous laisse tester les dipôles présents pour l'instant dans physic-schem."
     },
     "bipoleAnnotations": {
         "title": "Annoter ses composants",
         "paragraph1": "Il est fréquent que l'on veuille donner un petit nom à nos composants, tel que Robert le potentiomètre, ou plus classiquement la résistance R1. On peut aussi indiquer une information sur le composant, comme sa résistivité. Pour cela, vous avez le label et l'annotation qui sont des options à ajouter. Pour le label, utilisez <c>l=</c> et pour l'annotation c'est <c>a=</c>. Simple non ?",
         "paragraph2": "Attention, physic-schem présente une grande limite comparé à l'utilisation de circuitikz : l'absence d'équations. En effet, je n'ai pas encore implémenté la gestion des équations LaTeX. Alors que si vous utilisez circuitikz, vous pouvez facilement intégrer des équations dans vos labels et annotations. Par exemple une résistance R1 s'écrira <c>to[R, l=$R_1$]</c> pour avoir un R indice 1.",
         "paragraph3": "Attention aussi au sens de vos composants. Si vous regardez l'exemple suivant, vous remarquerez que la résistance à fait un demi tour avec des étapes intermédiaires. Celle de gauche est tracée de droite à gauche alors que celle de droite est tracée de gauche à droite, ce qui inverse le sens des labels et annotations.",
-        "paragraph4": "Retenez que l'ordre des coordonnées à un impact sur le sens du dipôle et donc sur le rendu."
+        "paragraph4": "Retenez que l'ordre des coordonnées a un impact sur le sens du dipôle et donc sur le rendu."
     },
     "bipoleDecorations": {
         "title": "Un peu d'esthétisme aux extrémités",
@@ -27,25 +27,25 @@
     "bipoleCurrant": {
         "title": "Ajouter du courant",
         "paragraph1": {
-            "1": "Il est assez courant de vouloir dessiner le courant passant à travers un composant. Pour cela rien de plus simple, ajoutez <c>i=i1</c> et vous obtiendrez une fléche de courant noté i1. Vous pouvez modifier le sens de la flèche, sa position et la place du texte avec les caractères <c>^</c> et <c>_</c> pour la place du texte (au dessus en dessous). Les caractères <c>></c> et ",
+            "1": "Il est assez courant de vouloir dessiner le courant passant à travers un composant. Pour cela rien de plus simple, ajoutez <c>i=i1</c> et vous obtiendrez une fléche de courant noté i1. Vous pouvez modifier le sens de la flèche, sa position et la place du texte avec les caractères <c>^</c> et <c>_</c> pour la place du texte (au-dessus, et en-dessous). Les caractères <c>></c> et ",
             "2": " pour le sens de la flèche (sens direct ou indirect). Leur ordre indique la place de la flèche. Je vous laisse tester par vous même, ça sera plus simple."
         },
         "paragraph2": "Petit point d'attention, si vous inversez l'ordre des coordonnées, c'est comme si vous aviez fait faire une rotation de 180° à votre composant. Les notions de droite et gauche ainsi que haut et bas seront inversées."
     },
     "monopole": {
         "title": "Dessiner un monopôle",
-        "paragraph1": "La vie n'est pas faite que de dipôles. Il y a aussi les monopôles (mon préféré : la masse). Cette fois le <c>to</c> est remplacé par <c>node</c>, et à la fin il nous faut ajouter <c>{}</c>. Entre ces accolades vous pouvez mettre un texte qui correspond au label. L'accolade est obligatoire dans circuitikz, si vous ne voulez pas mettre de label il faudra quand même en mettre une vide. Ces labels ne sont pas supporté pour l'instant par circuitikz, mais sachez que vous pourrez les remplir à votre guise dans votre éditeur LaTeX préféré."
+        "paragraph1": "La vie n'est pas faite que de dipôles. Il y a aussi les monopôles (mon préféré : la masse). Cette fois le <c>to</c> est remplacé par <c>node</c>, et à la fin il nous faut ajouter <c>{}</c>. Entre ces accolades vous pouvez mettre un texte qui correspond au label. L'accolade est obligatoire dans circuitikz, si vous ne voulez pas mettre de label il faudra quand même en mettre une vide. Ces labels ne sont pas supportés pour l'instant par circuitikz, mais sachez que vous pourrez les remplir à votre guise dans votre éditeur LaTeX préféré."
     },
     "multipoles": {
         "title": "Et des multipôles",
-        "paragraph1": "Pour les multipôles même logique. Sauf qu'ils on plusieurs pôles (captain obvious). Conséquence : on va pouvoir choisir qu'elle pôle sert de point de référence. Pour cela on utilise l'option <c>anchor=...</c>, remplacez les ... par le nom du pôle qui vous intéresse. Chaque composants à ses propres pôles, mais rassurez vous ce sont des physiciens qui gèrent le code, les noms devraient vous être familier. Pour le nmos les pôles sont <c>B</c>, <c>C</c>, <c>E</c>. Pour l'amplificateur opérationnel, il y a <c>+</c>, <c>-</c>, <c>out</c> pour les entrées sorties, et <c>up</c>, <c>down</c> pour les points d'alimentation."
+        "paragraph1": "Pour les multipôles, même logique. Sauf qu'ils ont plusieurs pôles (Captain Obvious). Conséquence : on va pouvoir choisir quel pôle sert de point de référence. Pour cela on utilise l'option <c>anchor=...</c>, remplacez les ... par le nom du pôle qui vous intéresse. Chaque composant a ses propres pôles, mais rassurez vous ce sont des physiciens qui gèrent le code, les noms devraient vous être familiers. Pour le nmos les pôles sont <c>B</c>, <c>C</c>, <c>E</c>. Pour l'amplificateur opérationnel, il y a <c>+</c>, <c>-</c>, <c>out</c> pour les entrées sorties, et <c>up</c>, <c>down</c> pour les points d'alimentation."
     },
     "multipolesPointOfInterest": {
         "title": "Utiliser les points d'intérêt des multipôles",
-        "paragraph1": "Maintenant on a un problème. Un fois mon multipôle placé, comment je fais pour brancher mes dipôles dessus ? C'est là que circuitikz est puissant. Commencez par donner un nom à votre multipôle comme ceci : <c>node[... ](nomDuComposant) {}</c>. Dans l'exemple ci dessous, j'ai pris le nom <c>opAmp</c> (super original). Vous pouvez maintenant utiliser les pôles du dipôle comme coordonnées avec <c>(nomDuComposant.nomDuPole)</c>. Dans notre exemple, <c>(opAmp.-)</c> correspond à la coordonnée du pole - de l'amplificateur opérationnel. Résultat on peut bouger ce multipôle, les résistances resteront bien attachées à lui."
+        "paragraph1": "Maintenant on a un problème. Un fois mon multipôle placé, comment je fais pour brancher mes dipôles dessus ? C'est là que circuitikz est puissant. Commencez par donner un nom à votre multipôle comme ceci : <c>node[... ](nomDuComposant) {}</c>. Dans l'exemple ci dessous, j'ai pris le nom <c>opAmp</c> (super original). Vous pouvez maintenant utiliser les pôles du dipôle comme coordonnées avec <c>(nomDuComposant.nomDuPole)</c>. Dans notre exemple, <c>(opAmp.-)</c> correspond à la coordonnée du pole - de l'amplificateur opérationnel. Résultat : on peut bouger ce multipôle, les résistances resteront bien attachées à lui."
     },
     "relative coordinates": {
         "title": "Utiliser des coordonnées relatives",
-        "paragraph1": "Vous l'avez sans doute remarqué, les résistance sont accrochées d'un côté, mais de l'autre tout est fixe. Pour remédier à ce problème, on va utiliser des coordonnées relatives. En écrivant <c>++(dx, dy)</c>, vous indiquez à TikZ d'ajouter dx et dy à la précédente coordonnée pour obtenir la nouvelle coordonnée. Vous pouvez maintenant bouger tout le bloc en modifiant uniquement la position de l'AOP. les résistances resteront verticale et de longueur 2cm."
+        "paragraph1": "Vous l'avez sans doute remarqué, les résistances sont accrochées d'un côté, mais de l'autre tout est fixe. Pour remédier à ce problème, on va utiliser des coordonnées relatives. En écrivant <c>++(dx, dy)</c>, vous indiquez à TikZ d'ajouter dx et dy à la précédente coordonnée pour obtenir la nouvelle coordonnée. Vous pouvez maintenant bouger tout le bloc en modifiant uniquement la position de l'AOP. les résistances resteront verticale et de longueur 2cm."
     }
 }
