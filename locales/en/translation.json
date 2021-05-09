@@ -5,15 +5,29 @@
         "tutorial": "Tuto"
     },
     "paragraph1": {
-        "title": "Schema must be beautiful and easy to do",
-        "txt": "What are you using to create your own electric schemas? Paint or Word? Then it is likely that you suffer to do them, and you must be disappointed by the results. Here you can draw schemas easily by focussing only on the content. Once done, you can export it as a png, or even better get the LaTeX code associated."
+        "title": "Create your circuits in few seconds",
+        "txt": "Switches, resistors, capacitors. All the basics components of an electric circuits are available in the left menu. Do not hesitate to ask if you need somme other components."
     },
     "paragraph2": {
-        "title": "LaTeX code?",
-        "txt": {
-            "1": "Yes! Have you seen scientific classe note with wonderful math equations and schemas? If yes, it is probably written in LaTeX. If you're interested in creating such magnificent documents, I recomand you this ",
+        "title": "Modify components easily",
+        "txt": "You need to specify the current through your component, or to give them a name? Click on a component to get access to all its options."
+    },
+    "paragraph3": {
+        "title": "Export your circuit as png, or CircuiTikZ code",
+        "txt1": "Get your circuit as a png picture, or get the CircuTikZ code to ingrate directly your circuit in a LaTeX document.",
+        "txt2": "You can also save them online, to share your creation with other users."
+    },
+    "paragraph4": {
+        "title": "Discover CircuiTikZ with an explorable explanation",
+        "link": {
             "url": "https://en.wikibooks.org/wiki/LaTeX",
-            "2": " which will teach you the basics of LaTeX."
-        }
+            "txt": "this Wikibook"
+        },
+        "txt1": "You whant to go further? Learn basics of CircuiTikZ in the tutorial. If you do not know what is LaTeX, ",
+        "txt2": " is a fantastic introduction to this language."
+    },
+    "contact": {
+        "title": "Contact",
+        "txt": "This application is clearly not finished. Do not hesitate to contact me if you have question, idea, or if you found a bug."
     }
 }

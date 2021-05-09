@@ -5,15 +5,29 @@
         "tutorial": "Tuto"
     },
     "paragraph1": {
-        "title": "Des schémas beau facilement",
-        "txt": "Avec quoi faite vous vos schémas ? Paint ou Word ? Dans les deux cas, tu dois souffrir, et le résultat ne peut qu'être décevant face à tous les efforts mis en oeuvre. Ici tu pourras faire tes schémas rapidement en ne te concentrant que sur le contenue de ton schéma. Une fois fini exporte le en png pour ou en svg (fonctionnalité à venir). Ou mieux encore récupère le code LaTeX associé."
+        "title": "Créez vos circuits en quelques cliques",
+        "txt": "Lampes, interrupteurs, résistances. Les composants de base d'un circuit électrique sont disponible dans le menu de gauche. N'hésitez pas à signaler des composants qui vous manqueraient."
     },
     "paragraph2": {
-        "title": "Du code LaTeX ?",
-        "txt": {
-            "1": "Tu as déjà vue un cours de science que tu trouves magnifique ? Probablement qu'il était écrit en LaTeX. Si tu veux toi aussi créer de magnifiques documents, je te recommande ce ",
-            "url": "https://fr.wikibooks.org/wiki/LaTeX",
-            "2": " qui te donnera toutes les bases."
-        }
+        "title": "Modifiez les composants facilement",
+        "txt": "Besoin d'ajouter un courant, ou de nommer vos composant ? Sélectionnez le et les différents options vous seront présentées à droite."
+    },
+    "paragraph3": {
+        "title": "Exportez votre circuit en png, ou en code CircuiTikZ",
+        "txt1": "Récupérez votre circuit sous forme d'une image png. Ou récupérez du code CircuiTikZ pour l'intégrer directement dans vos documents LaTeX.",
+        "txt2": "N'hésitez pas à sauvegarder vos réalisations en ligne pour les partager avec d'autres utilisateurs."
+    },
+    "paragraph4": {
+        "title": "Découvrez CircuiTikZ grace au tutoriel interactif",
+        "link": {
+            "url": "https://fr.wikibooks.org/wiki/LaTeX/G%C3%A9n%C3%A9ralit%C3%A9s",
+            "txt": "ce Wikibook"
+        },
+        "txt1": "Envie d'aller plus loin? Apprenez les rudiment de CircuiTikZ. Si vous ne connaissez pas encore LaTeX, ",
+        "txt2": " vous donnera toutes les bases pour découvrir ce fabuleux langage."
+    },
+    "contact": {
+        "title": "Contact",
+        "txt": "Cette application est toujours en cours de développement. N'hésitez pas à me contacter pour signaler un bug, demander une fonctionnalité ou toute autre remarque."
     }
 }
